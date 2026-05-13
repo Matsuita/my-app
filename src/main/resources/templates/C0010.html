@@ -76,19 +76,16 @@
         <!-- メールアドレス -->
 
         <input type="text" th:field="*{mail}" class="input-box" placeholder="メールアドレス">
-
         <div class="error"th:errors="*{mail}"></div>
 
         <!-- パスワード -->
 
         <input type="password" th:field="*{password}" class="input-box" placeholder="パスワード">
-
         <div class="error" th:errors="*{password}"></div>
 
         <!-- ログイン失敗 -->
 
         <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-
         <button type="submit" class="login-button">ログイン</button>
 
     </form>
