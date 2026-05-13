@@ -22,5 +22,6 @@ public class SalesController {
 
         model.addAttribute("salesSearchForm", new SalesSearchForm());
         return "S0020";
+        
     }
 }

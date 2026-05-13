@@ -7,6 +7,7 @@ public class DashboardController {
 	public String dashboard() {
 
 	    return "C0020";
+	    
 	}
 	
 }
