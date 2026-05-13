@@ -13,8 +13,6 @@ public class Account {
 
     @Id
     private Integer id;
-
     private String mail;
-
     private String password;
 }
