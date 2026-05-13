@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+/* 部分一致バッジ（スクショ寄せ） */
+.partial-badge {
+    display: inline-block;
+    background-color: #6c757d;
+    color: white;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+/*ヘッダーに<link rel="stylesheet" th:href="@{/teamb.css}">これいれて、
+<span class="partial-badge">部分一致</span> これ使ってね*/
