@@ -13,7 +13,7 @@ import jp.iglobe.pbl.model.SearchAccount;
 import jp.iglobe.pbl.repository.AccountRepository;
 
 @Controller
-public class SearchController {
+public class SearchController  {
 
 	@Autowired
 	private AccountRepository accountRepository;
