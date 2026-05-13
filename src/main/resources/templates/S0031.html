@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>アカウント登録確認</title>
+</head>
+
+<body>
+	<h1>アカウントを登録してよろしいですか？</h1>
+
+	<form th:object="" method="post">
+		<p>氏名
+			<span class="partial-badge">必須</span>
+			<input type="hidden" th:field="*{name}">
+		</p>
+		<p>メールアドレス
+			<span class="partial-badge">必須</span>
+			<input type="hidden" th:field="*{mail}">
+		</p>
+		<p>パスワード
+			<span class="partial-badge">必須</span>
+			<input type="hidden" th:field="*{password}">
+		</p>
+		<p>パスワード（確認）
+			<span class="partial-badge">必須</span>
+			<input type="hidden" th:field="*{password}">
+		</p>
+		<p>権限
+			<span class="partial-badge">必須</span>
+			<input type="radio" name="*{authority}" value="male" />権限なし
+			<input type="radio" name="*{authority}" value="female" />参照
+			<input type="radio" name="*{authority}" value="other" />更新
+		</p>
+
+		<button type="submit" th:formaction="@{}">OK</button>
+		<button type="button" onclick="history.back()">キャンセル</button>
+
+
+	</form>
+</body>
+
+</html>
