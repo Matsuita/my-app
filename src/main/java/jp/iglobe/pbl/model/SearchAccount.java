@@ -30,7 +30,7 @@ public class SearchAccount {
 
 	    private Integer authority;
 
-	     // getter setter
+	      // getter setter
 	}
 
 
