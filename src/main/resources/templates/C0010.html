@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+
+    <style>
+
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: #eeeeee;
+            font-family: "Yu Gothic", sans-serif;
+        }
+
+        .login-area{
+            width: 320px;
+            margin: 110px auto;
+        }
+
+        .system-title{
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .input-box{
+            width: 100%;
+            height: 48px;
+            padding-left: 12px;
+            box-sizing: border-box;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            font-size: 14px;
+            background-color: white;
+            margin-bottom: 2px;
+        }
+
+        .login-button{
+            width: 100%;
+            height: 48px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 3px;
+            background-color: #2f78bd;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-button:hover{
+            opacity: 0.9;
+        }
+
+        .error{
+			color: red;
+            font-size: 13px;
+            margin-top: 3px;
+            margin-bottom: 8px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="login-area">
+
+    <div class="system-title">物品売上管理システム</div>
+
+    <form th:action="@{/login}" th:object="${loginForm}" method="post">
+
+        <!-- メールアドレス -->
+
+        <input type="text" th:field="*{mail}" class="input-box" placeholder="メールアドレス">
+
+        <div class="error"th:errors="*{mail}"></div>
+
+        <!-- パスワード -->
+
+        <input type="password" th:field="*{password}" class="input-box" placeholder="パスワード">
+
+        <div class="error" th:errors="*{password}"></div>
+
+        <!-- ログイン失敗 -->
+
+        <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+        <button type="submit" class="login-button">ログイン</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
