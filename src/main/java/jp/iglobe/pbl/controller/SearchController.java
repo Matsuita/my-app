@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import jp.iglobe.pbl.model.Account;
 import jp.iglobe.pbl.model.AccountSearchForm;
@@ -32,7 +33,14 @@ public class SearchController {
 	    return "S0041";
 	}
 	
-	
+	@GetMapping("/accounts/edit/{id}")
+	public String edit(@PathVariable Integer id, Model model) {
+
+	    Account account = accountRepository.findById(id).orElse(null);
+	    model.addAttribute("account", account);
+
+	    return "S0042";
+	}
 	
 	
 	
