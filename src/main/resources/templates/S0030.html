@@ -10,7 +10,7 @@
 <body>
 	<h1>アカウント登録</h1>
 
-	<form th:action="@{/S0031}" th:object="" method="post">
+	<form 	th:action="@{/S0031}" th:object="${accountForm}" method="post">
 		<p>氏名
 			<span class="partial-badge">必須</span>
 			<input type="text" th:field="*{name}" placeholder="氏名"></p>
