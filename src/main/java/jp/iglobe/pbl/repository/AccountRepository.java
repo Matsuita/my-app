@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import jp.iglobe.pbl.model.Account;
+import jp.iglobe.pbl.model.SearchAccount;
 
-public interface AccountRepository extends JpaRepository<Account, Integer> {
+public interface AccountRepository extends JpaRepository<SearchAccount, Integer> {
 
     //
 	@Query("""
-        SELECT a FROM Account a 
+        SELECT a FROM SearchAccount a 
         WHERE 
         (:name IS NULL OR a.name LIKE %:name%)
         AND
@@ -24,5 +24,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 	//メール：未入力なら条件無視、入力あれば完全一致
     //権限：未選択なら条件無視、選択されていれば一致検索
 	
-    List<Account> search(String name, String mail, Integer authority);
+    List<SearchAccount> search(String name, String mail, Integer authority);
 }

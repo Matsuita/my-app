@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import jp.iglobe.pbl.model.Account;
 import jp.iglobe.pbl.model.AccountSearchForm;
+import jp.iglobe.pbl.model.SearchAccount;
 import jp.iglobe.pbl.repository.AccountRepository;
 
 @Controller
@@ -24,7 +24,7 @@ public class SearchController {
 
 	@GetMapping("/accounts/result")      // 検索結果
 	public String search(AccountSearchForm form, Model model) {
-	    List<Account> list = accountRepository.search(
+	    List<SearchAccount> list = accountRepository.search(
 	            form.getName(),
 	            form.getMail(),
 	            form.getAuthority());
@@ -36,7 +36,7 @@ public class SearchController {
 	@GetMapping("/accounts/edit/{id}")
 	public String edit(@PathVariable Integer id, Model model) {
 
-	    Account account = accountRepository.findById(id).orElse(null);
+	    SearchAccount account = accountRepository.findById(id).orElse(null);
 	    model.addAttribute("account", account);
 
 	    return "S0042";
