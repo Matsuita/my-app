@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" th:href="@{/teamb.css}">
+    <meta charset="UTF-8">
+    <title>売上検索</title>
+</head>
+
+<body>
+
+<h1>売上検索条件入力</h1>
+
+<form th:action="@{/sales/search}" th:object="${salesSearchForm}" method="post">
+
+    <!-- 販売日 -->
+
+    <div>
+        <label>販売日</label>
+        <input type="date" th:field="*{saleDateFrom}">
+		
+		～
+
+        <input type="date" th:field="*{saleDateTo}">
+    </div>
+
+    <br>
+
+    <!-- 担当 -->
+
+    <div>
+        <label>担当</label>
+        <select th:field="*{accountId}">
+			<option value="">選択してください</option>
+        </select>
+    </div>
+
+    <br>
+
+    <!-- 商品カテゴリー -->
+
+    <div>
+        <label>商品カテゴリー</label>
+        <select th:field="*{categoryId}">
+			<option value="">選択してください</option>
+		</select>
+    </div>
+
+    <br>
+
+    <!-- 商品名 -->
+
+    <div>
+        <label>商品名</label>
+		<span class="partial-badge">部分一致</span> 
+        <input type="text" th:field="*{tradeName}">
+    </div>
+
+    <br>
+
+    <!-- 備考 -->
+
+    <div>
+        <label>備考</label>
+		<span class="partial-badge">部分一致</span>
+        <input type="text" th:field="*{note}"> 
+		
+    </div>
+
+    <br>
+
+    <!-- ボタン -->
+
+    <button type="submit">検索</button>
+    <button type="reset">クリア</button>
+
+</form>
+
+</body>
+</html>
