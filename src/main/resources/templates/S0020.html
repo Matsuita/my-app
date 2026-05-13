@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+	<link rel="stylesheet" th:href="@{/teamb.css}">
     <meta charset="UTF-8">
     <title>売上検索</title>
 </head>
@@ -51,6 +52,7 @@
 
     <div>
         <label>商品名</label>
+		<span class="partial-badge">部分一致</span> 
         <input type="text" th:field="*{tradeName}">
     </div>
 
@@ -60,7 +62,8 @@
 
     <div>
         <label>備考</label>
-        <input type="text" th:field="*{note}">
+		<span class="partial-badge">部分一致</span>
+        <input type="text" th:field="*{note}"> 
     </div>
 
     <br>
