@@ -1,5 +1,4 @@
-
-	package jp.iglobe.pbl.model;
+package jp.iglobe.pbl.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
