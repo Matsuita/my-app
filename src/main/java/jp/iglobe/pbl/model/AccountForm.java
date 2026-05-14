@@ -14,4 +14,5 @@ public class AccountForm {
     private String passwordConfirm;
 
     private String authority;
+    
 }
