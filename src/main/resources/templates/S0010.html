@@ -7,6 +7,7 @@
 </head>
 
 <body>
+	<div th:replace="fragment/navbar :: navbar('sales')"></div>
 	<h1>売上登録</h1>
 	<form th:action="@{/sales/form-confirm}" th:object="${sale}" method="post">
 		<p>販売日<input type="date" th:field="*{saleDate}"></p>
