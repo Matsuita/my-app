@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>売上詳細編集確認画面</title>
+</head>
+<body>
+	<h1>売上登録確認</h1>
+		<form th:action="@{/sales/detail}" th:object="${sale}" method="post">
+			<p>販売日<input type="date" th:field="*{saleDate}"></p>
+			<p>担当<select th:field="*{accountId}">
+					<option value="">選択してください</option>
+				</select>
+			</p>
+			<p>商品カテゴリー<select th:field="*{categoryId}">
+					<option value="">選択してください</option>
+				</select>
+			</p>
+			<p>商品名<input type="text" th:field="*{tradeName}"></p>
+			<p>単価<input type="number" th:field="*{unitPrice}"></p>
+			<p>個数<input type="number" th:field="*{saleNumber}"></p>
+			<p>備考<input type="text" th:field="*{note}"></p>
+
+			<button type="submit">OK</button>
+			<a th:href="@{/sales/edit}">キャンセル</a>
+		</form>
+</body>
+</html>
