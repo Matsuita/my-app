@@ -2,15 +2,21 @@ package jp.iglobe.pbl.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.iglobe.pbl.model.AccountSearchForm;
 import jp.iglobe.pbl.model.SearchAccount;
 import jp.iglobe.pbl.repository.SearchRepository;
+
 
 @Controller
 public class SearchController {
@@ -18,13 +24,20 @@ public class SearchController {
 	@Autowired
 	private SearchRepository searchRepository;
 
-	@GetMapping("/accounts/search") // 入力画面
-	public String init() {
+	@GetMapping("/accounts/search")
+	public String init(Model model) {
+		model.addAttribute("accountSearchForm", new AccountSearchForm());
 		return "S0040";
 	}
 
-	@GetMapping("/accounts/result") // 検索結果
-	public String search(AccountSearchForm form, Model model) {
+	@PostMapping("/accounts/result") // 検索結果
+	public String search(@Valid @ModelAttribute AccountSearchForm form,
+			BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("accountSearchForm", form);
+			return "S0040"; // 入力画面に戻る
+		}
 		List<SearchAccount> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),

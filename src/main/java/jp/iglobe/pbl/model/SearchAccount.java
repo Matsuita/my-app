@@ -27,5 +27,4 @@ public class SearchAccount {
 
 	private Integer authority;
 
-	// getter setter
 }
