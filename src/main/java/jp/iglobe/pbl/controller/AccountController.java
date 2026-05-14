@@ -18,7 +18,7 @@ public class AccountController {
 		model.addAttribute("accountForm", new AccountForm());
 		return "S0030";
 	}
-	
+
 
 //	アカウント登録確認
 	@PostMapping("/S0031")

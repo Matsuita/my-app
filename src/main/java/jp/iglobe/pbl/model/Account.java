@@ -11,6 +11,7 @@ import lombok.Data;
 @Table(name = "accounts")
 public class Account {
 
+	
     @Id
     private Integer id;
     private String mail;
