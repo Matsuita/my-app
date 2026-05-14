@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>売上検索結果表示</title>
+
+    <link rel="stylesheet" th:href="@{/teamb.css}">
+
+</head>
+
+<body>
+
+<h1>売上検索結果表示</h1>
+
+<table border="1">
+
+    <tr>
+
+        <!-- 操作 -->
+
+        <th>操作</th>
+
+        <!-- No -->
+
+        <th>No</th>
+
+        <!-- 販売日 -->
+
+        <th>販売日</th>
+
+        <!-- 担当 -->
+
+        <th>担当</th>
+
+        <!-- 商品カテゴリー -->
+
+        <th>商品カテゴリー</th>
+
+        <!-- 商品名 -->
+
+        <th>商品名</th>
+
+        <!-- 単価 -->
+
+        <th>単価</th>
+
+        <!-- 個数 -->
+
+        <th>個数</th>
+
+        <!-- 小計 -->
+
+        <th>小計</th>
+
+    </tr>
+
+    <!-- 検索結果 -->
+
+    <tr th:each="sales : ${salesList}">
+
+        <!-- 操作 -->
+
+        <td>
+
+            <form th:action="@{/sales/detail}"
+                  method="get">
+
+                <input type="hidden"
+                       name="saleId"
+                       th:value="${sales.saleId}">
+
+                <button type="submit">
+                    詳細
+                </button>
+
+            </form>
+
+        </td>
+
+        <!-- No -->
+
+        <td th:text="${sales.saleId}">
+        </td>
+
+        <!-- 販売日 -->
+
+        <td th:text="${sales.saleDate}">
+        </td>
+
+        <!-- 担当 -->
+
+        <td th:text="${sales.accountId}">
+        </td>
+
+        <!-- 商品カテゴリー -->
+
+        <td th:text="${sales.categoryId}">
+        </td>
+
+        <!-- 商品名 -->
+
+        <td th:text="${sales.tradeName}">
+        </td>
+
+        <!-- 単価 -->
+
+        <td th:text="${sales.unitPrice}">
+        </td>
+
+        <!-- 個数 -->
+
+        <td th:text="${sales.saleNumber}">
+        </td>
+
+        <!-- 小計 -->
+
+        <td th:text="${sales.unitPrice * sales.saleNumber}">
+        </td>
+
+    </tr>
+
+</table>
+
+</body>
+
+</html>
