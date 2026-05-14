@@ -4,39 +4,46 @@
 <head>
 	<meta charset="UTF-8">
 	<title>アカウント登録確認</title>
+	<link rel="stylesheet" th:href="@{/teamb.css}">
 </head>
 
 <body>
 	<h1>アカウントを登録してよろしいですか？</h1>
 
-	<form th:object="" method="post">
+	<form th:object="${accountForm}" method="post">
 		<p>氏名
 			<span class="partial-badge">必須</span>
 			<input type="hidden" th:field="*{name}">
+			<span th:text="*{name}"></span> <!-- 表示用 -->
 		</p>
 		<p>メールアドレス
 			<span class="partial-badge">必須</span>
 			<input type="hidden" th:field="*{mail}">
+			<span th:text="*{mail}"></span> <!-- 表示用 -->
 		</p>
 		<p>パスワード
 			<span class="partial-badge">必須</span>
 			<input type="hidden" th:field="*{password}">
+			<span th:text="*{password}"></span> <!-- 表示用 -->
 		</p>
 		<p>パスワード（確認）
 			<span class="partial-badge">必須</span>
-			<input type="hidden" th:field="*{password}">
+			<input type="hidden" th:field="*{passwordConfirm}">
+			<span th:text="*{passwordConfirm}"></span> <!-- 表示用 -->
 		</p>
 		<p>権限
 			<span class="partial-badge">必須</span>
-			<input type="radio" name="*{authority}" value="male" />権限なし
-			<input type="radio" name="*{authority}" value="female" />参照
-			<input type="radio" name="*{authority}" value="other" />更新
+			<input type="hidden" th:field="*{authority}">
+			<span th:if="*{authority == 'male'}">権限なし</span><!-- 表示用 -->
+			<span th:if="*{authority == 'female'}">売上登録</span><!-- 表示用 -->
+			<span th:if="*{authority == 'other'}">アカウント登録</span><!-- 表示用 -->
+			
 		</p>
 
-		<button type="submit" th:formaction="@{}">OK</button>
+		<button type="submit" th:formaction="@{/S0031}">OK</button>
 		<button type="button" onclick="history.back()">キャンセル</button>
 
-
+		
 	</form>
 </body>
 

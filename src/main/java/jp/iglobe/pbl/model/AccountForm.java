@@ -2,6 +2,7 @@ package jp.iglobe.pbl.model;
 
 import lombok.Data;
 
+
 @Data
 public class AccountForm {
 
@@ -10,6 +11,9 @@ public class AccountForm {
     private String mail;
 
     private String password;
+    
+    private String passwordConfirm;
 
     private String authority;
+    
 }
