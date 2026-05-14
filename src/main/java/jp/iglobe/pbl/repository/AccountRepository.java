@@ -14,4 +14,7 @@ extends JpaRepository<Account, Integer> {
 
     // 一覧取得
     List<Account> findAll();
+    
+//    売上登録用
+    List<Account> findByAccountId(Integer accountId);
 }
