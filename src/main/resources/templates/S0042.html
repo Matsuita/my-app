@@ -35,7 +35,7 @@
 
 		<h2 class="mb-4">アカウント詳細編集</h2>
 
-		<form th:action="@{/accounts/update}" method="post">
+		<form th:action="@{/accounts/confirm}" method="post">
 
 			<!-- 氏名 -->
 			<div class="row mb-3 align-items-center">
@@ -106,16 +106,18 @@
 
 			<!-- ボタン -->
 			<div class="text-center">
-				<a th:href="@{/accounts/result}"
-									   class="btn btn-primary px-4">
-									     編集
-									</a>
 
-				<a th:href="@{/accounts/result}" class="btn btn-outline-secondary px-4 ms-2">
+				<!-- 更新ボタン（POST送信） -->
+				
+
+					<button type="submit">更新</button>
+			
+				<button type="submit" th:formaction="@{/accounts/result}">
 					キャンセル
-				</a>
-			</div>
+				</button>
 
+
+			</div>
 		</form>
 
 	</div>
