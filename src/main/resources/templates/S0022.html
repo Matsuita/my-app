@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>売上詳細表示</title>
+</head>
+
+<body>
+
+<h1>売上詳細表示</h1>
+
+<table border="1">
+
+    <tr>
+        <th>No</th>
+
+        <td th:text="${sales.saleId}">
+        </td>
+    </tr>
+
+    <!-- 販売日 -->
+
+    <tr>
+        <th>販売日</th>
+
+        <td th:text="${sales.saleDate}">
+        </td>
+    </tr>
+
+    <!-- 担当 -->
+
+    <tr>
+        <th>担当</th>
+
+        <td th:text="${sales.accountId}">
+        </td>
+    </tr>
+
+    <!-- 商品カテゴリー -->
+
+    <tr>
+        <th>商品カテゴリー</th>
+
+        <td th:text="${sales.categoryId}">
+        </td>
+    </tr>
+
+    <!-- 商品名 -->
+
+    <tr>
+        <th>商品名</th>
+
+        <td th:text="${sales.tradeName}">
+        </td>
+    </tr>
+
+    <!-- 単価 -->
+
+    <tr>
+        <th>単価</th>
+
+        <td th:text="${sales.unitPrice}">
+        </td>
+    </tr>
+
+    <!-- 個数 -->
+
+    <tr>
+        <th>個数</th>
+
+        <td th:text="${sales.saleNumber}">
+        </td>
+    </tr>
+
+    <!-- 小計 -->
+
+    <tr>
+        <th>小計</th>
+
+        <td th:text="${sales.unitPrice * sales.saleNumber}">
+        </td>
+    </tr>
+
+    <!-- 備考 -->
+
+    <tr>
+        <th>備考</th>
+
+        <td th:text="${sales.note}">
+        </td>
+    </tr>
+
+</table>
+
+<br>
+
+<!-- 編集 -->
+
+<form th:action="@{/sales/edit}" method="get" style="display:inline;">
+    <input type="hidden" name="saleId" th:value="${sales.saleId}">
+
+    <button type="submit">
+        編集
+    </button>
+
+</form>
+
+<!-- 削除 -->
+
+<form th:action="@{/sales/delete}" method="get" style="display:inline;">
+    <input type="hidden" name="saleId" th:value="${sales.saleId}">
+	
+    <button type="submit">
+        削除
+    </button>
+
+</form>
+
+<!-- キャンセル -->
+
+<form th:action="@{/S0020}" method="get" style="display:inline;">
+
+    <button type="submit">
+        キャンセル
+    </button>
+
+</form>
+
+</body>
+
+</html>
