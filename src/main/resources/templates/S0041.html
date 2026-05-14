@@ -42,10 +42,11 @@ table {
             <!-- データ表示 -->
             <tr th:each="a, stat : ${accounts}">
                 <td>
-                    <!-- 押せるだけボタン -->
-                    <button class="btn btn-primary btn-sm">
-                        <i class="bi bi-pencil"></i> 編集
-                    </button>
+                    
+					<a th:href="@{/accounts/edit/{id}(id=${a.accountId})}"
+					   class="btn btn-primary btn-sm">
+					    <i class="bi bi-pencil"></i> 編集
+					</a>
 
                     <button class="btn btn-danger btn-sm">
                         <i class="bi bi-x"></i> 削除
