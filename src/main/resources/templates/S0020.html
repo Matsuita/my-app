@@ -4,104 +4,142 @@
 <head>
 	
     <meta charset="UTF-8">
+
     <title>売上検索</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet" th:href="@{/teamb.css}">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+		  rel="stylesheet">
+
+	<link rel="stylesheet"
+		  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+	<link rel="stylesheet"
+		  th:href="@{/teamb.css}">
+
 </head>
 
 <body>
+
 	<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
-<h1>売上検索条件入力</h1>
 
-<form th:action="@{/sales/search}"
-      th:object="${salesSearchForm}"
-      method="post">
+	<h1>売上検索条件入力</h1>
 
-    <!-- 販売日 -->
+	<form th:action="@{/sales/search}"
+	      th:object="${salesSearchForm}"
+	      method="post">
 
-    <div>
-        <label>販売日</label>
+	    <!-- 販売日 -->
 
-        <input type="date"
-               th:field="*{saleDateFrom}">
+	    <div>
 
-		～
+	        <label>販売日</label>
 
-        <input type="date"
-               th:field="*{saleDateTo}">
-    </div>
+	        <input type="date"
+	               th:field="*{saleDateFrom}">
 
-    <br>
+			～
 
-    <!-- 担当 -->
+	        <input type="date"
+	               th:field="*{saleDateTo}">
 
-    <div>
-        <label>担当</label>
+	    </div>
 
-        <select th:field="*{accountId}">
-			<option value="">
-                選択してください
-            </option>
-        </select>
-    </div>
+	    <br>
 
-    <br>
+	    <!-- 担当 -->
 
-    <!-- 商品カテゴリー -->
+	    <div>
 
-    <div>
-        <label>商品カテゴリー</label>
+	        <label>担当</label>
 
-        <select th:field="*{categoryId}">
-			<option value="">
-                選択してください
-            </option>
-		</select>
-    </div>
+	        <select th:field="*{accountId}">
 
-    <br>
+				<option value="">
+	                選択してください
+	            </option>
 
-    <!-- 商品名 -->
+				<option th:each="account : ${accountList}"
+						th:value="${account.id}"
+						th:text="${account.name}">
+				</option>
 
-    <div>
-        <label>商品名</label>
+	        </select>
 
-		<span class="partial-badge">
-            部分一致
-        </span>
+	    </div>
 
-        <input type="text"
-               th:field="*{tradeName}">
-    </div>
+	    <br>
 
-    <br>
+	    <!-- 商品カテゴリー -->
 
-    <!-- 備考 -->
+	    <div>
 
-    <div>
-        <label>備考</label>
+	        <label>商品カテゴリー</label>
 
-		<span class="partial-badge">
-            部分一致
-        </span>
+	        <select th:field="*{categoryId}">
 
-        <input type="text"
-               th:field="*{note}">
-    </div>
+				<option value="">
+	                選択してください
+	            </option>
 
-    <br>
+				<option th:each="category : ${categoryList}"
+						th:value="${category.categoryId}"
+						th:text="${category.categoryName}">
+				</option>
 
-    <!-- ボタン -->
+			</select>
 
-    <button type="submit">
-        検索
-    </button>
+	    </div>
 
-    <button type="reset">
-        クリア
-    </button>
+	    <br>
 
-</form>
+	    <!-- 商品名 -->
 
-<hr>
+	    <div>
+
+	        <label>商品名</label>
+
+			<span class="partial-badge">
+	            部分一致
+	        </span>
+
+	        <input type="text"
+	               th:field="*{tradeName}">
+
+	    </div>
+
+	    <br>
+
+	    <!-- 備考 -->
+
+	    <div>
+
+	        <label>備考</label>
+
+			<span class="partial-badge">
+	            部分一致
+	        </span>
+
+	        <input type="text"
+	               th:field="*{note}">
+
+	    </div>
+
+	    <br>
+
+	    <!-- ボタン -->
+
+	    <button type="submit">
+	        検索
+	    </button>
+
+	    <button type="reset">
+	        クリア
+	    </button>
+
+	</form>
+
+	<hr>
+
+</body>
+
+</html>

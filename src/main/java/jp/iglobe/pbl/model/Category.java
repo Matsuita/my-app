@@ -6,15 +6,13 @@ import jakarta.persistence.Table;
 
 import lombok.Data;
 
-@Data
 @Entity
-@Table(name = "accounts")
-public class Account {
+@Data
+@Table(name = "categories")
+public class Category {
 
     @Id
-    private Integer id;
-    private String name;
-    private String mail;
-    private String password;
+    private Integer categoryId;
 
+    private String categoryName;
 }
