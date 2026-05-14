@@ -8,6 +8,6 @@ import jp.iglobe.pbl.model.Sale;
 
 public interface SalesRepository extends JpaRepository<Sale, Integer>{
 
-	List<Sales> findByTradeNameContaining(String tradeName);
+	List<Sale> findByTradeNameContaining(String tradeName);
 
 }

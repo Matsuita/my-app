@@ -2,33 +2,169 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
 	<meta charset="UTF-8">
+
 	<title>売上登録</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet" th:href="@{/teamb.css}">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+		  rel="stylesheet">
+
+	<link rel="stylesheet"
+		  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+	<link rel="stylesheet"
+		  th:href="@{/teamb.css}">
+
 </head>
 
 <body>
-	<div th:replace="fragment/navbar :: navbar('sales')"></div>
-	<h1>売上登録</h1>
-	<form th:action="@{/sales/form-confirm}" th:object="${sale}" method="post">
-		<p>販売日<input type="date" th:field="*{saleDate}"></p>
-		<p>担当<select th:field="*{accountId}">
-				<option value="">選択してください</option>
-			</select>
-		</p>
-		<p>商品カテゴリー<select th:field="*{categoryId}">
-				<option value="">選択してください</option>
-			</select>
-		</p>
-		<p>商品名<input type="text" th:field="*{tradeName}"></p>
-		<p>単価<input type="number" th:field="*{unitPrice}"></p>
-		<p>個数<input type="number" th:field="*{saleNumber}"></p>
-		<p>備考<input type="text" th:field="*{note}"></p>
 
-		<button type="submit">登録</button>
+	<div th:replace="fragment/navbar :: navbar('sales')"></div>
+
+	<h1>売上登録</h1>
+
+	<form th:action="@{/sales/form-confirm}"
+		  th:object="${sale}"
+		  method="post">
+
+		<!-- 販売日 -->
+
+		<p>
+
+			販売日
+
+			<input type="date"
+				   th:field="*{saleDate}">
+
+			<span th:errors="*{saleDate}">
+			</span>
+
+		</p>
+
+		<!-- 担当 -->
+
+		<p>
+
+			担当
+
+			<select th:field="*{accountId}">
+
+				<option value="">
+					選択してください
+				</option>
+
+				<option th:each="account : ${accountList}"
+						th:value="${account.id}"
+						th:text="${account.name}">
+				</option>
+
+			</select>
+
+			<span th:errors="*{accountId}">
+			</span>
+
+		</p>
+
+		<!-- 商品カテゴリー -->
+
+		<p>
+
+			商品カテゴリー
+
+			<select th:field="*{categoryId}">
+
+				<option value="">
+					選択してください
+				</option>
+
+				<option th:each="category : ${categoryList}"
+						th:value="${category.categoryId}"
+						th:text="${category.categoryName}">
+				</option>
+
+			</select>
+
+			<span th:errors="*{categoryId}">
+			</span>
+
+		</p>
+
+		<!-- 商品名 -->
+
+		<p>
+
+			商品名
+
+			<input type="text"
+				   th:field="*{tradeName}">
+
+			<span th:errors="*{tradeName}">
+			</span>
+
+		</p>
+
+		<!-- 単価 -->
+
+		<p>
+
+			単価
+
+			<input type="number"
+				   th:field="*{unitPrice}">
+
+			<span th:errors="*{unitPrice}">
+			</span>
+
+		</p>
+
+		<!-- 個数 -->
+
+		<p>
+
+			個数
+
+			<input type="number"
+				   th:field="*{saleNumber}">
+
+			<span th:errors="*{saleNumber}">
+			</span>
+
+		</p>
+
+		<!-- 小計 -->
+
+		<p>
+
+			小計
+
+			<input type="text"
+				   th:value="${sale.unitPrice != null && sale.saleNumber != null ? sale.unitPrice * sale.saleNumber : ''}"
+				   readonly>
+
+		</p>
+
+		<!-- 備考 -->
+
+		<p>
+
+			備考
+
+			<input type="text"
+				   th:field="*{note}">
+
+		</p>
+
+		<!-- ボタン -->
+
+		<button type="submit">
+			登録
+		</button>
+
 	</form>
+
 </body>
 
 </html>
+
+			
