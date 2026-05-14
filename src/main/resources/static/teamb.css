@@ -13,3 +13,123 @@
 }
 /*ヘッダーに<link rel="stylesheet" th:href="@{/teamb.css}">これいれて、
 <span class="partial-badge">部分一致</span> これ使ってね*/
+
+/* ===== 全体フォント ===== */
+body {
+    margin: 0;
+    padding-top: 60px;
+
+    font-family:
+        "Yu Gothic UI",
+        "Yu Gothic",
+        "Meiryo",
+        "Hiragino Kaku Gothic ProN",
+        "Segoe UI",
+        sans-serif;
+}
+
+/* ===== ナビバー ===== */
+.navbar {
+    height: 60px;
+    padding: 0 20px;
+
+    border-bottom: 1px solid #ccc;
+    background-color: #e9ecef !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ===== タイトル ===== */
+.navbar-brand {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555 !important;
+}
+
+/* ===== メニュー配置 ===== */
+.menu {
+    display: flex;
+    gap: 25px;
+}
+
+/* ===== リンク基本 ===== */
+.nav-link {
+    color: #555 !important;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 5px;
+
+    transition: all 0.15s ease;
+}
+
+/* ===== hover完全一致 ===== */
+.nav-link:hover {
+    color: #222 !important;
+    border-bottom: 2px solid #666;
+    padding-bottom: 6px;
+}
+
+/* ===== ログアウト位置 ===== */
+.logout {
+    margin-left: auto;
+}
+
+/* ===== 選択中メニュー ===== */
+.nav-link.active {
+    color: #222 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #666;
+    padding-bottom: 6px;
+}
+
+/*<nav class="navbar fixed-top">
+
+    <!-- タイトル -->
+    <span class="navbar-brand">
+        物品売上管理システム
+    </span>
+
+    <!-- メニュー -->
+    <div class="menu">
+
+        <a class="nav-link"
+           th:classappend="${#httpServletRequest.requestURI == '/dashboard'} ? ' active'"
+           th:href="@{/dashboard}">
+           ダッシュボード
+        </a>
+
+        <a class="nav-link"
+           th:classappend="${#httpServletRequest.requestURI == '/sales/register'} ? ' active'"
+           th:href="@{/sales/register}">
+           売上登録
+        </a>
+
+        <a class="nav-link"
+           th:classappend="${#httpServletRequest.requestURI == '/sales/search'} ? ' active'"
+           th:href="@{/sales/search}">
+           売上検索
+        </a>
+
+        <a class="nav-link"
+           th:classappend="${#httpServletRequest.requestURI == '/accounts/register'} ? ' active'"
+           th:href="@{/accounts/register}">
+           アカウント登録
+        </a>
+
+        <a class="nav-link"
+           th:classappend="${#httpServletRequest.requestURI == '/accounts/search'} ? ' active'"
+           th:href="@{/accounts/search}">
+           アカウント検索
+        </a>
+
+    </div>
+
+    <!-- ログアウト -->
+    <a class="nav-link logout"
+       th:href="@{/logout}">
+       ログアウト
+    </a>
+
+</nav>
