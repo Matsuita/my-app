@@ -3,35 +3,40 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>アカウント登録</title>
-	<link rel="stylesheet" th:href="@{/teamb.css}">
+	<title>アカウント登録確認</title>
 </head>
 
 <body>
-	<div th:replace="fragment/navbar :: navbar('S0030')"></div>
-	<h1>アカウント登録</h1>
+	<h1>アカウントを登録してよろしいですか？</h1>
 
-	<form 	th:action="@{/S0031}" th:object="${accountForm}" method="post">
+	<form th:object="" method="post">
 		<p>氏名
 			<span class="partial-badge">必須</span>
-			<input type="text" th:field="*{name}" placeholder="氏名"></p>
+			<input type="hidden" th:field="*{name}">
+		</p>
 		<p>メールアドレス
 			<span class="partial-badge">必須</span>
-			<input type="text" th:field="*{mail}" placeholder="メールアドレス"></p>
+			<input type="hidden" th:field="*{mail}">
+		</p>
 		<p>パスワード
 			<span class="partial-badge">必須</span>
-			<input type="text" th:field="*{password}" placeholder="パスワード"></p>
+			<input type="hidden" th:field="*{password}">
+		</p>
 		<p>パスワード（確認）
 			<span class="partial-badge">必須</span>
-			<input type="text" th:field="*{password}" placeholder="パスワード（確認）"></p>
+			<input type="hidden" th:field="*{password}">
+		</p>
 		<p>権限
 			<span class="partial-badge">必須</span>
 			<input type="radio" name="*{authority}" value="male" />権限なし
 			<input type="radio" name="*{authority}" value="female" />参照
 			<input type="radio" name="*{authority}" value="other" />更新
 		</p>
-		
-		<p><button type="submit">登録</button></p>
+
+		<button type="submit" th:formaction="@{}">OK</button>
+		<button type="button" onclick="history.back()">キャンセル</button>
+
+
 	</form>
 </body>
 

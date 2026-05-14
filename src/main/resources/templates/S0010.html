@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>売上登録</title>
+</head>
+
+<body>
+	<div th:replace="fragment/navbar :: navbar('sales')"></div>
+	<h1>売上登録</h1>
+	<form th:action="@{/sales/form-confirm}" th:object="${sale}" method="post">
+		<p>販売日<input type="date" th:field="*{saleDate}"></p>
+		<p>担当<select th:field="*{accountId}">
+				<option value="">選択してください</option>
+			</select>
+		</p>
+		<p>商品カテゴリー<select th:field="*{categoryId}">
+				<option value="">選択してください</option>
+			</select>
+		</p>
+		<p>商品名<input type="text" th:field="*{tradeName}"></p>
+		<p>単価<input type="number" th:field="*{unitPrice}"></p>
+		<p>個数<input type="number" th:field="*{saleNumber}"></p>
+		<p>備考<input type="text" th:field="*{note}"></p>
+
+		<button type="submit">登録</button>
+	</form>
+</body>
+
+</html>
