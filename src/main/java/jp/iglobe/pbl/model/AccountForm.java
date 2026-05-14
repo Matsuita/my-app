@@ -1,8 +1,9 @@
 package jp.iglobe.pbl.model;
 
+import java.util.List;
+
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -25,7 +26,7 @@ public class AccountForm {
 	@NotBlank(message = "確認のためのパスワードを入力してください")
     private String passwordConfirm;
 
-	@NotNull(message = "権限を選択してください")
+	private List<Integer> authList;
     private Integer authority;
 	
     
