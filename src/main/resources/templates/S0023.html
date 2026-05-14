@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>売上詳細編集</title>
+
+</head>
+
+<body>
+
+<h1>売上詳細編集</h1>
+
+<form th:action="@{/sales/update}" th:object="${salesForm}" method="post">
+
+    <!-- ID -->
+
+    <input type="hidden" th:field="*{saleId}">
+
+    <!-- 権限 -->
+
+    <input type="hidden" th:field="*{authority}">
+
+    <!-- 販売日 -->
+
+    <p>
+
+        販売日
+
+        <span>必須</span>
+
+        <input type="date" th:field="*{saleDate}">
+        <span th:errors="*{saleDate}">
+        </span>
+
+    </p>
+
+    <!-- 担当 -->
+
+    <p>
+
+        担当
+
+        <span>必須</span>
+
+        <input type="text" th:field="*{accountId}">
+        <span th:errors="*{accountId}">
+        </span>
+
+    </p>
+
+    <!-- 商品カテゴリー -->
+
+    <p>
+
+        商品カテゴリー
+
+        <span>必須</span>
+
+        <input type="text" th:field="*{categoryId}">
+        <span th:errors="*{categoryId}">
+        </span>
+
+    </p>
+
+    <!-- 商品名 -->
+
+    <p>
+
+        商品名
+
+        <span>必須</span>
+
+        <input type="text" th:field="*{tradeName}">
+        <span th:errors="*{tradeName}">
+        </span>
+
+    </p>
+
+    <!-- 単価 -->
+
+    <p>
+
+        単価
+
+        <span>必須</span>
+
+        <input type="text" th:field="*{unitPrice}">
+        <span th:errors="*{unitPrice}">
+        </span>
+
+    </p>
+
+    <!-- 個数 -->
+
+    <p>
+
+        個数
+
+        <span>必須</span>
+
+        <input type="text" th:field="*{saleNumber}">
+        <span th:errors="*{saleNumber}">
+        </span>
+
+    </p>
+
+    <!-- 備考 -->
+
+    <p>
+
+        備考
+
+        <br>
+
+        <textarea th:field="*{note}" rows="10" cols="50">
+        </textarea>
+
+    </p>
+
+    <!-- 権限エラー -->
+
+    <p th:text="${errorMessage}">
+    </p>
+
+    <!-- ボタン -->
+
+    <button type="submit">
+        更新
+    </button>
+
+    <button type="button" onclick="history.back()">
+        キャンセル
+    </button>
+
+</form>
+
+</body>
+
+</html>
