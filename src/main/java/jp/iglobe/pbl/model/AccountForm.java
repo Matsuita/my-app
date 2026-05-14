@@ -2,6 +2,7 @@ package jp.iglobe.pbl.model;
 
 import lombok.Data;
 
+
 @Data
 public class AccountForm {
 
