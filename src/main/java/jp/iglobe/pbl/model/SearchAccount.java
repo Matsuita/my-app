@@ -1,8 +1,6 @@
 package jp.iglobe.pbl.model;
 
-
-	
-	import jakarta.persistence.Column;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,27 +9,23 @@ import jakarta.persistence.Table;
 
 import lombok.Data;
 
-
 @Data
-	@Entity
-	@Table(name = "accounts")
+@Entity
+@Table(name = "accounts")
 public class SearchAccount {
 
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "account_id")
-	    private Integer accountId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "account_id")
+	private Integer accountId;
 
-	    private String name;
-	    private String mail;
+	private String name;
+	private String mail;
 
-	    @Column(name = "password")
-	    private String password;
+	@Column(name = "password")
+	private String password;
 
-	    private Integer authority;
+	private Integer authority;
 
-	      // getter setter
-	}
-
-
-
+	// getter setter
+}
