@@ -2,143 +2,293 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	
+
     <meta charset="UTF-8">
 
     <title>売上検索</title>
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-		  rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
-	<link rel="stylesheet"
-		  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-	<link rel="stylesheet"
-		  th:href="@{/teamb.css}">
+    <link rel="stylesheet"
+          th:href="@{/teamb.css}">
+
+    <style>
+
+        body{
+            background:#f5f5f5;
+            font-family:"Yu Gothic",sans-serif;
+        }
+
+        .search-container{
+            width:850px;
+            margin:50px auto;
+        }
+
+        h1{
+            font-size:64px;
+            margin-bottom:50px;
+            color:#222;
+        }
+
+        .form-row{
+            display:flex;
+            align-items:center;
+            margin-bottom:28px;
+        }
+
+        .label-area{
+            width:240px;
+            text-align:right;
+            margin-right:25px;
+            font-size:20px;
+            font-weight:bold;
+            color:#222;
+        }
+
+        .input-area{
+            display:flex;
+            align-items:center;
+        }
+
+        input[type="date"]{
+            width:185px;
+            height:55px;
+            border:1px solid #d6d6d6;
+            border-radius:5px;
+            padding:10px;
+            font-size:18px;
+            background:white;
+        }
+
+        select{
+            width:520px;
+            height:55px;
+            border:1px solid #d6d6d6;
+            border-radius:5px;
+            padding-left:15px;
+            font-size:18px;
+            background:white;
+        }
+
+        input[type="text"]{
+            width:520px;
+            height:55px;
+            border:1px solid #d6d6d6;
+            border-radius:5px;
+            padding-left:15px;
+            font-size:18px;
+            background:white;
+        }
+
+        .wave{
+            margin:0 30px;
+            font-size:30px;
+        }
+
+        .partial-badge{
+            background:#7c7c7c;
+            color:white;
+            border-radius:20px;
+            font-size:14px;
+            padding:3px 10px;
+            margin-left:8px;
+            font-weight:normal;
+        }
+
+        .button-area{
+            margin-top:40px;
+            margin-left:265px;
+        }
+
+        .search-btn{
+            width:120px;
+            height:55px;
+            background:#2f80c9;
+            border:none;
+            border-radius:5px;
+            color:white;
+            font-size:30px;
+            font-weight:bold;
+            margin-right:15px;
+        }
+
+        .clear-btn{
+            width:100px;
+            height:55px;
+            background:white;
+            border:1px solid #ccc;
+            border-radius:5px;
+            font-size:28px;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-	<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
+<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-	<h1>売上検索条件入力</h1>
+<div class="search-container">
 
-	<form th:action="@{/sales/search}"
-	      th:object="${salesSearchForm}"
-	      method="post">
+    <h1>売上検索条件入力</h1>
 
-	    <!-- 販売日 -->
+    <form th:action="@{/sales/search}"
+          th:object="${salesSearchForm}"
+          method="post">
 
-	    <div>
+        <!-- 販売日 -->
 
-	        <label>販売日</label>
+        <div class="form-row">
 
-	        <input type="date"
-	               th:field="*{saleDateFrom}">
+            <div class="label-area">
+                販売日
+            </div>
 
-			～
+            <div class="input-area">
 
-	        <input type="date"
-	               th:field="*{saleDateTo}">
+                <input type="date"
+                       th:field="*{saleDateFrom}">
 
-	    </div>
+                <span class="wave">～</span>
 
-	    <br>
+                <input type="date"
+                       th:field="*{saleDateTo}">
 
-	    <!-- 担当 -->
+            </div>
 
-	    <div>
+        </div>
 
-	        <label>担当</label>
+        <!-- 担当 -->
 
-	        <select th:field="*{accountId}">
+        <div class="form-row">
 
-				<option value="">
-	                選択してください
-	            </option>
+            <div class="label-area">
+                担当
+            </div>
 
-				<option th:each="account : ${accountList}"
-						th:value="${account.id}"
-						th:text="${account.name}">
-				</option>
+            <div class="input-area">
 
-	        </select>
+                <select th:field="*{accountId}">
 
-	    </div>
+                    <option value="">
+                        選択してください
+                    </option>
 
-	    <br>
+                    <option th:each="account : ${accountList}"
+                            th:value="${account.id}"
+                            th:text="${account.name}">
+                    </option>
 
-	    <!-- 商品カテゴリー -->
+                </select>
 
-	    <div>
+            </div>
 
-	        <label>商品カテゴリー</label>
+        </div>
 
-	        <select th:field="*{categoryId}">
+        <!-- 商品カテゴリー -->
 
-				<option value="">
-	                選択してください
-	            </option>
+        <div class="form-row">
 
-				<option th:each="category : ${categoryList}"
-						th:value="${category.categoryId}"
-						th:text="${category.categoryName}">
-				</option>
+            <div class="label-area">
+                商品カテゴリー
+            </div>
 
-			</select>
+            <div class="input-area">
 
-	    </div>
+                <select th:field="*{categoryId}">
 
-	    <br>
+                    <option value="">
+                        選択してください
+                    </option>
 
-	    <!-- 商品名 -->
+                    <option th:each="category : ${categoryList}"
+                            th:value="${category.categoryId}"
+                            th:text="${category.categoryName}">
+                    </option>
 
-	    <div>
+                </select>
 
-	        <label>商品名</label>
+            </div>
 
-			<span class="partial-badge">
-	            部分一致
-	        </span>
+        </div>
 
-	        <input type="text"
-	               th:field="*{tradeName}">
+        <!-- 商品名 -->
 
-	    </div>
+        <div class="form-row">
 
-	    <br>
+            <div class="label-area">
 
-	    <!-- 備考 -->
+                商品名
 
-	    <div>
+                <span class="partial-badge">
+                    部分一致
+                </span>
 
-	        <label>備考</label>
+            </div>
 
-			<span class="partial-badge">
-	            部分一致
-	        </span>
+            <div class="input-area">
 
-	        <input type="text"
-	               th:field="*{note}">
+                <input type="text"
+                       placeholder="商品名"
+                       th:field="*{tradeName}">
 
-	    </div>
+            </div>
 
-	    <br>
+        </div>
 
-	    <!-- ボタン -->
+        <!-- 備考 -->
 
-	    <button type="submit">
-	        検索
-	    </button>
+        <div class="form-row">
 
-	    <button type="reset">
-	        クリア
-	    </button>
+            <div class="label-area">
 
-	</form>
+                備考
 
-	<hr>
+                <span class="partial-badge">
+                    部分一致
+                </span>
+
+            </div>
+
+            <div class="input-area">
+
+                <input type="text"
+                       placeholder="備考"
+                       th:field="*{note}">
+
+            </div>
+
+        </div>
+
+        <!-- ボタン -->
+
+        <div class="button-area">
+
+            <button type="submit"
+                    class="search-btn">
+
+                <i class="bi bi-search"></i>
+                検索
+
+            </button>
+
+            <button type="reset"
+                    class="clear-btn">
+
+                クリア
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
 
 </body>
 
