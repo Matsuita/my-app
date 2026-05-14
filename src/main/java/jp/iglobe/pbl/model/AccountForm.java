@@ -10,6 +10,8 @@ public class AccountForm {
     private String mail;
 
     private String password;
+    
+    private String passwordConfirm;
 
     private String authority;
 }

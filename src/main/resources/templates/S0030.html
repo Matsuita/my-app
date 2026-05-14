@@ -19,15 +19,15 @@
 			<input type="text" th:field="*{mail}" placeholder="メールアドレス"></p>
 		<p>パスワード
 			<span class="partial-badge">必須</span>
-			<input type="text" th:field="*{password}" placeholder="パスワード"></p>
+			<input type="password" th:field="*{password}" placeholder="パスワード"></p>
 		<p>パスワード（確認）
 			<span class="partial-badge">必須</span>
-			<input type="text" th:field="*{password}" placeholder="パスワード（確認）"></p>
+			<input type="password" th:field="*{passwordConfirm}" placeholder="パスワード（確認）"></p>
 		<p>権限
 			<span class="partial-badge">必須</span>
-			<input type="radio" name="*{authority}" value="male" />権限なし
-			<input type="radio" name="*{authority}" value="female" />売上登録
-			<input type="radio" name="*{authority}" value="other" />アカウント登録
+			<input type="radio" th:field="*{authority}" value="male" />権限なし
+			<input type="radio" th:field="*{authority}" value="female" />売上登録
+			<input type="radio" th:field="*{authority}" value="other" />アカウント登録
 		</p>
 		
 		<p><button type="submit">登録</button></p>
