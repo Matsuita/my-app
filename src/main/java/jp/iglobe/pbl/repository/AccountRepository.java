@@ -7,14 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import jp.iglobe.pbl.model.Account;
 
 public interface AccountRepository
-extends JpaRepository<Account, Integer> {
+        extends JpaRepository<Account, Integer> {
 
     // ログイン用
     Account findByMail(String mail);
 
     // 一覧取得
     List<Account> findAll();
-    
-//    売上登録用
-    List<Account> findByAccountId(Integer accountId);
 }
