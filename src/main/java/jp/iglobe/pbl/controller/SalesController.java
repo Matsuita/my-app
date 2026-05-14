@@ -44,17 +44,11 @@ public class SalesController {
                 categoryRepository.findAll();
 
         // 画面へ渡す
-        model.addAttribute(
-                "sale",
-                new Sale());
+        model.addAttribute("sale", new Sale());
 
-        model.addAttribute(
-                "accountList",
-                accountList);
+        model.addAttribute("accountList",accountList);
 
-        model.addAttribute(
-                "categoryList",
-                categoryList);
+        model.addAttribute("categoryList",categoryList);
 
         return "S0010";
     }
@@ -65,13 +59,19 @@ public class SalesController {
 
     @PostMapping("/S0011")
     public String salesConfirm(
-            Sale sale,
-            Model model) {
-
-        model.addAttribute(
-                "sale",
-                sale);
-
+            Sale sale, Model model) {
+    	List<Account> accountList =
+                accountRepository.findAll();
+    	
+    	List<Category> categoryList =
+                categoryRepository.findAll();
+    	
+        model.addAttribute("sale", sale);
+        
+        model.addAttribute("accountList", accountList);
+        
+        model.addAttribute("categoryList",categoryList);
+        
         return "S0011";
     }
 
@@ -79,9 +79,8 @@ public class SalesController {
     // 売上登録実行
     // =========================
 
-    @PostMapping("/sales/create")
-    public String salesCreate(
-            Sale sale) {
+    @PostMapping("/salesCreate")
+    public String salesCreate(Sale sale) {
 
         salesRepository.save(sale);
 
@@ -93,12 +92,9 @@ public class SalesController {
     // =========================
 
     @GetMapping("/S0024")
-    public String editConfirm(
-            Model model) {
+    public String editConfirm(Model model) {
 
-        model.addAttribute(
-                "sale",
-                new Sale());
+        model.addAttribute("sale",new Sale());
 
         return "S0024";
     }
@@ -108,12 +104,9 @@ public class SalesController {
     // =========================
 
     @GetMapping("/S0025")
-    public String salesDelete(
-            Model model) {
+    public String salesDelete(Model model) {
 
-        model.addAttribute(
-                "sale",
-                new Sale());
+        model.addAttribute("sale",new Sale());
 
         return "S0025";
     }
