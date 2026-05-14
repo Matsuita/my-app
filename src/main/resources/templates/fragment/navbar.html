@@ -23,25 +23,25 @@
         </a>
 
         <a class="nav-link"
-           th:classappend="${active == 'sales-register'} ? ' active'"
-           th:href="@{/sales/register}">
+           th:classappend="${active == 'sales'} ? ' active'"
+           th:href="@{/sales}">
            売上登録
         </a>
 
         <a class="nav-link"
-           th:classappend="${active == 'sales-search'} ? ' active'"
+           th:classappend="${active == 'sales/search'} ? ' active'"
            th:href="@{/sales/search}">
            売上検索
         </a>
 
         <a class="nav-link"
-           th:classappend="${active == 'account-register'} ? ' active'"
-           th:href="@{/accounts/register}">
+           th:classappend="${active == 'S0030'} ? ' active'"
+           th:href="@{/S0030}">
            アカウント登録
         </a>
 
         <a class="nav-link"
-           th:classappend="${active == 'account-search'} ? ' active'"
+           th:classappend="${active == 'account/search'} ? ' active'"
            th:href="@{/accounts/search}">
            アカウント検索
         </a>
