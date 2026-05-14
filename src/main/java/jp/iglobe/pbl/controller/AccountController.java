@@ -11,6 +11,7 @@ public class AccountController {
 
 @GetMapping("/S0030")
     public String account(Model model) {
+	
         model.addAttribute("accountForm",  new AccountForm());
         return "S0030";
     }
