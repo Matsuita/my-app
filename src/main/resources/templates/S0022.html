@@ -2,130 +2,273 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>売上詳細表示</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+          th:href="@{/teamb.css}">
+
+    <style>
+
+        body{
+            background:#f5f5f5;
+            font-family:"Yu Gothic",sans-serif;
+        }
+
+        .container-box{
+            width:950px;
+            margin:45px auto;
+        }
+
+        h1{
+            font-size:54px;
+            margin-bottom:45px;
+            color:#222;
+        }
+
+        table{
+            width:800px;
+            border-collapse:collapse;
+            margin-left:40px;
+        }
+
+        tr{
+            border-bottom:1px solid #ddd;
+        }
+
+        th{
+            width:220px;
+            padding:22px 20px;
+            text-align:left;
+            font-size:18px;
+            font-weight:bold;
+            color:#222;
+        }
+
+        td{
+            padding:22px 10px;
+            font-size:18px;
+            color:#333;
+        }
+
+        .button-area{
+            margin-top:35px;
+            margin-left:230px;
+        }
+
+        .edit-btn{
+            width:150px;
+            height:55px;
+            border:none;
+            border-radius:5px;
+            background:#2f80c9;
+            color:white;
+            font-size:18px;
+            font-weight:bold;
+            margin-right:12px;
+        }
+
+        .delete-btn{
+            width:150px;
+            height:55px;
+            border:none;
+            border-radius:5px;
+            background:#e25555;
+            color:white;
+            font-size:18px;
+            font-weight:bold;
+            margin-right:12px;
+        }
+
+        .cancel-btn{
+            width:170px;
+            height:55px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            background:white;
+            color:#333;
+            font-size:18px;
+            font-weight:bold;
+        }
+
+        .btn-icon{
+            margin-right:8px;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-<h1>売上詳細表示</h1>
+<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-<table border="1">
+<div class="container-box">
 
-    <tr>
-        <th>No</th>
+    <h1>売上詳細表示</h1>
 
-        <td th:text="${sales.saleId}">
-        </td>
-    </tr>
+    <table>
 
-    <!-- 販売日 -->
+        <!-- 販売日 -->
 
-    <tr>
-        <th>販売日</th>
+        <tr>
 
-        <td th:text="${sales.saleDate}">
-        </td>
-    </tr>
+            <th>販売日</th>
 
-    <!-- 担当 -->
+            <td th:text="${sales.saleDate}">
+            </td>
 
-    <tr>
-        <th>担当</th>
+        </tr>
 
-        <td th:text="${sales.accountId}">
-        </td>
-    </tr>
+        <!-- 担当 -->
 
-    <!-- 商品カテゴリー -->
+        <tr>
 
-    <tr>
-        <th>商品カテゴリー</th>
+            <th>担当</th>
 
-        <td th:text="${sales.categoryId}">
-        </td>
-    </tr>
+            <td th:text="${sales.accountId}">
+            </td>
 
-    <!-- 商品名 -->
+        </tr>
 
-    <tr>
-        <th>商品名</th>
+        <!-- 商品カテゴリー -->
 
-        <td th:text="${sales.tradeName}">
-        </td>
-    </tr>
+        <tr>
 
-    <!-- 単価 -->
+            <th>商品カテゴリー</th>
 
-    <tr>
-        <th>単価</th>
+            <td th:text="${sales.categoryId}">
+            </td>
 
-        <td th:text="${sales.unitPrice}">
-        </td>
-    </tr>
+        </tr>
 
-    <!-- 個数 -->
+        <!-- 商品名 -->
 
-    <tr>
-        <th>個数</th>
+        <tr>
 
-        <td th:text="${sales.saleNumber}">
-        </td>
-    </tr>
+            <th>商品名</th>
 
-    <!-- 小計 -->
+            <td th:text="${sales.tradeName}">
+            </td>
 
-    <tr>
-        <th>小計</th>
+        </tr>
 
-        <td th:text="${sales.unitPrice * sales.saleNumber}">
-        </td>
-    </tr>
+        <!-- 単価 -->
 
-    <!-- 備考 -->
+        <tr>
 
-    <tr>
-        <th>備考</th>
+            <th>単価</th>
 
-        <td th:text="${sales.note}">
-        </td>
-    </tr>
+            <td th:text="${sales.unitPrice}">
+            </td>
 
-</table>
+        </tr>
 
-<br>
+        <!-- 個数 -->
 
-<!-- 編集 -->
+        <tr>
 
-<form th:action="@{/sales/edit}" method="get" style="display:inline;">
-    <input type="hidden" name="saleId" th:value="${sales.saleId}">
+            <th>個数</th>
 
-    <button type="submit">
-        編集
-    </button>
+            <td th:text="${sales.saleNumber}">
+            </td>
 
-</form>
+        </tr>
 
-<!-- 削除 -->
+        <!-- 小計 -->
 
-<form th:action="@{/sales/delete}" method="get" style="display:inline;">
-    <input type="hidden" name="saleId" th:value="${sales.saleId}">
-	
-    <button type="submit">
-        削除
-    </button>
+        <tr>
 
-</form>
+            <th>小計</th>
 
-<!-- キャンセル -->
+            <td th:text="${sales.unitPrice * sales.saleNumber}">
+            </td>
 
-<form th:action="@{/S0020}" method="get" style="display:inline;">
+        </tr>
 
-    <button type="submit">
-        キャンセル
-    </button>
+        <!-- 備考 -->
 
-</form>
+        <tr>
+
+            <th>備考</th>
+
+            <td th:text="${sales.note}">
+            </td>
+
+        </tr>
+
+    </table>
+
+    <!-- ボタン -->
+
+    <div class="button-area">
+
+        <!-- 編集 -->
+
+        <form th:action="@{/sales/edit}"
+              method="get"
+              style="display:inline;">
+
+            <input type="hidden"
+                   name="saleId"
+                   th:value="${sales.saleId}">
+
+            <button type="submit"
+                    class="edit-btn">
+
+                <i class="bi bi-check-lg btn-icon"></i>
+                編 集
+
+            </button>
+
+        </form>
+
+        <!-- 削除 -->
+
+        <form th:action="@{/sales/delete}"
+              method="get"
+              style="display:inline;">
+
+            <input type="hidden"
+                   name="saleId"
+                   th:value="${sales.saleId}">
+
+            <button type="submit"
+                    class="delete-btn">
+
+                <i class="bi bi-x-lg btn-icon"></i>
+                削 除
+
+            </button>
+
+        </form>
+
+        <!-- キャンセル -->
+
+        <form th:action="@{/S0020}"
+              method="get"
+              style="display:inline;">
+
+            <button type="submit"
+                    class="cancel-btn">
+
+                キャンセル
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 </body>
 

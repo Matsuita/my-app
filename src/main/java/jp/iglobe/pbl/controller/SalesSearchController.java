@@ -51,22 +51,37 @@ public class SalesSearchController {
     }
     
 
-    // 検索処理
+ // 検索処理
     @PostMapping("/sales/search")
     public String searchResult(
-    @ModelAttribute
-    SalesSearchForm salesSearchForm, Model model) {
+            @ModelAttribute
+            SalesSearchForm salesSearchForm,
+            Model model) {
 
-        // 商品名部分一致検索
-        List<Sale> salesList =salesRepository.findByTradeNameContaining(salesSearchForm.getTradeName());
+        List<Sale> salesList =
+            salesRepository.search(
 
-        // 検索結果
-        model.addAttribute("salesList", salesList);
+                salesSearchForm.getSaleDateFrom(),
 
-        // 入力値保持
-        model.addAttribute("salesSearchForm", salesSearchForm);
+                salesSearchForm.getSaleDateTo(),
 
-        // 結果画面
+                salesSearchForm.getAccountId(),
+
+                salesSearchForm.getCategoryId(),
+
+                salesSearchForm.getTradeName(),
+
+                salesSearchForm.getNote()
+            );
+
+        model.addAttribute(
+                "salesList",
+                salesList);
+
+        model.addAttribute(
+                "salesSearchForm",
+                salesSearchForm);
+
         return "S0021";
     }
 

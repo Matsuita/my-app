@@ -1,15 +1,31 @@
 package jp.iglobe.pbl.model;
 
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
 public class SalesSearchForm {
-	
-    private String saleDateFrom;
-    private String saleDateTo;
-    private String accountId;
-    private String categoryId;
+
+    // 販売日From
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate saleDateFrom;
+
+    // 販売日To
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate saleDateTo;
+
+    // 担当
+    private Integer accountId;
+
+    // 商品カテゴリー
+    private Integer categoryId;
+
+    // 商品名
     private String tradeName;
+
+    // 備考
     private String note;
-   
 }

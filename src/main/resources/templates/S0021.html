@@ -7,122 +7,191 @@
 
     <title>売上検索結果表示</title>
 
-    <link rel="stylesheet" th:href="@{/teamb.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+          th:href="@{/teamb.css}">
+
+    <style>
+
+        body{
+            background:#f5f5f5;
+            font-family:"Yu Gothic",sans-serif;
+        }
+
+        .container-box{
+            width:1250px;
+            margin:50px auto;
+        }
+
+        h1{
+            font-size:64px;
+            margin-bottom:40px;
+            color:#222;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        th{
+            border-bottom:2px solid #ddd;
+            padding:18px 10px;
+            text-align:left;
+            font-size:20px;
+            background:#f8f8f8;
+        }
+
+        td{
+            border-bottom:1px solid #ddd;
+            padding:18px 10px;
+            font-size:18px;
+            vertical-align:middle;
+        }
+
+        .detail-btn{
+            background:#2f80c9;
+            color:white;
+            border:none;
+            border-radius:5px;
+            width:80px;
+            height:45px;
+            font-size:18px;
+            font-weight:bold;
+        }
+
+        .detail-btn:hover{
+            opacity:0.9;
+        }
+
+        .subtotal{
+            font-weight:bold;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<h1>売上検索結果表示</h1>
+<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-<table border="1">
+<div class="container-box">
 
-    <tr>
+    <h1>売上検索結果表示</h1>
 
-        <!-- 操作 -->
+    <table>
 
-        <th>操作</th>
+        <tr>
 
-        <!-- No -->
+            <!-- 操作 -->
+            <th>操作</th>
 
-        <th>No</th>
+            <!-- No -->
+            <th>No</th>
 
-        <!-- 販売日 -->
+            <!-- 販売日 -->
+            <th>販売日</th>
 
-        <th>販売日</th>
+            <!-- 担当 -->
+            <th>担当</th>
 
-        <!-- 担当 -->
+            <!-- 商品カテゴリー -->
+            <th>商品カテゴリー</th>
 
-        <th>担当</th>
+            <!-- 商品名 -->
+            <th>商品名</th>
 
-        <!-- 商品カテゴリー -->
+            <!-- 単価 -->
+            <th>単価</th>
 
-        <th>商品カテゴリー</th>
+            <!-- 個数 -->
+            <th>個数</th>
 
-        <!-- 商品名 -->
+            <!-- 小計 -->
+            <th>小計</th>
 
-        <th>商品名</th>
+        </tr>
 
-        <!-- 単価 -->
+        <!-- 検索結果 -->
 
-        <th>単価</th>
+        <tr th:each="sales : ${salesList}">
 
-        <!-- 個数 -->
+            <!-- 操作 -->
 
-        <th>個数</th>
+            <td>
 
-        <!-- 小計 -->
+                <form th:action="@{/sales/detail}"
+                      method="get">
 
-        <th>小計</th>
+                    <input type="hidden"
+                           name="saleId"
+                           th:value="${sales.saleId}">
 
-    </tr>
+                    <button type="submit"
+                            class="detail-btn">
 
-    <!-- 検索結果 -->
+                        <i class="bi bi-check-lg"></i>
+                        詳細
 
-    <tr th:each="sales : ${salesList}">
+                    </button>
 
-        <!-- 操作 -->
+                </form>
 
-        <td>
+            </td>
 
-            <form th:action="@{/sales/detail}"
-                  method="get">
+            <!-- No -->
 
-                <input type="hidden"
-                       name="saleId"
-                       th:value="${sales.saleId}">
+            <td th:text="${sales.saleId}">
+            </td>
 
-                <button type="submit">
-                    詳細
-                </button>
+            <!-- 販売日 -->
 
-            </form>
+            <td th:text="${sales.saleDate}">
+            </td>
 
-        </td>
+            <!-- 担当 -->
 
-        <!-- No -->
+            <td th:text="${sales.accountId}">
+            </td>
 
-        <td th:text="${sales.saleId}">
-        </td>
+            <!-- 商品カテゴリー -->
 
-        <!-- 販売日 -->
+            <td th:text="${sales.categoryId}">
+            </td>
 
-        <td th:text="${sales.saleDate}">
-        </td>
+            <!-- 商品名 -->
 
-        <!-- 担当 -->
+            <td th:text="${sales.tradeName}">
+            </td>
 
-        <td th:text="${sales.accountId}">
-        </td>
+            <!-- 単価 -->
 
-        <!-- 商品カテゴリー -->
+            <td th:text="${sales.unitPrice}">
+            </td>
 
-        <td th:text="${sales.categoryId}">
-        </td>
+            <!-- 個数 -->
 
-        <!-- 商品名 -->
+            <td th:text="${sales.saleNumber}">
+            </td>
 
-        <td th:text="${sales.tradeName}">
-        </td>
+            <!-- 小計 -->
 
-        <!-- 単価 -->
+            <td class="subtotal"
+                th:text="${sales.unitPrice * sales.saleNumber}">
+            </td>
 
-        <td th:text="${sales.unitPrice}">
-        </td>
+        </tr>
 
-        <!-- 個数 -->
+    </table>
 
-        <td th:text="${sales.saleNumber}">
-        </td>
-
-        <!-- 小計 -->
-
-        <td th:text="${sales.unitPrice * sales.saleNumber}">
-        </td>
-
-    </tr>
-
-</table>
+</div>
 
 </body>
 
