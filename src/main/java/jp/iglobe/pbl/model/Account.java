@@ -14,6 +14,7 @@ public class Account {
 	
     @Id
     private Integer id;
+    private String name;
     private String mail;
     private String password;
     private String passwordConfirm;

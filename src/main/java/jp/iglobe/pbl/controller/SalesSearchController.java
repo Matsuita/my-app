@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jp.iglobe.pbl.model.Sales;
 import jp.iglobe.pbl.model.SalesForm;
 import jp.iglobe.pbl.model.SalesSearchForm;
+import jp.iglobe.pbl.repository.AccountRepository;
+import jp.iglobe.pbl.repository.CategoryRepository;
 import jp.iglobe.pbl.repository.SalesRepository;
 
 @Controller
@@ -22,13 +24,32 @@ public class SalesSearchController {
 
     @Autowired
     private SalesRepository salesRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-    // 検索画面
+ // 検索画面
     @GetMapping("/S0020")
     public String search(Model model) {
-        model.addAttribute("salesSearchForm", new SalesSearchForm());
+
+        model.addAttribute(
+                "salesSearchForm",
+                new SalesSearchForm());
+
+        // 担当一覧
+        model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+        // カテゴリー一覧
+        model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
+
         return "S0020";
     }
+    
 
     // 検索処理
     @PostMapping("/sales/search")
