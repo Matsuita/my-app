@@ -15,4 +15,5 @@ public class Account {
     private Integer id;
     private String mail;
     private String password;
+
 }
