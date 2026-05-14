@@ -17,44 +17,49 @@ import jp.iglobe.pbl.repository.AccountRepository;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private AccountRepository accountRepository;
+	@Autowired
+	private AccountRepository accountRepository;
 
-    // ログイン画面
-    @GetMapping("/")
-    public String index(Model model) {
+	// ログイン画面
+	@GetMapping("/")
+	public String index(Model model) {
 
-        model.addAttribute("loginForm", new LoginForm());
-        return "C0010";
-    }
+		model.addAttribute("loginForm", new LoginForm());
+		return "C0010";
+	}
 
-    // ログイン処理
-    @PostMapping("/login")
-    public String login(
-    @Valid
-    @ModelAttribute LoginForm loginForm, BindingResult result, Model model) {
+	// ログイン処理
+	@PostMapping("/login")
+	public String login(
+			@Valid @ModelAttribute LoginForm loginForm, BindingResult result, Model model) {
 
-        if (result.hasErrors()) {
-            return "C0010";
-        }
+		if (result.hasErrors()) {
+			return "C0010";
+		}
 
-        Account account = accountRepository.findByMail(loginForm.getMail());
+		Account account = accountRepository.findByMail(loginForm.getMail());
 
-        if (account != null) {
-            if (account.getPassword().equals(loginForm.getPassword())) {
-                return "redirect:/dashboard";
-            }
-        }
+		if (account != null) {
+			if (account.getPassword().equals(loginForm.getPassword())) {
+				return "redirect:/dashboard";
+			}
+		}
 
-        model.addAttribute("errorMessage", "メールアドレスまたはパスワードが違います。");
+		model.addAttribute("errorMessage", "メールアドレスまたはパスワードが違います。");
 
-        return "C0010";
-    }
+		return "C0010";
+	}
 
-    // ダッシュボード
-    @GetMapping("/dashboard")
-    public String dashboard() {
+	// ダッシュボード
+	@GetMapping("/dashboard")
+	public String dashboard() {
 
-        return "C0020";
-    }
+		return "C0020";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+
+		return "redirect:/"; // ログイン画面へ
+	}
 }
