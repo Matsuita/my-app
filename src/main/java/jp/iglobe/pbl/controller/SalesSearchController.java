@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import jp.iglobe.pbl.model.Sales;
+import jp.iglobe.pbl.model.Sale;
 import jp.iglobe.pbl.model.SalesForm;
 import jp.iglobe.pbl.model.SalesSearchForm;
 import jp.iglobe.pbl.repository.AccountRepository;
@@ -58,7 +58,7 @@ public class SalesSearchController {
     SalesSearchForm salesSearchForm, Model model) {
 
         // 商品名部分一致検索
-        List<Sales> salesList =salesRepository.findByTradeNameContaining(salesSearchForm.getTradeName());
+        List<Sale> salesList =salesRepository.findByTradeNameContaining(salesSearchForm.getTradeName());
 
         // 検索結果
         model.addAttribute("salesList", salesList);
@@ -74,7 +74,7 @@ public class SalesSearchController {
     @GetMapping("/sales/detail")
     public String detail(Integer saleId, Model model) {
 
-        Sales sales = salesRepository.findById(saleId).orElse(null);
+        Sale sales = salesRepository.findById(saleId).orElse(null);
 
         model.addAttribute("sales", sales);
 
@@ -85,7 +85,7 @@ public class SalesSearchController {
     @GetMapping("/sales/edit")
     public String edit(Integer saleId, Model model) {
 
-        Sales sales = salesRepository.findById(saleId).orElse(null);
+        Sale sales = salesRepository.findById(saleId).orElse(null);
 
         SalesForm form = new SalesForm();
 
@@ -124,7 +124,7 @@ public class SalesSearchController {
             return "S0023";
         }
 
-        Sales sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
+        Sale sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
 
         // 更新
         sales.setTradeName(salesForm.getTradeName());
