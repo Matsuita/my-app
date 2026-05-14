@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import jp.iglobe.pbl.model.AccountSearchForm2;
+import jp.iglobe.pbl.model.AccountSearchForm;
 import jp.iglobe.pbl.model.SearchAccount;
 import jp.iglobe.pbl.repository.SearchRepository;
 
@@ -23,7 +23,7 @@ public class SearchController  {
 	}
 
 	@GetMapping("/accounts/result")      // 検索結果
-	public String search(AccountSearchForm2 form, Model model) {
+	public String search(AccountSearchForm form, Model model) {
 	    List<SearchAccount> list = searchRepository.search(
 	            form.getName(),
 	            form.getMail(),
