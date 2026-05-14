@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jp.iglobe.pbl.model.AccountForm;
 import jp.iglobe.pbl.model.AccountSearchForm;
 import jp.iglobe.pbl.model.SearchAccount;
 import jp.iglobe.pbl.repository.SearchRepository;
@@ -55,5 +56,18 @@ public class SearchController {
 
 		return "S0042";
 	}
+	@PostMapping("/accounts/confirm")
+	public String confirm(AccountForm account, Model model) {
+		  model.addAttribute("account", account);
+		return "S0043"; // 遷移先HTML
+	}
 
+	@PostMapping("/accounts/update")
+	public String update(@ModelAttribute AccountForm account) {
+
+	    // ここで更新処理（DB保存など）
+	    // accountRepository.save(account); みたいなやつ
+
+	     return "redirect:/accounts/search";
+	}
 }
