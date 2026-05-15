@@ -44,7 +44,7 @@
 					<span class="partial-badge">必須</span>
 				</div>
 				<div class="col">
-					<input type="text" name="name" class="form-control" th:value="${account.name}">
+					<input type="text" class="form-control" th:field="${name}">
 					<div class="error-text" th:if="${nameError}" th:text="${nameError}"></div>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 					<span class="partial-badge">必須</span>
 				</div>
 				<div class="col">
-					<input type="text" name="mail" class="form-control" th:value="${account.mail}">
+					<input type="text" class="form-control" th:field="${mail}">
 					<div class="error-text" th:if="${mailError}" th:text="${mailError}"></div>
 				</div>
 			</div>

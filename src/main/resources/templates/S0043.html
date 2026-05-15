@@ -35,7 +35,7 @@
 	<div class="form-area">
 
 		<h2 class="mb-4">アカウント詳細編集確認</h2>
-		<form th:action="@{/accounts/update}" th:object="${account}" method="post">
+		<form th:action="@{/accounts/result}" th:object="${account}" method="post">
 			<p>ID: <span th:text="${account.accountId}"></span></p>
 			<input type="hidden" th:field="*{accountId}">
 			
@@ -59,9 +59,9 @@
 			<input type="hidden" th:field="*{authority}">
 			<p>
 				権限：
-				<span th:if="*{authority == '0'}">権限なし</span>
-				<span th:if="*{authority == '1'}">売上登録</span>
-				<span th:if="*{authority == '2'}">アカウント登録</span>
+				<span th:if="*{authority == 0}">権限なし</span>
+				<span th:if="*{authority == 1}">売上登録</span>
+				<span th:if="*{authority == 2}">アカウント登録</span>
 			</p>
 
 			<!-- ボタン -->

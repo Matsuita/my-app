@@ -66,14 +66,21 @@ public class SearchController {
 		return "S0043"; // 遷移先HTML
 	}
 
-	@PostMapping("/accounts/update")
-	public String update(@ModelAttribute AccountForm account) {
-
-		// ここで更新処理（DB保存など）
-		// accountRepository.save(account); みたいなやつ
-
-		return "redirect:/accounts/search";
-	}
+//	@PostMapping("/accounts/update")
+//	public String update(@ModelAttribute AccountForm account) {
+//
+//		SearchAccount accounts = new SearchAccount();
+//
+//		accounts.setAccountId(account.getAccountId());
+//		accounts.setName(account.getName());
+//		accounts.setMail(account.getMail());
+//		accounts.setAuthority(account.getAuthority());
+//		accounts.setPassword(account.getPassword());
+//
+//		searchRepository.save(accounts);
+//
+//		return "redirect:/accounts/search";
+//	}
 
 	// 確認画面
 	@PostMapping("/accounts/delete")
@@ -95,9 +102,9 @@ public class SearchController {
 			Model model) {
 
 		List<SearchAccount> list = searchRepository.search(
-				 form.getName(),
-		            form.getMail(),
-		            form.getAuthority());
+				form.getName(),
+				form.getMail(),
+				form.getAuthority());
 
 		model.addAttribute("accounts", list);
 
