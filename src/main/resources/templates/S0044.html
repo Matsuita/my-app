@@ -29,8 +29,8 @@
 		}
 	</style>
 </head>
-
-< class="form-area">
+<div th:replace="fragment/navbar :: navbar('account/search')"></div>
+<div class="form-area">
 
 	<h2 class="mb-4">アカウント詳細削除確認</h2>
 
@@ -121,7 +121,7 @@
 				×OK
 			</button>
 
-			<a th:href="@{/accounts/edit/{id}(id=${account.accountId})}" class="btn btn-secondary">
+			<a th:href="@{/accounts/result}" class="btn btn-secondary">
 				キャンセル
 			</a>
 		</div>
