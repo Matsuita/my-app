@@ -143,25 +143,41 @@
 
         <!-- 販売日 -->
 
-        <div class="form-row">
+		<!-- 販売日 -->
 
-            <div class="label-area">
-                販売日
-            </div>
+		<div class="form-row">
 
-            <div class="input-area">
+		    <div class="label-area">
+		        販売日
+		    </div>
 
-                <input type="date"
-                       th:field="*{saleDateFrom}">
+		    <div class="input-area">
 
-                <span class="wave">～</span>
+		        <input type="date"
+		               th:field="*{saleDateFrom}">
 
-                <input type="date"
-                       th:field="*{saleDateTo}">
+		        <span class="wave">～</span>
 
-            </div>
+		        <input type="date"
+		               th:field="*{saleDateTo}">
 
-        </div>
+		    </div>
+
+		</div>
+
+		<!-- エラー -->
+
+		<div class="error-message"
+		     th:text="${dateFromError}">
+		</div>
+
+		<div class="error-message"
+		     th:text="${dateToError}">
+		</div>
+		
+		<div class="error-message"
+		     th:text="${dateRangeError}">
+		</div>
 
         <!-- 担当 -->
 
@@ -266,6 +282,10 @@
         </div>
 
         <!-- ボタン -->
+		
+		<div class="error-message"
+		     th:text="${searchError}">
+		</div>
 
         <div class="button-area">
 

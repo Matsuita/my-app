@@ -1,5 +1,6 @@
 package jp.iglobe.pbl.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,49 +18,109 @@ import jp.iglobe.pbl.repository.AccountRepository;
 @Controller
 public class LoginController {
 
-	@Autowired
-	private AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-	// ログイン画面
-	@GetMapping("/")
-	public String index(Model model) {
+    // =========================
+    // ログイン画面
+    // =========================
 
-		model.addAttribute("loginForm", new LoginForm());
-		return "C0010";
-	}
+    @GetMapping("/")
+    public String index(
+            HttpSession session,
+            Model model) {
 
-	// ログイン処理
-	@PostMapping("/login")
-	public String login(
-			@Valid @ModelAttribute LoginForm loginForm, BindingResult result, Model model) {
+        // ログアウト状態
+        session.invalidate();
 
-		if (result.hasErrors()) {
-			return "C0010";
-		}
+        model.addAttribute(
+                "loginForm",
+                new LoginForm());
 
-		Account account = accountRepository.findByMail(loginForm.getMail());
+        return "C0010";
+    }
 
-		if (account != null) {
-			if (account.getPassword().equals(loginForm.getPassword())) {
-				return "redirect:/dashboard";
-			}
-		}
+    // =========================
+    // ログイン処理
+    // =========================
 
-		model.addAttribute("errorMessage", "メールアドレスまたはパスワードが違います。");
+    @PostMapping("/login")
+    public String login(
 
-		return "C0010";
-	}
+            @Valid
+            @ModelAttribute
+            LoginForm loginForm,
 
-	// ダッシュボード
-	@GetMapping("/dashboard")
-	public String dashboard() {
+            BindingResult result,
 
-		return "C0020";
-	}
+            HttpSession session,
 
-	@GetMapping("/logout")
-	public String logout() {
+            Model model) {
 
-		return "redirect:/"; // ログイン画面へ
-	}
+        // 入力エラー
+        if (result.hasErrors()) {
+
+            return "C0010";
+        }
+
+        // メール検索
+        Account account =
+                accountRepository.findByMail(
+                        loginForm.getMail());
+
+        // ログイン成功
+        if (account != null) {
+
+            if (account.getPassword()
+                    .equals(
+                        loginForm.getPassword())) {
+
+                // Session保存
+                session.setAttribute(
+                        "loginUser",
+                        account);
+
+                return "redirect:/dashboard";
+            }
+        }
+
+        // ログイン失敗
+        model.addAttribute(
+                "errorMessage",
+                "メールアドレスまたはパスワードが違います。");
+
+        return "C0010";
+    }
+
+    // =========================
+    // ダッシュボード
+    // =========================
+
+    @GetMapping("/dashboard")
+    public String dashboard(
+            HttpSession session) {
+
+        // 未ログイン
+        if (session.getAttribute("loginUser")
+                == null) {
+
+            return "redirect:/";
+        }
+
+        return "C0020";
+    }
+
+    // =========================
+    // ログアウト
+    // =========================
+
+    @GetMapping("/logout")
+    public String logout(
+            HttpSession session) {
+
+        // Session削除
+        session.invalidate();
+
+        return "redirect:/";
+    }
 }

@@ -9,11 +9,13 @@ import lombok.Data;
 @Data
 public class SalesSearchForm {
 
-    // 販売日From
+    // 販売日（開始）
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate saleDateFrom;
 
-    // 販売日To
+    // 販売日（終了）
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate saleDateTo;
 

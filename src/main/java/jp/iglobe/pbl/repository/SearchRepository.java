@@ -21,10 +21,6 @@ public interface SearchRepository extends JpaRepository<SearchAccount, Integer> 
 			    @Param("name") String name,
 			    @Param("mail") String mail,
 			    @Param("authority") Integer authority);
-	//accountsテーブル）からデータ取得
-	//名前：未入力なら条件無視、入力あれば部分一致検索
-	//メール：未入力なら条件無視、入力あれば完全一致
-	//権限：未選択なら条件無視、選択されていれば一致検索
 
 	
 }
