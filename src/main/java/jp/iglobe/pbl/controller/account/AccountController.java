@@ -75,7 +75,7 @@ public class AccountController {
 		// 2. DBに保存実行！
 		accountRepository.save(account);
 
-		return "S0030";
+		return "redirect:/S0030";
 	}
 
 }
