@@ -35,7 +35,9 @@
 
 		<h2 class="mb-4">アカウント詳細編集確認</h2>
 		<form th:action="@{/accounts/update}" th:object="${account}" method="post">
+			<p>ID: <span th:text="${account.accountId}"></span></p>
 			<input type="hidden" th:field="*{accountId}">
+			
 			<!-- 氏名 -->
 			<input type="hidden" th:field="*{name}">
 			<p>氏名：<span th:text="*{name}"></span></p>

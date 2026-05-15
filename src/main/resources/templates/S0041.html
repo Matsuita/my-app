@@ -48,9 +48,16 @@ table {
 					    <i class="bi bi-pencil"></i> 編集
 					</a>
 
-                    <button class="btn btn-danger btn-sm">
-                        <i class="bi bi-x"></i> 削除
-                    </button>
+					<form th:action="@{/accounts/delete}" method="post" style="display:inline;">
+					    <input type="hidden" name="accountId" th:value="${a.accountId}">
+					    <input type="hidden" name="name" th:value="${a.name}">
+					    <input type="hidden" name="mail" th:value="${a.mail}">
+					    <input type="hidden" name="authority" th:value="${a.authority}">
+					    
+					    <button type="submit" class="btn btn-danger btn-sm">
+					        <i class="bi bi-x"></i> 削除
+					    </button>
+					</form>
                 </td>
 
                 <td th:text="${stat.count}">1</td>
