@@ -196,7 +196,7 @@
                     </option>
 
                     <option th:each="account : ${accountList}"
-                            th:value="${accountId}"
+                            th:value="${account.accountId}"
                             th:text="${account.name}">
                     </option>
 

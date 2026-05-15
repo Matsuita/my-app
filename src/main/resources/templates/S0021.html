@@ -158,13 +158,25 @@
 
             <!-- 担当 -->
 
-            <td th:text="${sales.accountId}">
-            </td>
+			<td>
+			    <span th:each="account : ${accountList}">
+			        <span th:if="${account.accountId == sales.accountId}" th:text="${account.name}">
+			        </span>
+
+			    </span>
+
+			</td>
 
             <!-- 商品カテゴリー -->
 
-            <td th:text="${sales.categoryId}">
-            </td>
+			<td>
+			    <span th:each="category : ${categoryList}">
+			        <span th:if="${category.categoryId == sales.categoryId}"
+			              th:text="${category.categoryName}">
+			        </span>
+			    </span>
+
+			</td>
 
             <!-- 商品名 -->
 
