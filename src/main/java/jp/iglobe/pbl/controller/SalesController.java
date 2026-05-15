@@ -2,14 +2,19 @@ package jp.iglobe.pbl.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.iglobe.pbl.model.Account;
 import jp.iglobe.pbl.model.Category;
 import jp.iglobe.pbl.model.Sale;
+import jp.iglobe.pbl.model.SalesForm;
 import jp.iglobe.pbl.repository.AccountRepository;
 import jp.iglobe.pbl.repository.CategoryRepository;
 import jp.iglobe.pbl.repository.SalesRepository;
@@ -87,10 +92,30 @@ public class SalesController {
 
     // 売上詳細編集確認画面
 
-    @GetMapping("/S0024")
-    public String editConfirm(Model model) {
+ // 売上詳細編集確認画面
+    @PostMapping("/S0024")
+    public String editConfirm(
+    		@Valid
+            @ModelAttribute
+            SalesForm salesForm, BindingResult result, Model model) {
 
-        model.addAttribute("sale",new Sale());
+        // 入力エラー
+        if(result.hasErrors()){
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0023";
+        }
+
+        model.addAttribute(
+                "salesForm",
+                salesForm);
 
         return "S0024";
     }

@@ -1,5 +1,6 @@
 package jp.iglobe.pbl.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
@@ -267,7 +268,7 @@ public class SalesSearchController {
     public String update(
     @Valid
     @ModelAttribute
-    SalesForm salesForm, BindingResult result, Model model) {
+    SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
 
         // 入力エラー
         if (result.hasErrors()) {
@@ -282,13 +283,32 @@ public class SalesSearchController {
 
         Sale sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
 
-        // 更新
+     // 更新
         sales.setTradeName(salesForm.getTradeName());
         sales.setUnitPrice(salesForm.getUnitPrice());
         sales.setSaleNumber(salesForm.getSaleNumber());
         sales.setNote(salesForm.getNote());
+        sales.setSaleDate(LocalDate.parse(salesForm.getSaleDate()));
+        sales.setAccountId(salesForm.getAccountId());
+        sales.setCategoryId(salesForm.getCategoryId());
         salesRepository.save(sales);
 
-        return "redirect:/S0020";
+        // 一覧再取得
+        List<Sale> salesList = salesRepository.findAll();
+        session.setAttribute("salesList", salesList);
+        return "redirect:/S0021";
+    }
+    
+    @GetMapping("/S0021")
+    public String result(HttpSession session,Model model) {
+
+        // 未ログイン
+        if(session.getAttribute("loginUser") == null){
+            return "redirect:/";
+        }
+
+        // 一覧取得
+        model.addAttribute("salesList", session.getAttribute("salesList"));
+        return "S0021";
     }
 }
