@@ -44,11 +44,11 @@ public class Sale {
 	private String tradeName;
 	
 	@Column(name = "unit_price")
-	@NotBlank(message = "単価を入力してください")
+	@NotNull(message = "単価を入力してください")
 	private Integer unitPrice;
 	
 	@Column(name = "sale_number")
-	@NotBlank(message = "個数を入力してください")
+	@NotNull(message = "個数を入力してください")
 	private Integer saleNumber;
 	
 	@Column(name = "note")

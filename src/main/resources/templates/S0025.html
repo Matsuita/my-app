@@ -7,24 +7,72 @@
 
 <body>
 	<h1>売上詳細削除確認</h1>
-		<form th:action="@{/sales/search/result}" th:object="${sale}" method="post">
-			<p>販売日<input type="date" th:field="*{saleDate}"></p>
-			<p>担当<select th:field="*{accountId}">
-					<option value="">選択してください</option>
-				</select>
-			</p>
-			<p>商品カテゴリー<select th:field="*{categoryId}">
-					<option value="">選択してください</option>
-				</select>
-			</p>
-			<p>商品名<input type="text" th:field="*{tradeName}"></p>
-			<p>単価<input type="number" th:field="*{unitPrice}"></p>
-			<p>個数<input type="number" th:field="*{saleNumber}"></p>
-			<p>小計<input type="number" th:field="*{saleNumber}"></p>
-			<p>備考<input type="text" th:field="*{note}"></p>
+	
+	<table>
+		<tr>
+			<th>販売日</th>
+				<td th:text="${sales.saleDate}"></td>
+		</tr>
+		
+		<tr>
+			<th>担当</th>
+				<td th:text="${sales.accountId}"></td>
+		</tr>
+		
+		<tr>
+			<th>商品カテゴリー</th>
+				<td th:text="${sales.categoryId}"></td>
+		</tr>
+		
+		<tr>
+			<th>商品名</th>
+				<td th:text="${sales.tradeName}"></td>
+		</tr>
+			
+		<tr>
+			<th>単価</th>
+				<td th:text="${sales.unitPrice}"></td>
+		</tr>
+						
+		<tr>
+			<th>個数</th>
+				<td th:text="${sales.saleNumber}"></td>
+		</tr>
+							
+		<tr>
+			<th>小計</th>
+				<td th:text="${sales.unitPrice * sales.saleNumber}"></td>
+		</tr>	
+		<tr>
+			<th>備考</th>
+				<td th:text="${sales.note}"></td>
+		</tr>
+	</table>
+	
+	
+	<!--送信用-->
+	<form th:action="@{/sales/delete/execute}" th:object="${sales}" method="post">
+		
+		<input type="hidden" name="saleId" th:value="${sales.saleId}">
+		
+		<input type="hidden" name="accountId" th:value="${sales.accountId}">
+											  
+		<input type="hidden" name="categoryId" th:value="${sales.categoryId}">
+					
+		<input type="hidden" name="tradeName" th:value="${sales.tradeName}">
+			
+		<input type="hidden" name="unitPrice" th:value="${sales.unitPrice}">
+		
+		<input type="hidden" name="saleNumber" th:value="${sales.saleNumber}">
+					
+		<input type="hidden" name="saleSum" th:value="${sales.unitPrice * sales.saleNumber}">
+					
+		<input type="hidden" name="saleNumber" th:value="${sales.note}">
 
-			<button type="submit">OK</button>
-			<a th:href="@{/login}">キャンセル</a>
-		</form>
+		
+		<!--ボタン-->
+		<button type="submit">OK</button>
+		<a th:href="@{/sales/search}">キャンセル</a>
+	</form>
 </body>
 </html>

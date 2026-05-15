@@ -234,13 +234,35 @@
         <!-- 削除 -->
 
         <form th:action="@{/sales/delete}"
-              method="get"
+			  th:object="${sales}"
+              method="post"
               style="display:inline;">
 
-            <input type="hidden"
-                   name="saleId"
-                   th:value="${sales.saleId}">
+            <input type="hidden" name="saleId"
+			 th:value="${sales.saleId}">
+				   
+			<input type="hidden" name="accountId"
+			 th:value="${sales.accountId}">
+									  
+			<input type="hidden" name="categoryId"
+			 th:value="${sales.categoryId}">
+			
+			<input type="hidden" name="tradeName"
+			 th:value="${sales.tradeName}">
+			
+			<input type="hidden" name="unitPrice"
+			 th:value="${sales.unitPrice}">
+			
+			<input type="hidden" name="saleNumber"
+			 th:value="${sales.saleNumber}">
+			
+			<input type="hidden" name="saleSum"
+			 th:value="${sales.unitPrice * sales.saleNumber}">
+			
+			<input type="hidden" name="saleNumber"
+			 th:value="${sales.note}">
 
+			
             <button type="submit"
                     class="delete-btn">
 
