@@ -59,16 +59,16 @@ public class SalesController {
     // 売上登録確認画面
 
     @PostMapping("/S0011")
-    public String salesConfirm(
-            Sale sale, Model model) {
+    public String salesConfirm(@Valid
+            Sale sale, BindingResult result, Model model) {
     	List<Account> accountList =
                 accountRepository.findAll();
     	
     	List<Category> categoryList =
                 categoryRepository.findAll();
     	
-    	if(sale == null) {
-    		
+    	if(result.hasErrors()) {
+    		return "S0010";
     	}
     	
         model.addAttribute("sale", sale);
@@ -133,8 +133,8 @@ public class SalesController {
     @PostMapping("/sales/delete/execute")
     public String salesDelete(Integer saleId) {
     	
-    	salesRepository.deleteBySaleId(saleId);
+    	salesRepository.deleteById(saleId);
     	
-    	return "S0021";
+    	return "redirect:/sales/search";
     }
 }

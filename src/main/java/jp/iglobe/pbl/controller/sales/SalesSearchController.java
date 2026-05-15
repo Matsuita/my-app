@@ -61,9 +61,14 @@ public class SalesSearchController {
     }
     
     @GetMapping("/sales/search")
-    public String searchRedirect(){
-
-        return "redirect:/";
+    public String searchRedirect(Model model){
+    	
+    	List<Sale> salesList =
+                salesRepository.findAll();
+    	
+    	model.addAttribute("salesList", salesList);
+    	
+        return "S0021";
     }
     
 
