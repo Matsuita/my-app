@@ -2,7 +2,6 @@ package jp.iglobe.pbl.model.account;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,13 +11,13 @@ import jakarta.validation.constraints.NotBlank;
 
 import lombok.Data;
 
-@Entity
+
 @Table(name = "accounts")
 @Data
 public class AccountForm {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer account_id;
+	private Integer accountId;
 
 	@NotBlank(message = "名前を入力してください")
 	private String name;

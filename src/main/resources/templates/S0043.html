@@ -35,7 +35,7 @@
 	<div class="form-area">
 
 		<h2 class="mb-4">アカウント詳細編集確認</h2>
-		<form th:action="@{/accounts/result}" th:object="${account}" method="post">
+		<form th:action="@{/accounts/update}" th:object="${account}" method="post">
 			<p>ID: <span th:text="${account.accountId}"></span></p>
 			<input type="hidden" th:field="*{accountId}">
 			
@@ -69,8 +69,8 @@
 			<button type="submit" class="btn btn-primary">
 				更新
 			</button>
-					<a th:href="@{/accounts/edit/{id}(id=${account.accountId})}" class="btn btn-secondary">
-				キャンセル
+			<a th:href="@{/accounts/result}" class="btn btn-secondary">
+			    キャンセル
 			</a>
 		</form>
 	</div>

@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountDeleteForm;
 import jp.iglobe.pbl.model.account.AccountForm;
 import jp.iglobe.pbl.model.account.AccountSearchForm;
-import jp.iglobe.pbl.model.account.SearchAccount;
 import jp.iglobe.pbl.repository.SearchRepository;
 
 @Controller
@@ -41,7 +41,7 @@ public class SearchController {
 			model.addAttribute("accountSearchForm", form);
 			return "S0040"; // 入力画面に戻る
 		}
-		List<SearchAccount> list = searchRepository.search(
+		List<Account> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),
 				form.getAuthority());
@@ -54,7 +54,7 @@ public class SearchController {
 	@GetMapping("/accounts/edit/{id}")
 	public String edit(@PathVariable Integer id, Model model) {
 
-		SearchAccount account = searchRepository.findById(id).orElse(null);
+		Account account = searchRepository.findById(id).orElse(null);
 		model.addAttribute("account", account);
 
 		return "S0042";
@@ -66,21 +66,21 @@ public class SearchController {
 		return "S0043"; // 遷移先HTML
 	}
 
-//	@PostMapping("/accounts/update")
-//	public String update(@ModelAttribute AccountForm account) {
-//
-//		SearchAccount accounts = new SearchAccount();
-//
-//		accounts.setAccountId(account.getAccountId());
-//		accounts.setName(account.getName());
-//		accounts.setMail(account.getMail());
-//		accounts.setAuthority(account.getAuthority());
-//		accounts.setPassword(account.getPassword());
-//
-//		searchRepository.save(accounts);
-//
-//		return "redirect:/accounts/search";
-//	}
+	@PostMapping("/accounts/update")
+	public String update(@ModelAttribute AccountForm account) {
+
+		Account accounts = new Account();
+
+		accounts.setAccountId(account.getAccountId());
+		accounts.setName(account.getName());
+		accounts.setMail(account.getMail());
+		accounts.setAuthority(account.getAuthority());
+		accounts.setPassword(account.getPassword());
+
+		searchRepository.save(accounts);
+
+		return "return redirect:/accounts/result";}
+	
 
 	// 確認画面
 	@PostMapping("/accounts/delete")
@@ -101,7 +101,7 @@ public class SearchController {
 			@ModelAttribute("accountSearchForm") AccountSearchForm form,
 			Model model) {
 
-		List<SearchAccount> list = searchRepository.search(
+		List<Account> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),
 				form.getAuthority());
