@@ -2,6 +2,7 @@ package jp.iglobe.pbl.controller;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,15 @@ public class SalesSearchController {
 
  // 検索画面
     @GetMapping("/S0020")
-    public String search(Model model) {
+    public String search( HttpSession session,Model model) {
+    	
+    	// 未ログイン
+        if(session.getAttribute("loginUser")
+                == null){
+
+            return "redirect:/";
+        }
+
 
         model.addAttribute(
                 "salesSearchForm",
@@ -50,30 +59,138 @@ public class SalesSearchController {
         return "S0020";
     }
     
+    @GetMapping("/sales/search")
+    public String searchRedirect(){
+
+        return "redirect:/";
+    }
+    
 
  // 検索処理
     @PostMapping("/sales/search")
     public String searchResult(
+
+            HttpSession session,
+
+            @Valid
             @ModelAttribute
             SalesSearchForm salesSearchForm,
+
+            BindingResult result,
+
             Model model) {
 
+        // 未ログイン
+        if(session.getAttribute("loginUser")
+                == null){
+
+            return "redirect:/";
+        }
+
+        // 開始日チェック
+
+        if (result.hasFieldErrors("saleDateFrom")) {
+
+            model.addAttribute(
+                    "dateFromError",
+                    "販売日（検索開始日）を正しく入力して下さい。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // 終了日チェック
+
+        if (result.hasFieldErrors("saleDateTo")) {
+
+            model.addAttribute(
+                    "dateToError",
+                    "販売日（検索終了日）を正しく入力して下さい。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // 開始日 > 終了日チェック
+
+        if(salesSearchForm.getSaleDateFrom() != null
+            && salesSearchForm.getSaleDateTo() != null
+            && salesSearchForm.getSaleDateFrom()
+                    .isAfter(
+                        salesSearchForm.getSaleDateTo())){
+
+            model.addAttribute(
+                "dateRangeError",
+                "販売日（検索開始日）または販売日（検索終了日）を正しく入力して下さい。");
+
+            model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+            model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // 検索
+
         List<Sale> salesList =
-            salesRepository.search(
+                salesRepository.search(
 
-                salesSearchForm.getSaleDateFrom(),
+                        salesSearchForm.getSaleDateFrom(),
 
-                salesSearchForm.getSaleDateTo(),
+                        salesSearchForm.getSaleDateTo(),
 
-                salesSearchForm.getAccountId(),
+                        salesSearchForm.getAccountId(),
 
-                salesSearchForm.getCategoryId(),
+                        salesSearchForm.getCategoryId(),
 
-                salesSearchForm.getTradeName(),
+                        salesSearchForm.getTradeName(),
 
-                salesSearchForm.getNote()
-            );
+                        salesSearchForm.getNote()
+                );
 
+        // 件数チェック
+
+        if (salesList.isEmpty()) {
+
+            model.addAttribute(
+                    "searchError",
+                    "検索結果はありません。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // session保存
+        session.setAttribute(
+                "salesList",
+                salesList);
+
+        // 結果
         model.addAttribute(
                 "salesList",
                 salesList);
@@ -87,7 +204,19 @@ public class SalesSearchController {
 
     // 詳細画面
     @GetMapping("/sales/detail")
-    public String detail(Integer saleId, Model model) {
+    public String detail(HttpSession session, Integer saleId, Model model) {
+    	
+    	if(session.getAttribute("loginUser") == null){
+
+            return "redirect:/";
+        }
+
+        // 詳細画面へ直接アクセス禁止
+        if(session.getAttribute("salesList")
+                == null){
+
+            return "redirect:/";
+        }
 
         Sale sales = salesRepository.findById(saleId).orElse(null);
 
@@ -113,10 +242,22 @@ public class SalesSearchController {
         form.setSaleNumber(sales.getSaleNumber());
         form.setNote(sales.getNote());
 
-        // 更新権限
+     // 更新権限
         form.setAuthority("更新");
 
-        model.addAttribute("salesForm", form);
+        model.addAttribute(
+                "salesForm",
+                form);
+
+        // 担当一覧
+        model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+        // 商品カテゴリー一覧
+        model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
 
         return "S0023";
     }
