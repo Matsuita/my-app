@@ -1,5 +1,6 @@
 package jp.iglobe.pbl.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,15 +9,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jp.iglobe.pbl.model.Account;
 import jp.iglobe.pbl.model.AccountForm;
+import jp.iglobe.pbl.repository.AccountRepository;
 
 @Controller
 public class AccountController {
+	@Autowired
+	AccountRepository accountRepository;
 
 	//	アカウント登録
 	@GetMapping("/S0030")
 	public String account(Model model) {
 		model.addAttribute("accountForm", new AccountForm());
+		return "S0030";
+	}
+
+	//	確認画面から戻って来る場合。値を保持させるがエラーメッセージは消える仕様
+	@PostMapping("/S0030_back")
+	public String backToS0030(@ModelAttribute AccountForm accountForm, Model model) {
+		model.addAttribute("accountForm", accountForm);
 		return "S0030";
 	}
 
@@ -48,6 +60,22 @@ public class AccountController {
 		// 全てOKなら確認画面（S0031）へ
 		return "S0031";
 
+	}
+
+	@PostMapping("/S0031_register")
+	public String register(@ModelAttribute AccountForm accountForm) {
+
+		// 1. Repositoryが扱う「Account」クラスに値をセット
+		Account account = new Account();
+		account.setName(accountForm.getName());
+		account.setMail(accountForm.getMail());
+		account.setPassword(accountForm.getPassword());
+		account.setAuthority(accountForm.getAuthority());
+
+		// 2. DBに保存実行！
+		accountRepository.save(account);
+
+		return "S0030";
 	}
 
 }
