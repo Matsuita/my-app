@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import jp.iglobe.pbl.model.Account;
+import jp.iglobe.pbl.model.account.Account;
 
 @Repository
 public interface AccountRepository

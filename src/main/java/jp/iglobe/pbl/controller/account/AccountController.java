@@ -1,4 +1,4 @@
-package jp.iglobe.pbl.controller;
+package jp.iglobe.pbl.controller.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import jp.iglobe.pbl.model.Account;
-import jp.iglobe.pbl.model.AccountForm;
+import jp.iglobe.pbl.model.account.Account;
+import jp.iglobe.pbl.model.account.AccountForm;
 import jp.iglobe.pbl.repository.AccountRepository;
 
 @Controller

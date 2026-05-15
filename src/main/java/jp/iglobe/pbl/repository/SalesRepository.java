@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import jp.iglobe.pbl.model.Sale;
+import jp.iglobe.pbl.model.sales.Sale;
 
 public interface SalesRepository
         extends JpaRepository<Sale, Integer> {

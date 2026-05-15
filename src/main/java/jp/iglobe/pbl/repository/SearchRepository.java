@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import jp.iglobe.pbl.model.SearchAccount;
+import jp.iglobe.pbl.model.account.SearchAccount;
 
 public interface SearchRepository extends JpaRepository<SearchAccount, Integer> {
 
