@@ -19,8 +19,10 @@ public interface SalesRepository
     List<Sale>
     findByNoteContaining(String note);
     @Query("""
+
     	    SELECT s
     	    FROM Sale s
+
     	    WHERE
     	    (:saleDateFrom IS NULL
     	        OR s.saleDate >= :saleDateFrom)
@@ -39,18 +41,27 @@ public interface SalesRepository
 
     	    AND
     	    (:tradeName IS NULL
+    	        OR :tradeName = ''
     	        OR s.tradeName LIKE %:tradeName%)
 
     	    AND
     	    (:note IS NULL
+    	        OR :note = ''
     	        OR s.note LIKE %:note%)
+
     	""")
     	List<Sale> search(
+
     	    LocalDate saleDateFrom,
+
     	    LocalDate saleDateTo,
+
     	    Integer accountId,
+
     	    Integer categoryId,
+
     	    String tradeName,
+
     	    String note
     	);
     
