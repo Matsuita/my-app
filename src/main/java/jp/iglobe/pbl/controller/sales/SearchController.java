@@ -18,6 +18,7 @@ import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountDeleteForm;
 import jp.iglobe.pbl.model.account.AccountForm;
 import jp.iglobe.pbl.model.account.AccountSearchForm;
+import jp.iglobe.pbl.model.account.SearchAccount;
 import jp.iglobe.pbl.repository.SearchRepository;
 
 @Controller
@@ -67,7 +68,7 @@ public class SearchController {
 	}
 
 	@PostMapping("/accounts/update")
-	public String update(@ModelAttribute AccountForm account) {
+	public String update(@ModelAttribute SearchAccount account) {
 
 		Account accounts = new Account();
 
@@ -79,7 +80,7 @@ public class SearchController {
 
 		searchRepository.save(accounts);
 
-		return "return redirect:/accounts/result";}
+		return "redirect:/accounts/result";}
 	
 
 	// 確認画面
