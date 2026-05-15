@@ -66,6 +66,10 @@ public class SalesController {
     	List<Category> categoryList =
                 categoryRepository.findAll();
     	
+    	if(sale == null) {
+    		
+    	}
+    	
         model.addAttribute("sale", sale);
         
         model.addAttribute("accountList", accountList);
