@@ -200,6 +200,14 @@ public class SalesSearchController {
         model.addAttribute(
                 "salesList",
                 salesList);
+        
+        model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+        model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
 
         model.addAttribute(
                 "salesSearchForm",
@@ -227,6 +235,13 @@ public class SalesSearchController {
         Sale sales = salesRepository.findById(saleId).orElse(null);
 
         model.addAttribute("sales", sales);
+        model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+        model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
 
         return "S0022";
     }
