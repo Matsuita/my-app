@@ -1,5 +1,6 @@
 package jp.iglobe.pbl.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,8 +16,8 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "account_id")
-    private Integer account_id;
+    @Column(name = "account_id")
+    private Integer accountId;
 
     private String name;
 
