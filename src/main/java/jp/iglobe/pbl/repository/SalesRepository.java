@@ -53,5 +53,9 @@ public interface SalesRepository
     	    String tradeName,
     	    String note
     	);
+    
+    //  売上削除
+    	List<Sale> deleteBySaleId(Integer saleId);
+    
 }
     

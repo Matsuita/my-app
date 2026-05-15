@@ -28,9 +28,7 @@ public class SalesController {
     // 売上
     private final SalesRepository salesRepository;
 
-    // =========================
     // 売上登録画面
-    // =========================
 
     @GetMapping("/S0010")
     public String newSale(Model model) {
@@ -53,9 +51,7 @@ public class SalesController {
         return "S0010";
     }
 
-    // =========================
     // 売上登録確認画面
-    // =========================
 
     @PostMapping("/S0011")
     public String salesConfirm(
@@ -79,9 +75,7 @@ public class SalesController {
         return "S0011";
     }
 
-    // =========================
     // 売上登録実行
-    // =========================
 
     @PostMapping("/salesCreate")
     public String salesCreate(Sale sale) {
@@ -91,9 +85,7 @@ public class SalesController {
         return "redirect:/S0010";
     }
 
-    // =========================
     // 売上詳細編集確認画面
-    // =========================
 
     @GetMapping("/S0024")
     public String editConfirm(Model model) {
@@ -103,15 +95,21 @@ public class SalesController {
         return "S0024";
     }
 
-    // =========================
     // 売上詳細削除確認画面
-    // =========================
 
-    @GetMapping("/S0025")
-    public String salesDelete(Model model) {
+    @PostMapping("/sales/delete")
+    public String deleteConfirm(Sale sales, Model model) {
 
-        model.addAttribute("sale",new Sale());
+        model.addAttribute("sales", sales);
 
         return "S0025";
+    }
+    
+    @PostMapping("/sales/delete/execute")
+    public String salesDelete(Integer saleId) {
+    	
+    	salesRepository.deleteBySaleId(saleId);
+    	
+    	return "S0021";
     }
 }
