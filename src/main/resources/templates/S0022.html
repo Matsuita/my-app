@@ -134,8 +134,13 @@
 
             <th>担当</th>
 
-            <td th:text="${sales.accountId}">
-            </td>
+			<td>
+
+			    <span th:each="account : ${accountList}">
+			        <span th:if="${account.accountId == sales.accountId}"
+			              th:text="${account.name}">
+			        </span>
+			    </span>
 
         </tr>
 
@@ -145,8 +150,15 @@
 
             <th>商品カテゴリー</th>
 
-            <td th:text="${sales.categoryId}">
-            </td>
+			<td>
+
+			    <span th:each="category : ${categoryList}">
+			        <span th:if="${category.categoryId == sales.categoryId}"
+			              th:text="${category.categoryName}">
+			        </span>
+			    </span>
+
+			</td>
 
         </tr>
 
