@@ -24,29 +24,35 @@
 		<p>パスワード
 			<span class="partial-badge">必須</span>
 			<input type="hidden" th:field="*{password}">
-			<span th:text="*{password}"></span> <!-- 表示用 -->
+			<span
+				th:text="${accountForm.password != null ? #strings.repeat('●', accountForm.password.length()) : ''}"></span>
+			<!-- 表示用 -->
 		</p>
 		<p>パスワード（確認）
 			<span class="partial-badge">必須</span>
 			<input type="hidden" th:field="*{passwordConfirm}">
-			<span th:text="*{passwordConfirm}"></span> <!-- 表示用 -->
+			<span
+				th:text="${accountForm.passwordConfirm != null ? #strings.repeat('●', accountForm.passwordConfirm.length()) : ''}"></span>
+			<!-- 表示用 -->
 		</p>
-		
+
 		<p>権限：
 			<span class="partial-badge">必須</span>
-		    <span th:if="${accountForm.authority == 0}">権限なし</span>
-		    <span th:if="${accountForm.authority == 1}">売上登録</span>
-		    <span th:if="${accountForm.authority == 2}">アカウント登録</span>
-		    <span th:if="${accountForm.authority == 3}">売上登録 ＋ アカウント登録</span>
+			<span th:if="${accountForm.authority == 0}">権限なし</span>
+			<span th:if="${accountForm.authority == 1}">売上登録</span>
+			<span th:if="${accountForm.authority == 2}">アカウント登録</span>
+			<span th:if="${accountForm.authority == 3}">売上登録 ＋ アカウント登録</span>
 		</p>
 
 		<!-- 最終的にDB保存用クラスへ渡すために数値を保持 -->
 		<input type="hidden" th:field="*{authority}" />
-		
 
-		<button type="submit" th:formaction="@{/S0031}">OK</button>
-		<button type="button" onclick="history.back()">キャンセル</button>
 
+		<button type="submit" th:formaction="@{/S0031_register}">OK</button>
+		<!--		<button type="button" onclick="history.back()">キャンセル</button>-->
+		<!--		<a th:href="@{/S0030}" class="button">キャンセル</a>-->
+
+		<button type="submit" th:formaction="@{/S0030_back}">キャンセル</button>
 
 	</form>
 </body>
