@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jp.iglobe.pbl.model.AccountDeleteForm;
 import jp.iglobe.pbl.model.AccountForm;
 import jp.iglobe.pbl.model.AccountSearchForm;
 import jp.iglobe.pbl.model.SearchAccount;
@@ -69,5 +70,19 @@ public class SearchController {
 	    // accountRepository.save(account); みたいなやつ
 
 	     return "redirect:/accounts/search";
+	}
+	
+	// 確認画面
+	@PostMapping("/accounts/delete")
+	public String deleteConfirm(AccountDeleteForm account, Model model) {
+	    model.addAttribute("account", account);
+	    return "S0044";
+	}
+
+	// 実際の削除
+	@PostMapping("/accounts/delete/execute")
+	public String deleteExecute(@ModelAttribute AccountDeleteForm account) {
+	    searchRepository.deleteById(account.getAccountId());
+	    return "redirect:/accounts/search";
 	}
 }

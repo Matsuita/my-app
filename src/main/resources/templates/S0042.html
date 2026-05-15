@@ -35,8 +35,8 @@
 
 		<h2 class="mb-4">アカウント詳細編集</h2>
 
-		<form th:action="@{/accounts/confirm}" method="post">
-
+		<form th:action="@{/accounts/confirm}" th:object="${account}" method="post">
+			<input type="hidden" th:field="*{accountId}">
 			<!-- 氏名 -->
 			<div class="row mb-3 align-items-center">
 				<div class="col-auto label-col">
