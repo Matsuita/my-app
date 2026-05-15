@@ -1,0 +1,314 @@
+package jp.iglobe.pbl.controller.sales;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import jp.iglobe.pbl.model.sales.Sale;
+import jp.iglobe.pbl.model.sales.SalesForm;
+import jp.iglobe.pbl.model.sales.SalesSearchForm;
+import jp.iglobe.pbl.repository.AccountRepository;
+import jp.iglobe.pbl.repository.CategoryRepository;
+import jp.iglobe.pbl.repository.SalesRepository;
+
+@Controller
+public class SalesSearchController {
+
+    @Autowired
+    private SalesRepository salesRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+ // 検索画面
+    @GetMapping("/S0020")
+    public String search( HttpSession session,Model model) {
+    	
+    	// 未ログイン
+        if(session.getAttribute("loginUser")
+                == null){
+
+            return "redirect:/";
+        }
+
+
+        model.addAttribute(
+                "salesSearchForm",
+                new SalesSearchForm());
+
+        // 担当一覧
+        model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+        // カテゴリー一覧
+        model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
+
+        return "S0020";
+    }
+    
+    @GetMapping("/sales/search")
+    public String searchRedirect(){
+
+        return "redirect:/";
+    }
+    
+
+ // 検索処理
+    @PostMapping("/sales/search")
+    public String searchResult(
+
+            HttpSession session,
+
+            @Valid
+            @ModelAttribute
+            SalesSearchForm salesSearchForm,
+
+            BindingResult result,
+
+            Model model) {
+
+        // 未ログイン
+        if(session.getAttribute("loginUser")
+                == null){
+
+            return "redirect:/";
+        }
+
+        // 開始日チェック
+
+        if (result.hasFieldErrors("saleDateFrom")) {
+
+            model.addAttribute(
+                    "dateFromError",
+                    "販売日（検索開始日）を正しく入力して下さい。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // 終了日チェック
+
+        if (result.hasFieldErrors("saleDateTo")) {
+
+            model.addAttribute(
+                    "dateToError",
+                    "販売日（検索終了日）を正しく入力して下さい。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // 開始日 > 終了日チェック
+
+        if(salesSearchForm.getSaleDateFrom() != null
+            && salesSearchForm.getSaleDateTo() != null
+            && salesSearchForm.getSaleDateFrom()
+                    .isAfter(
+                        salesSearchForm.getSaleDateTo())){
+
+            model.addAttribute(
+                "dateRangeError",
+                "販売日（検索開始日）または販売日（検索終了日）を正しく入力して下さい。");
+
+            model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+            model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // 検索
+
+        List<Sale> salesList =
+                salesRepository.search(
+
+                        salesSearchForm.getSaleDateFrom(),
+
+                        salesSearchForm.getSaleDateTo(),
+
+                        salesSearchForm.getAccountId(),
+
+                        salesSearchForm.getCategoryId(),
+
+                        salesSearchForm.getTradeName(),
+
+                        salesSearchForm.getNote()
+                );
+
+        // 件数チェック
+
+        if (salesList.isEmpty()) {
+
+            model.addAttribute(
+                    "searchError",
+                    "検索結果はありません。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0020";
+        }
+
+        // session保存
+        session.setAttribute(
+                "salesList",
+                salesList);
+
+        // 結果
+        model.addAttribute(
+                "salesList",
+                salesList);
+
+        model.addAttribute(
+                "salesSearchForm",
+                salesSearchForm);
+
+        return "S0021";
+    }
+
+    // 詳細画面
+    @GetMapping("/sales/detail")
+    public String detail(HttpSession session, Integer saleId, Model model) {
+    	
+    	if(session.getAttribute("loginUser") == null){
+
+            return "redirect:/";
+        }
+
+        // 詳細画面へ直接アクセス禁止
+        if(session.getAttribute("salesList")
+                == null){
+
+            return "redirect:/";
+        }
+
+        Sale sales = salesRepository.findById(saleId).orElse(null);
+
+        model.addAttribute("sales", sales);
+
+        return "S0022";
+    }
+
+    // 編集画面
+    @GetMapping("/sales/edit")
+    public String edit(Integer saleId, Model model) {
+
+        Sale sales = salesRepository.findById(saleId).orElse(null);
+
+        SalesForm form = new SalesForm();
+
+        form.setSaleId(sales.getSaleId());
+        form.setSaleDate(sales.getSaleDate().toString());
+        form.setAccountId(sales.getAccountId());
+        form.setCategoryId(sales.getCategoryId());
+        form.setTradeName(sales.getTradeName());
+        form.setUnitPrice(sales.getUnitPrice());
+        form.setSaleNumber(sales.getSaleNumber());
+        form.setNote(sales.getNote());
+
+     // 更新権限
+        form.setAuthority("更新");
+
+        model.addAttribute(
+                "salesForm",
+                form);
+
+        // 担当一覧
+        model.addAttribute(
+                "accountList",
+                accountRepository.findAll());
+
+        // 商品カテゴリー一覧
+        model.addAttribute(
+                "categoryList",
+                categoryRepository.findAll());
+
+        return "S0023";
+    }
+
+    // 更新処理
+    @PostMapping("/sales/update")
+    public String update(
+    @Valid
+    @ModelAttribute
+    SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
+
+        // 入力エラー
+        if (result.hasErrors()) {
+            return "S0023";
+        }
+
+        // 権限チェック
+        if (!"更新".equals(salesForm.getAuthority())) {
+            model.addAttribute("errorMessage", "更新権限がありません。");
+            return "S0023";
+        }
+
+        Sale sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
+
+     // 更新
+        sales.setTradeName(salesForm.getTradeName());
+        sales.setUnitPrice(salesForm.getUnitPrice());
+        sales.setSaleNumber(salesForm.getSaleNumber());
+        sales.setNote(salesForm.getNote());
+        sales.setSaleDate(LocalDate.parse(salesForm.getSaleDate()));
+        sales.setAccountId(salesForm.getAccountId());
+        sales.setCategoryId(salesForm.getCategoryId());
+        salesRepository.save(sales);
+
+        // 一覧再取得
+        List<Sale> salesList = salesRepository.findAll();
+        session.setAttribute("salesList", salesList);
+        return "redirect:/S0021";
+    }
+    
+    @GetMapping("/S0021")
+    public String result(HttpSession session,Model model) {
+
+        // 未ログイン
+        if(session.getAttribute("loginUser") == null){
+            return "redirect:/";
+        }
+
+        // 一覧取得
+        model.addAttribute("salesList", session.getAttribute("salesList"));
+        return "S0021";
+    }
+}
