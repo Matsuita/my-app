@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountDeleteForm;
-import jp.iglobe.pbl.model.account.AccountForm;
 import jp.iglobe.pbl.model.account.AccountSearchForm;
-import jp.iglobe.pbl.model.account.SearchAccount;
 import jp.iglobe.pbl.repository.SearchRepository;
 
 @Controller
@@ -62,27 +60,26 @@ public class SearchController {
 	}
 
 	@PostMapping("/accounts/confirm")
-	public String confirm(AccountForm account, Model model) {
-		model.addAttribute("account", account);
-		return "S0043"; // 遷移先HTML
+	public String confirm(@ModelAttribute Account account, Model model) {
+	    model.addAttribute("account", account);
+	    return "S0043";
 	}
-
 	@PostMapping("/accounts/update")
-	public String update(@ModelAttribute SearchAccount account) {
+	public String update(@ModelAttribute Account account) {
 
-		Account accounts = new Account();
+	    Account existing = searchRepository
+	            .findById(account.getAccountId())
+	            .orElseThrow();
 
-		accounts.setAccountId(account.getAccountId());
-		accounts.setName(account.getName());
-		accounts.setMail(account.getMail());
-		accounts.setAuthority(account.getAuthority());
-		accounts.setPassword(account.getPassword());
+	    existing.setName(account.getName());
+	    existing.setMail(account.getMail());
+	    existing.setAuthority(account.getAuthority());
+	    existing.setPassword(account.getPassword());
 
-		searchRepository.save(accounts);
+	    searchRepository.save(existing);
 
-		return "redirect:/accounts/result";}
-	
-
+	    return "redirect:/accounts/result";
+	}
 	// 確認画面
 	@PostMapping("/accounts/delete")
 	public String deleteConfirm(AccountDeleteForm account, Model model) {
