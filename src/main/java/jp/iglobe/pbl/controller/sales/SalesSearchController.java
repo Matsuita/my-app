@@ -46,9 +46,9 @@ public class SalesSearchController {
 				new SalesSearchForm());
 
 		// 担当一覧
-		model.addAttribute(
-				"accountList",
-				accountRepository.findAll());
+		List<Integer> accountIds = salesRepository.findUsedAccountIds();
+
+		model.addAttribute("accountList", accountRepository.findAllById(accountIds));
 
 		// カテゴリー一覧
 		model.addAttribute(
@@ -243,7 +243,7 @@ public class SalesSearchController {
 		if(saleId == null) {
 			return "redirect:/S0021";
 		}
-		
+
 		Sale sales = salesRepository.findById(saleId).orElse(null);
 		
 		if(sales == null) {
@@ -308,32 +308,13 @@ public class SalesSearchController {
 	        return "S0023";
 	    }
 	    
-	 
-		
-	 // アカウント存在チェック
-	    if(!accountRepository.existsById(salesForm.getAccountId())) {
-	        model.addAttribute("errorMessage", "アカウントテーブルに存在しません。");
-	        model.addAttribute("accountList", accountRepository.findAll());
-	        model.addAttribute("categoryList", categoryRepository.findAll());
-
-	        return "S0023";
-	    }
-
-		
-	 // 商品カテゴリ存在チェック
-	    if(!categoryRepository.existsById(salesForm.getCategoryId())) {
-	        model.addAttribute("errorMessage", "商品カテゴリーテーブルに存在しません。");
-	        model.addAttribute("accountList", accountRepository.findAll());
-	        model.addAttribute("categoryList", categoryRepository.findAll());
-
-	        return "S0023";
-	    }
 
 		// 権限チェック
 		if (!"更新".equals(salesForm.getAuthority())) {
 			model.addAttribute("errorMessage", "更新権限がありません。");
 			return "S0023";
 		}
+		
 		
 		// 入力エラー
 	    if(result.hasErrors()) {
