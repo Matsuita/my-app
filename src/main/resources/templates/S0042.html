@@ -60,31 +60,28 @@
 					<div class="error-text" th:if="${mailError}" th:text="${mailError}"></div>
 				</div>
 			</div>
-
-			<!-- パスワード 　-->
-			<div class="row mb-3 align-items-center">
-				<div class="col-auto label-col">
-					<label>パスワード</label>
-					<span class="partial-badge">必須</span>
-				</div>
-				<div class="col">
-					<input type="password" name="password" class="form-control">
-					<div class="error-text" th:if="${passwordError}" th:text="${passwordError}"></div>
-				</div>
-			</div>
+			<!-- password保持用（超重要） -->
+			
 
 			<!-- パスワード -->
-<!--			<div class="row mb-3 align-items-center">-->
-<!--				<div class="col-auto label-col">-->
-<!--					<label>パスワード（確認）</label><span class="partial-badge">必須</span>-->
+			<div class="row mb-3 align-items-center">
+			  <div class="col-auto label-col">
+			    <label>パスワード</label>
+			  </div>
+			  <div class="col">
+			    <input type="password" th:field="*{password}" class="form-control">
+			  </div>
+			</div>
 
-<!--				</div>-->
-<!--				<div class="col">-->
-<!--					<input type="password" name="passwordConfirm" class="form-control">-->
-<!--					<div class="error-text" th:if="${passwordConfirmError}" th:text="${passwordConfirmError}"></div>-->
-<!--				</div>-->
-<!--			</div>-->
-
+			<!-- パスワード確認 -->
+			<div class="row mb-3 align-items-center">
+			  <div class="col-auto label-col">
+			    <label>パスワード（確認）</label>
+			  </div>
+			  <div class="col">
+			    <input type="password" th:field="*{passwordConfirm}" class="form-control">
+			  </div>
+			</div>
 			<!-- 権限 -->
 			<div class="row mb-4 align-items-center">
 				<div class="col-auto label-col">

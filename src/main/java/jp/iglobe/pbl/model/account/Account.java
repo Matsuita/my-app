@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import lombok.Data;
 
@@ -26,4 +27,7 @@ public class Account {
     private String password;
 
     private Integer authority;
+    
+    @Transient
+    private String passwordConfirm;
 }
