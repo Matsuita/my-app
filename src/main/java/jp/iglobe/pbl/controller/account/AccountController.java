@@ -48,14 +48,14 @@ public class AccountController {
 			result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードが一致しません");
 			return "S0030"; // 入力画面へ戻る
 		}
-		int totalAuth = 0;
-		if (accountForm.getAuthList() != null) {
-			for (Integer val : accountForm.getAuthList()) {
-				totalAuth += val;
-			}
-		}
-		// ここで 0, 1, 2, 3 のいずれかになる
-		accountForm.setAuthority(totalAuth);
+//		int totalAuth = 0;
+//		if (accountForm.getAuthList() != null) {
+//			for (Integer val : accountForm.getAuthList()) {
+//				totalAuth += val;
+//			}
+//		}
+//		// ここで 0, 1, 2, 3 のいずれかになる
+//		accountForm.setAuthority(totalAuth);
 
 		// 全てOKなら確認画面（S0031）へ
 		return "S0031";

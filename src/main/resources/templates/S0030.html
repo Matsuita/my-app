@@ -51,12 +51,13 @@
 
 		<p>権限
 			<span class="partial-badge">必須</span>
+			<input type="radio" th:field="*{authority}" value="0" />権限なし
+			<input type="radio" th:field="*{authority}" value="1" />売上登録
+			<input type="radio" th:field="*{authority}" value="2" />アカウント登録
+			<input type="radio" th:field="*{authority}" value="3" />売上登録＋アカウント登録
+			<span class="error" th:if="${#fields.hasErrors('authority')}" th:errors="*{authority}">
+			</span><!-- このタグでエラーの記述を呼び出す -->
 
-			<!-- value="1" は売上（2進数の01） -->
-			<input type="checkbox" name="authList" value="1" />売上登録
-
-			<!-- value="2" はアカウント（2進数の10） -->
-			<input type="checkbox" name="authList" value="2" />アカウント登録
 		</p>
 
 		<p><button type="submit">登録</button></p>
