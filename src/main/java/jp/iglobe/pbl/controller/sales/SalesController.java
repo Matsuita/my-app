@@ -116,15 +116,19 @@ public class SalesController {
         model.addAttribute(
                 "salesForm",
                 salesForm);
-
+     model.addAttribute("accountList", accountRepository.findAll());
+     model.addAttribute("categoryLIst", categoryRepository.findAll());
+     
         return "S0024";
     }
 
     // 売上詳細削除確認画面
 
     @PostMapping("/sales/delete")
-    public String deleteConfirm(Sale sales, Model model) {
+    public String deleteConfirm(Integer saleId, Model model) {
 
+    	Sale sales = salesRepository.findById(saleId).orElse(null);
+    	
         model.addAttribute("sales", sales);
 
         return "S0025";
