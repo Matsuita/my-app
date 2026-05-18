@@ -78,7 +78,7 @@
 
 		<p>
 			単価　＜必須＞
-			<input type="number"
+			<input type="text"
 				   th:field="*{unitPrice}">
 			<span th:errors="*{unitPrice}">
 			</span>
@@ -87,7 +87,7 @@
 		<!-- 個数 -->
 		<p>
 			個数　＜必須＞
-			<input type="number"
+			<input type="text"
 				   th:field="*{saleNumber}">
 			<span th:errors="*{saleNumber}">
 			</span>
