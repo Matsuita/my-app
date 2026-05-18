@@ -132,7 +132,7 @@
 	    <i class="bi bi-check-lg"></i> OK
 	  </button>
 
-	  <a th:href="@{/accounts/result}" class="btn btn-outline-secondary px-4 ms-2">
+	  <a th:href="@{/accounts/edit/{id}(id=*{accountId})}" class="btn btn-outline-secondary px-4 ms-2">
 	    キャンセル
 	  </a>
 	</div>
