@@ -47,7 +47,7 @@
 	<h2 class="mb-4">アカウント詳細削除確認</h2>
 
 	<form th:action="@{/accounts/delete/execute}" th:object="${account}" method="post">
-		<p>ID: <span th:text="${account.accountId}"></span></p>
+		
 		<input type="hidden" th:field="*{accountId}">
 
 		<!-- 氏名 -->
