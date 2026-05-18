@@ -36,15 +36,29 @@
 			<!-- 表示用 -->
 		</p>
 
-		<p>権限：
-			<span class="partial-badge">必須</span>
-			<span th:if="${accountForm.authority == 0}">権限なし</span>
-			<span th:if="${accountForm.authority == 1}">売上登録</span>
-			<span th:if="${accountForm.authority == 2}">アカウント登録</span>
-			<span th:if="${accountForm.authority == 3}">売上登録 ＋ アカウント登録</span>
-			<!-- 最終的にDB保存用クラスへ渡すために数値を保持 -->
-			<input type="hidden" th:field="*{authority}" /><!-- 表示用 -->
+
+		<p>権限
+		    <span class="partial-badge">必須</span>
+		    
+		    <!-- 1. 見た目用のラジオボタン（すべて disabled を付与して操作不能にする） -->
+		    <input type="radio" name="authority_view" value="0" th:checked="${accountForm.authority == 0}" disabled />権限なし
+		    <input type="radio" name="authority_view" value="1" th:checked="${accountForm.authority == 1}" disabled />売上登録
+		    <input type="radio" name="authority_view" value="2" th:checked="${accountForm.authority == 2}" disabled />アカウント登録
+		    <input type="radio" name="authority_view" value="3" th:checked="${accountForm.authority == 3}" disabled />売上登録＋アカウント登録
+
+		    <!-- 2. 実際にデータを送信するためのhiddenタグ（これがないと次の画面に値が渡りません） -->
+		    <input type="hidden" th:field="*{authority}" />
 		</p>
+
+		<!--		<p>権限：-->
+		<!--			<span class="partial-badge">必須</span>-->
+		<!--			<span th:if="${accountForm.authority == 0}">権限なし</span>-->
+		<!--			<span th:if="${accountForm.authority == 1}">売上登録</span>-->
+		<!--			<span th:if="${accountForm.authority == 2}">アカウント登録</span>-->
+		<!--			<span th:if="${accountForm.authority == 3}">売上登録 ＋ アカウント登録</span>-->
+		<!--			 最終的にDB保存用クラスへ渡すために数値を保持 -->
+		<!--			<input type="hidden" th:field="*{authority}" /> 表示用 -->
+		<!--		</p>-->
 
 
 		<button type="submit" th:formaction="@{/S0031_register}">OK</button>
