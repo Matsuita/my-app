@@ -73,13 +73,13 @@
 				th:object="${salesCreateForm}"
 				method="post">
 						  
-			<input type="hidden" th:field="*{saleDate}">
-			<input type="hidden" th:field="*{accountId}">
-			<input type="hidden" th:field="*{categoryId}">
-			<input type="hidden" th:field="*{tradeName}">
-			<input type="hidden" th:field="*{unitPrice}">
-			<input type="hidden" th:field="*{saleNumber}">
-			<input type="hidden" th:field="*{note}">
+			<input type="hidden" th:value="*{saleDate}">
+			<input type="hidden" th:value="*{accountId}">
+			<input type="hidden" th:value="*{categoryId}">
+			<input type="hidden" th:value="*{tradeName}">
+			<input type="hidden" th:value="*{unitPrice}">
+			<input type="hidden" th:value="*{saleNumber}">
+			<input type="hidden" th:value="*{note}">
 					
 			<!-- ボタン -->
 			<button type="submit">
