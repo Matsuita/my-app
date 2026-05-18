@@ -39,13 +39,15 @@
 		<p>パスワード
 			<span class="partial-badge">必須</span>
 			<input type="password" th:field="*{password}" placeholder="パスワード">
-			<span class="error" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">
+			<span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
 			</span><!-- このタグでエラーの記述を呼び出す -->
 		</p>
 
 		<p>パスワード（確認）
 			<span class="partial-badge">必須</span>
 			<input type="password" th:field="*{passwordConfirm}" placeholder="パスワード（確認）">
+			<span class="error" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">
+						</span><!-- このタグでエラーの記述を呼び出す -->
 		</p>
 
 
