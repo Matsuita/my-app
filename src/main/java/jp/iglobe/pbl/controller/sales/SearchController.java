@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountDeleteForm;
 import jp.iglobe.pbl.model.account.AccountSearchForm;
+import jp.iglobe.pbl.model.account.AccountUpdateForm;
 import jp.iglobe.pbl.repository.SearchRepository;
 
 @Controller
-@SessionAttributes("accountSearchForm")
+
 public class SearchController {
 
 	@Autowired
@@ -54,18 +54,25 @@ public class SearchController {
 	public String edit(@PathVariable Integer id, Model model) {
 
 		Account account = searchRepository.findById(id).orElse(null);
-		model.addAttribute("account", account);
+		model.addAttribute("accountUpdateForm", account);
 
 		return "S0042";
 	}
 
 	@PostMapping("/accounts/confirm")
-	public String confirm(@ModelAttribute Account account, Model model) {
-	    model.addAttribute("account", account);
-	    return "S0043";
+	public String confirm(
+			@Valid @ModelAttribute AccountUpdateForm form,
+	        BindingResult result,
+	        Model model) {
+
+	    if (result.hasErrors()) {
+	        return "S0042"; // 入力画面に戻す
+	    }
+	    model.addAttribute("accountUpdateForm", form);
+	    return "S0043"; // 確認画面
 	}
 	@PostMapping("/accounts/update")
-	public String update(@ModelAttribute Account account) {
+	public String update(@ModelAttribute AccountUpdateForm account) {
 
 	    Account existing = searchRepository
 	            .findById(account.getAccountId())
@@ -102,9 +109,10 @@ public class SearchController {
 
 	@GetMapping("/accounts/result")
 	public String resultFromSession(
-			@ModelAttribute("accountSearchForm") AccountSearchForm form,
+			@ModelAttribute AccountSearchForm form,
 			Model model) {
-
+		
+		
 		List<Account> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),

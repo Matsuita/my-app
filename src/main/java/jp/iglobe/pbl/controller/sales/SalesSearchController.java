@@ -37,7 +37,7 @@ public class SalesSearchController {
 
 		// 未ログイン
 		if (session.getAttribute("loginUser") == null) {
-
+			
 			return "redirect:/";
 		}
 
