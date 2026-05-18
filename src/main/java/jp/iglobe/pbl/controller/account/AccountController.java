@@ -32,6 +32,13 @@ public class AccountController {
 		return "S0030";
 	}
 
+	//	アカウント登録確認画面へ直接は飛ばず、アカウント登録画面へ遷移
+	@GetMapping("S0031")
+	public String confirm(Model model) {
+		model.addAttribute("accountForm", new AccountForm());
+		return "redirect:/S0030";
+	}
+
 	//	アカウント登録確認
 	@PostMapping("/S0031")
 	public String confirm(@Validated @ModelAttribute AccountForm accountForm,
@@ -45,17 +52,10 @@ public class AccountController {
 		// 2. パスワード一致チェック（カスタムチェック）
 		if (!accountForm.getPassword().equals(accountForm.getPasswordConfirm())) {
 			// passwordConfirmフィールドに対して個別にエラーを紐付ける
-			result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードが一致しません");
+			result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードとパスワード（確認）の入力値が異なります。");
 			return "S0030"; // 入力画面へ戻る
 		}
-//		int totalAuth = 0;
-//		if (accountForm.getAuthList() != null) {
-//			for (Integer val : accountForm.getAuthList()) {
-//				totalAuth += val;
-//			}
-//		}
-//		// ここで 0, 1, 2, 3 のいずれかになる
-//		accountForm.setAuthority(totalAuth);
+		//		
 
 		// 全てOKなら確認画面（S0031）へ
 		return "S0031";
