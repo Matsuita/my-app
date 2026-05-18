@@ -54,7 +54,7 @@
 		<div class="text-center mb-5">
 			<h2 class="text-start">アカウント詳細編集確認</h2>
 		</div>
-		<form th:action="@{/accounts/update}" th:object="${account}" method="post">
+		<form th:action="@{/accounts/update}" th:object="${accountUpdateForm}" method="post">
 
 	<input type="hidden" th:field="*{accountId}">
 	<input type="hidden" th:field="*{name}">
@@ -84,22 +84,22 @@
 	  <div class="col-3 text-end">パスワード</div>
 	  <div class="col-9">
 	    <input type="text"
-	           th:value="${#strings.repeat('•', account.password.length())}"
+	           th:value="${#strings.repeat('•', accountUpdateForm.password.length())}"
 	           class="form-control"
 	           disabled>
 	  </div>
 	</div>
 
 	<!-- パスワード確認 -->
-	<div class="row mb-3 align-items-center">
-	  <div class="col-3 text-end">パスワード（確認）</div>
-	  <div class="col-9">
-	    <input type="text"
-	           th:value="${#strings.repeat('•', account.passwordConfirm.length())}"
-	           class="form-control"
-	           disabled>
-	  </div>
-	</div>
+<!--	<div class="row mb-3 align-items-center">-->
+<!--	  <div class="col-3 text-end">パスワード（確認）</div>-->
+<!--	  <div class="col-9">-->
+<!--	    <input type="text"-->
+<!--	           th:value="${#strings.repeat('•', account.passwordConfirm.length())}"-->
+<!--	           class="form-control"-->
+<!--	           disabled>-->
+<!--	  </div>-->
+<!--	</div>-->
 
 	<!-- 権限 -->
 	<div class="row mb-4 align-items-center">
