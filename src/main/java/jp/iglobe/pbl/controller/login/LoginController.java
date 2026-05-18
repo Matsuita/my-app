@@ -49,13 +49,7 @@ public class LoginController {
 
             @Valid
             @ModelAttribute
-            LoginForm loginForm,
-
-            BindingResult result,
-
-            HttpSession session,
-
-            Model model) {
+            LoginForm loginForm,BindingResult result,HttpSession session,Model model) {
 
         // 入力エラー
         if (result.hasErrors()) {
@@ -64,30 +58,22 @@ public class LoginController {
         }
 
         // メール検索
-        Account account =
-                accountRepository.findByMail(
-                        loginForm.getMail());
+        Account account = accountRepository.findByMail(loginForm.getMail());
 
         // ログイン成功
         if (account != null) {
 
-            if (account.getPassword()
-                    .equals(
-                        loginForm.getPassword())) {
+            if (account.getPassword().equals(loginForm.getPassword())) {
 
                 // Session保存
-                session.setAttribute(
-                        "loginUser",
-                        account);
+                session.setAttribute("loginUser", account);
 
                 return "redirect:/dashboard";
             }
         }
 
         // ログイン失敗
-        model.addAttribute(
-                "errorMessage",
-                "メールアドレスまたはパスワードが違います。");
+        model.addAttribute("errorMessage", "メールアドレスまたはパスワードが違います。");
 
         return "C0010";
     }
@@ -97,15 +83,13 @@ public class LoginController {
     // =========================
 
     @GetMapping("/dashboard")
-    public String dashboard(
-            HttpSession session) {
-
-        // 未ログイン
-        if (session.getAttribute("loginUser")
-                == null) {
-
+    public String dashboard(HttpSession session) {
+    	
+    	// 未ログイン
+        if(session.getAttribute("loginUser") == null) {
             return "redirect:/";
         }
+
 
         return "C0020";
     }
@@ -115,8 +99,7 @@ public class LoginController {
     // =========================
 
     @GetMapping("/logout")
-    public String logout(
-            HttpSession session) {
+    public String logout(HttpSession session) {
 
         // Session削除
         session.invalidate();

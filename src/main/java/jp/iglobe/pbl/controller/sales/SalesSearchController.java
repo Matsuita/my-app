@@ -280,14 +280,6 @@ public class SalesSearchController {
 			@ModelAttribute 
 			SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
 
-		// 入力エラー
-	    if(result.hasErrors()) {
-	        model.addAttribute("accountList", accountRepository.findAll());
-
-	        model.addAttribute("categoryList", categoryRepository.findAll());
-
-	        return "S0023";
-	    }
 	    
 	 // 単価形式チェック
 	    if(!salesForm.getUnitPrice().matches("^[0-9]+$")) {
@@ -307,10 +299,11 @@ public class SalesSearchController {
 
 	        return "S0023";
 	    }
+	    
+	 
 		
 	 // アカウント存在チェック
-	    if(!accountRepository.existsById(
-	            salesForm.getAccountId())) {
+	    if(!accountRepository.existsById(salesForm.getAccountId())) {
 	        model.addAttribute("errorMessage", "アカウントテーブルに存在しません。");
 	        model.addAttribute("accountList", accountRepository.findAll());
 	        model.addAttribute("categoryList", categoryRepository.findAll());
@@ -320,8 +313,7 @@ public class SalesSearchController {
 
 		
 	 // 商品カテゴリ存在チェック
-	    if(!categoryRepository.existsById(
-	            salesForm.getCategoryId())) {
+	    if(!categoryRepository.existsById(salesForm.getCategoryId())) {
 	        model.addAttribute("errorMessage", "商品カテゴリーテーブルに存在しません。");
 	        model.addAttribute("accountList", accountRepository.findAll());
 	        model.addAttribute("categoryList", categoryRepository.findAll());
@@ -334,6 +326,15 @@ public class SalesSearchController {
 			model.addAttribute("errorMessage", "更新権限がありません。");
 			return "S0023";
 		}
+		
+		// 入力エラー
+	    if(result.hasErrors()) {
+	        model.addAttribute("accountList", accountRepository.findAll());
+
+	        model.addAttribute("categoryList", categoryRepository.findAll());
+
+	        return "S0023";
+	    }
 
 		Sale sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
 
@@ -355,11 +356,12 @@ public class SalesSearchController {
 
 	@GetMapping("/S0021")
 	public String result(HttpSession session, Model model) {
+		if(session.getAttribute("loginUser")
+		        == null) {
 
-		// 未ログイン
-		if (session.getAttribute("loginUser") == null) {
-			return "redirect:/";
+		    return "redirect:/";
 		}
+
 
 		// 一覧取得
 		model.addAttribute(
