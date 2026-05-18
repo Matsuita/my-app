@@ -28,8 +28,8 @@
 
     <!-- 表示 -->
     <p>販売日：<span th:text="*{saleDate}"></span></p>
-    <p>担当：<span th:text="*{accountId}"></span></p>
-    <p>商品カテゴリー：<span th:text="*{categoryId}"></span></p>
+    <p>担当：<span th:each="account : ${accountList}"> <span th:if="${account.accountId == salesForm.accountId}" th:text="${account.name}"></span></span></p>
+    <p>商品カテゴリー：<span th:each="category : ${categoryList}"><span th:if="${category.categoryId == salesForm.categoryId}" th:text="${category.categoryName}"></span></span></p>
     <p>商品名：<span th:text="*{tradeName}"></span></p>
     <p>単価：<span th:text="*{unitPrice}"></span></p>
     <p>個数：<span th:text="*{saleNumber}"></span></p>

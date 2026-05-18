@@ -24,311 +24,310 @@ import jp.iglobe.pbl.repository.SalesRepository;
 @Controller
 public class SalesSearchController {
 
-    @Autowired
-    private SalesRepository salesRepository;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-
- // 検索画面
-    @GetMapping("/S0020")
-    public String search( HttpSession session,Model model) {
-    	
-    	// 未ログイン
-        if(session.getAttribute("loginUser")
-                == null){
-
-            return "redirect:/";
-        }
-
-
-        model.addAttribute(
-                "salesSearchForm",
-                new SalesSearchForm());
-
-        // 担当一覧
-        model.addAttribute(
-                "accountList",
-                accountRepository.findAll());
+	@Autowired
+	private SalesRepository salesRepository;
+	@Autowired
+	private AccountRepository accountRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
 
-        // カテゴリー一覧
-        model.addAttribute(
-                "categoryList",
-                categoryRepository.findAll());
+	// 検索画面
+	@GetMapping("/S0020")
+	public String search(HttpSession session, Model model) {
 
-        return "S0020";
-    }
-    
-    @GetMapping("/sales/search")
-    public String searchRedirect(Model model){
-    	
-    	List<Sale> salesList =
-                salesRepository.findAll();
-    	
-    	model.addAttribute("salesList", salesList);
-    	
-        return "S0021";
-    }
-    
+		// 未ログイン
+		if (session.getAttribute("loginUser") == null) {
 
- // 検索処理
-    @PostMapping("/sales/search")
-    public String searchResult(
+			return "redirect:/";
+		}
 
-            HttpSession session,
+		model.addAttribute(
+				"salesSearchForm",
+				new SalesSearchForm());
 
-            @Valid
-            @ModelAttribute
-            SalesSearchForm salesSearchForm,
+		// 担当一覧
+		model.addAttribute(
+				"accountList",
+				accountRepository.findAll());
 
-            BindingResult result,
+		// カテゴリー一覧
+		model.addAttribute(
+				"categoryList",
+				categoryRepository.findAll());
 
-            Model model) {
+		return "S0020";
+	}
 
-        // 未ログイン
-        if(session.getAttribute("loginUser")
-                == null){
+	@GetMapping("/sales/search")
+	public String searchRedirect(Model model) {
 
-            return "redirect:/";
-        }
+		List<Sale> salesList = salesRepository.findAll();
 
-        // 開始日チェック
+		model.addAttribute("salesList", salesList);
 
-        if (result.hasFieldErrors("saleDateFrom")) {
+		return "S0021";
+	}
 
-            model.addAttribute(
-                    "dateFromError",
-                    "販売日（検索開始日）を正しく入力して下さい。");
+	// 検索処理
+	@PostMapping("/sales/search")
+	public String searchResult(
 
-            model.addAttribute(
-                    "accountList",
-                    accountRepository.findAll());
+			HttpSession session,
 
-            model.addAttribute(
-                    "categoryList",
-                    categoryRepository.findAll());
+			@Valid @ModelAttribute SalesSearchForm salesSearchForm,
 
-            return "S0020";
-        }
+			BindingResult result,
 
-        // 終了日チェック
+			Model model) {
 
-        if (result.hasFieldErrors("saleDateTo")) {
+		// 未ログイン
+		if (session.getAttribute("loginUser") == null) {
 
-            model.addAttribute(
-                    "dateToError",
-                    "販売日（検索終了日）を正しく入力して下さい。");
+			return "redirect:/";
+		}
 
-            model.addAttribute(
-                    "accountList",
-                    accountRepository.findAll());
+		// 開始日チェック
 
-            model.addAttribute(
-                    "categoryList",
-                    categoryRepository.findAll());
+		if (result.hasFieldErrors("saleDateFrom")) {
 
-            return "S0020";
-        }
+			model.addAttribute(
+					"dateFromError",
+					"販売日（検索開始日）を正しく入力して下さい。");
 
-        // 開始日 > 終了日チェック
+			model.addAttribute(
+					"accountList",
+					accountRepository.findAll());
 
-        if(salesSearchForm.getSaleDateFrom() != null
-            && salesSearchForm.getSaleDateTo() != null
-            && salesSearchForm.getSaleDateFrom()
-                    .isAfter(
-                        salesSearchForm.getSaleDateTo())){
+			model.addAttribute(
+					"categoryList",
+					categoryRepository.findAll());
 
-            model.addAttribute(
-                "dateRangeError",
-                "販売日（検索開始日）または販売日（検索終了日）を正しく入力して下さい。");
+			return "S0020";
+		}
 
-            model.addAttribute(
-                "accountList",
-                accountRepository.findAll());
+		// 終了日チェック
 
-            model.addAttribute(
-                "categoryList",
-                categoryRepository.findAll());
+		if (result.hasFieldErrors("saleDateTo")) {
 
-            return "S0020";
-        }
+			model.addAttribute(
+					"dateToError",
+					"販売日（検索終了日）を正しく入力して下さい。");
 
-        // 検索
+			model.addAttribute(
+					"accountList",
+					accountRepository.findAll());
 
-        List<Sale> salesList =
-                salesRepository.search(
+			model.addAttribute(
+					"categoryList",
+					categoryRepository.findAll());
 
-                        salesSearchForm.getSaleDateFrom(),
+			return "S0020";
+		}
 
-                        salesSearchForm.getSaleDateTo(),
+		// 開始日 > 終了日チェック
 
-                        salesSearchForm.getAccountId(),
+		if (salesSearchForm.getSaleDateFrom() != null
+				&& salesSearchForm.getSaleDateTo() != null
+				&& salesSearchForm.getSaleDateFrom()
+						.isAfter(
+								salesSearchForm.getSaleDateTo())) {
 
-                        salesSearchForm.getCategoryId(),
+			model.addAttribute(
+					"dateRangeError",
+					"販売日（検索開始日）または販売日（検索終了日）を正しく入力して下さい。");
 
-                        salesSearchForm.getTradeName(),
+			model.addAttribute(
+					"accountList",
+					accountRepository.findAll());
 
-                        salesSearchForm.getNote()
-                );
+			model.addAttribute(
+					"categoryList",
+					categoryRepository.findAll());
 
-        // 件数チェック
+			return "S0020";
+		}
 
-        if (salesList.isEmpty()) {
+		// 検索
 
-            model.addAttribute(
-                    "searchError",
-                    "検索結果はありません。");
+		List<Sale> salesList = salesRepository.search(
 
-            model.addAttribute(
-                    "accountList",
-                    accountRepository.findAll());
+				salesSearchForm.getSaleDateFrom(),
 
-            model.addAttribute(
-                    "categoryList",
-                    categoryRepository.findAll());
+				salesSearchForm.getSaleDateTo(),
 
-            return "S0020";
-        }
+				salesSearchForm.getAccountId(),
 
-        // session保存
-        session.setAttribute(
-                "salesList",
-                salesList);
+				salesSearchForm.getCategoryId(),
 
-        // 結果
-        model.addAttribute(
-                "salesList",
-                salesList);
-        
-        model.addAttribute(
-                "accountList",
-                accountRepository.findAll());
+				salesSearchForm.getTradeName(),
 
-        model.addAttribute(
-                "categoryList",
-                categoryRepository.findAll());
+				salesSearchForm.getNote());
 
-        model.addAttribute(
-                "salesSearchForm",
-                salesSearchForm);
+		// 件数チェック
 
-        return "S0021";
-    }
+		if (salesList.isEmpty()) {
 
-    // 詳細画面
-    @GetMapping("/sales/detail")
-    public String detail(HttpSession session, Integer saleId, Model model) {
-    	
-    	if(session.getAttribute("loginUser") == null){
-
-            return "redirect:/";
-        }
+			model.addAttribute(
+					"searchError",
+					"検索結果はありません。");
 
-        // 詳細画面へ直接アクセス禁止
-        if(session.getAttribute("salesList")
-                == null){
+			model.addAttribute(
+					"accountList",
+					accountRepository.findAll());
 
-            return "redirect:/";
-        }
-
-        Sale sales = salesRepository.findById(saleId).orElse(null);
-
-        model.addAttribute("sales", sales);
-        model.addAttribute(
-                "accountList",
-                accountRepository.findAll());
-
-        model.addAttribute(
-                "categoryList",
-                categoryRepository.findAll());
-
-        return "S0022";
-    }
-
-    // 編集画面
-    @GetMapping("/sales/edit")
-    public String edit(Integer saleId, Model model) {
-
-        Sale sales = salesRepository.findById(saleId).orElse(null);
-
-        SalesForm form = new SalesForm();
-
-        form.setSaleId(sales.getSaleId());
-        form.setSaleDate(sales.getSaleDate().toString());
-        form.setAccountId(sales.getAccountId());
-        form.setCategoryId(sales.getCategoryId());
-        form.setTradeName(sales.getTradeName());
-        form.setUnitPrice(sales.getUnitPrice());
-        form.setSaleNumber(sales.getSaleNumber());
-        form.setNote(sales.getNote());
-
-     // 更新権限
-        form.setAuthority("更新");
-
-        model.addAttribute(
-                "salesForm",
-                form);
-
-        // 担当一覧
-        model.addAttribute(
-                "accountList",
-                accountRepository.findAll());
-
-        // 商品カテゴリー一覧
-        model.addAttribute(
-                "categoryList",
-                categoryRepository.findAll());
-
-        return "S0023";
-    }
-
-    // 更新処理
-    @PostMapping("/sales/update")
-    public String update(
-    @Valid
-    @ModelAttribute
-    SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
-
-        // 入力エラー
-        if (result.hasErrors()) {
-            return "S0023";
-        }
-
-        // 権限チェック
-        if (!"更新".equals(salesForm.getAuthority())) {
-            model.addAttribute("errorMessage", "更新権限がありません。");
-            return "S0023";
-        }
-
-        Sale sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
-
-     // 更新
-        sales.setTradeName(salesForm.getTradeName());
-        sales.setUnitPrice(salesForm.getUnitPrice());
-        sales.setSaleNumber(salesForm.getSaleNumber());
-        sales.setNote(salesForm.getNote());
-        sales.setSaleDate(LocalDate.parse(salesForm.getSaleDate()));
-        sales.setAccountId(salesForm.getAccountId());
-        sales.setCategoryId(salesForm.getCategoryId());
-        salesRepository.save(sales);
-
-        // 一覧再取得
-        List<Sale> salesList = salesRepository.findAll();
-        session.setAttribute("salesList", salesList);
-        return "redirect:/S0021";
-    }
-    
-    @GetMapping("/S0021")
-    public String result(HttpSession session,Model model) {
-
-        // 未ログイン
-        if(session.getAttribute("loginUser") == null){
-            return "redirect:/";
-        }
-
-        // 一覧取得
-        model.addAttribute("salesList", session.getAttribute("salesList"));
-        return "S0021";
-    }
+			model.addAttribute(
+					"categoryList",
+					categoryRepository.findAll());
+
+			return "S0020";
+		}
+
+		// session保存
+		session.setAttribute(
+				"salesList",
+				salesList);
+
+		// 結果
+		model.addAttribute(
+				"salesList",
+				salesList);
+
+		model.addAttribute(
+				"accountList",
+				accountRepository.findAll());
+
+		model.addAttribute(
+				"categoryList",
+				categoryRepository.findAll());
+
+		model.addAttribute(
+				"salesSearchForm",
+				salesSearchForm);
+
+		return "S0021";
+	}
+
+	// 詳細画面
+	@GetMapping("/sales/detail")
+	public String detail(HttpSession session, Integer saleId, Model model) {
+
+		if (session.getAttribute("loginUser") == null) {
+
+			return "redirect:/";
+		}
+
+		// 詳細画面へ直接アクセス禁止
+		if (session.getAttribute("salesList") == null) {
+
+			return "redirect:/";
+		}
+
+		Sale sales = salesRepository.findById(saleId).orElse(null);
+
+		model.addAttribute("sales", sales);
+		model.addAttribute(
+				"accountList",
+				accountRepository.findAll());
+
+		model.addAttribute(
+				"categoryList",
+				categoryRepository.findAll());
+
+		return "S0022";
+	}
+
+	// 編集画面
+	@GetMapping("/sales/edit")
+	public String edit(Integer saleId, Model model) {
+
+		Sale sales = salesRepository.findById(saleId).orElse(null);
+
+		SalesForm form = new SalesForm();
+
+		form.setSaleId(sales.getSaleId());
+		form.setSaleDate(sales.getSaleDate().toString());
+		form.setAccountId(sales.getAccountId());
+		form.setCategoryId(sales.getCategoryId());
+		form.setTradeName(sales.getTradeName());
+		form.setUnitPrice(sales.getUnitPrice());
+		form.setSaleNumber(sales.getSaleNumber());
+		form.setNote(sales.getNote());
+
+		// 更新権限
+		form.setAuthority("更新");
+
+		model.addAttribute(
+				"salesForm",
+				form);
+
+		// 担当一覧
+		model.addAttribute(
+				"accountList",
+				accountRepository.findAll());
+
+		// 商品カテゴリー一覧
+		model.addAttribute(
+				"categoryList",
+				categoryRepository.findAll());
+
+		return "S0023";
+	}
+
+	// 更新処理
+	@PostMapping("/sales/update")
+	public String update(
+			@Valid @ModelAttribute SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
+
+		// 入力エラー
+		if (result.hasErrors()) {
+			return "S0023";
+		}
+
+		// 権限チェック
+		if (!"更新".equals(salesForm.getAuthority())) {
+			model.addAttribute("errorMessage", "更新権限がありません。");
+			return "S0023";
+		}
+
+		Sale sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
+
+		// 更新
+		sales.setTradeName(salesForm.getTradeName());
+		sales.setUnitPrice(salesForm.getUnitPrice());
+		sales.setSaleNumber(salesForm.getSaleNumber());
+		sales.setNote(salesForm.getNote());
+		sales.setSaleDate(LocalDate.parse(salesForm.getSaleDate()));
+		sales.setAccountId(salesForm.getAccountId());
+		sales.setCategoryId(salesForm.getCategoryId());
+		salesRepository.save(sales);
+
+		// 一覧再取得
+		List<Sale> salesList = salesRepository.findAll();
+		session.setAttribute("salesList", salesList);
+		return "redirect:/S0021";
+	}
+
+	@GetMapping("/S0021")
+	public String result(HttpSession session, Model model) {
+
+		// 未ログイン
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/";
+		}
+
+		// 一覧取得
+		model.addAttribute(
+				"salesList",
+				session.getAttribute("salesList"));
+
+		model.addAttribute(
+				"accountList",
+				accountRepository.findAll());
+
+		model.addAttribute(
+				"categoryList",
+				categoryRepository.findAll());
+
+		return "S0021";
+	}
 }
