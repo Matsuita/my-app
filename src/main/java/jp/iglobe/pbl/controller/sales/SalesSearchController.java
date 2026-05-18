@@ -249,8 +249,8 @@ public class SalesSearchController {
 		form.setAccountId(sales.getAccountId());
 		form.setCategoryId(sales.getCategoryId());
 		form.setTradeName(sales.getTradeName());
-		form.setUnitPrice(sales.getUnitPrice());
-		form.setSaleNumber(sales.getSaleNumber());
+		form.setUnitPrice(String.valueOf(sales.getUnitPrice()));
+		form.setSaleNumber(String.valueOf(sales.getSaleNumber()));
 		form.setNote(sales.getNote());
 
 		// 更新権限
@@ -276,12 +276,58 @@ public class SalesSearchController {
 	// 更新処理
 	@PostMapping("/sales/update")
 	public String update(
-			@Valid @ModelAttribute SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
+			@Valid 
+			@ModelAttribute 
+			SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
 
 		// 入力エラー
-		if (result.hasErrors()) {
-			return "S0023";
-		}
+	    if(result.hasErrors()) {
+	        model.addAttribute("accountList", accountRepository.findAll());
+
+	        model.addAttribute("categoryList", categoryRepository.findAll());
+
+	        return "S0023";
+	    }
+	    
+	 // 単価形式チェック
+	    if(!salesForm.getUnitPrice().matches("^[0-9]+$")) {
+
+	        model.addAttribute("unitPriceError", "単価を正しく入力して下さい。");
+	        model.addAttribute("accountList", accountRepository.findAll());
+	        model.addAttribute("categoryList", categoryRepository.findAll());
+
+	        return "S0023";
+	    }
+	    
+	    // 個数形式チェック
+	    if(!salesForm.getSaleNumber().matches("^[0-9]+$")) {
+	        model.addAttribute("saleNumberError", "個数を正しく入力して下さい。");
+	        model.addAttribute("accountList", accountRepository.findAll());
+	        model.addAttribute("categoryList", categoryRepository.findAll());
+
+	        return "S0023";
+	    }
+		
+	 // アカウント存在チェック
+	    if(!accountRepository.existsById(
+	            salesForm.getAccountId())) {
+	        model.addAttribute("errorMessage", "アカウントテーブルに存在しません。");
+	        model.addAttribute("accountList", accountRepository.findAll());
+	        model.addAttribute("categoryList", categoryRepository.findAll());
+
+	        return "S0023";
+	    }
+
+		
+	 // 商品カテゴリ存在チェック
+	    if(!categoryRepository.existsById(
+	            salesForm.getCategoryId())) {
+	        model.addAttribute("errorMessage", "商品カテゴリーテーブルに存在しません。");
+	        model.addAttribute("accountList", accountRepository.findAll());
+	        model.addAttribute("categoryList", categoryRepository.findAll());
+
+	        return "S0023";
+	    }
 
 		// 権限チェック
 		if (!"更新".equals(salesForm.getAuthority())) {
@@ -293,8 +339,8 @@ public class SalesSearchController {
 
 		// 更新
 		sales.setTradeName(salesForm.getTradeName());
-		sales.setUnitPrice(salesForm.getUnitPrice());
-		sales.setSaleNumber(salesForm.getSaleNumber());
+		sales.setUnitPrice(Integer.parseInt(salesForm.getUnitPrice()));
+		sales.setSaleNumber(Integer.parseInt(salesForm.getSaleNumber()));
 		sales.setNote(salesForm.getNote());
 		sales.setSaleDate(LocalDate.parse(salesForm.getSaleDate()));
 		sales.setAccountId(salesForm.getAccountId());

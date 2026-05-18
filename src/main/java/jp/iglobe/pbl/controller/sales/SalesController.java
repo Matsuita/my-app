@@ -112,12 +112,50 @@ public class SalesController {
 
             return "S0023";
         }
+        
+     // 単価形式チェック
+        if(!salesForm.getUnitPrice()
+                .matches("^[0-9]+$")) {
+
+            model.addAttribute(
+                    "unitPriceError",
+                    "単価を正しく入力して下さい。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0023";
+        }
+        
+     // 個数形式チェック
+        if(!salesForm.getSaleNumber()
+                .matches("^[0-9]+$")) {
+
+            model.addAttribute(
+                    "saleNumberError",
+                    "個数を正しく入力して下さい。");
+
+            model.addAttribute(
+                    "accountList",
+                    accountRepository.findAll());
+
+            model.addAttribute(
+                    "categoryList",
+                    categoryRepository.findAll());
+
+            return "S0023";
+        }
 
         model.addAttribute(
                 "salesForm",
                 salesForm);
      model.addAttribute("accountList", accountRepository.findAll());
-     model.addAttribute("categoryLIst", categoryRepository.findAll());
+     model.addAttribute("categoryList", categoryRepository.findAll());
      
         return "S0024";
     }
@@ -130,6 +168,10 @@ public class SalesController {
     	Sale sales = salesRepository.findById(saleId).orElse(null);
     	
         model.addAttribute("sales", sales);
+        
+        model.addAttribute("accountList", accountRepository.findAll());
+
+        model.addAttribute("categoryList", categoryRepository.findAll());
 
         return "S0025";
     }
