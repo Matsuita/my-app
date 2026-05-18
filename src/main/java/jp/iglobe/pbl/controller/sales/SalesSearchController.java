@@ -37,7 +37,7 @@ public class SalesSearchController {
 
 		// 未ログイン
 		if (session.getAttribute("loginUser") == null) {
-
+			
 			return "redirect:/";
 		}
 
@@ -239,8 +239,16 @@ public class SalesSearchController {
 	// 編集画面
 	@GetMapping("/sales/edit")
 	public String edit(Integer saleId, Model model) {
-
+		
+		if(saleId == null) {
+			return "redirect:/S0021";
+		}
+		
 		Sale sales = salesRepository.findById(saleId).orElse(null);
+		
+		if(sales == null) {
+			return "redirect:/S0021";
+		}
 
 		SalesForm form = new SalesForm();
 

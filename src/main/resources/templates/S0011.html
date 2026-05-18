@@ -18,94 +18,69 @@
 	<div th:replace="fragment/navbar :: navbar('sales')"></div>
 
 		<h1>売上登録確認</h1>
-
-		<form th:action="@{/salesCreate}"
-			  th:object="${salesCreateForm}"
-			  method="post">
-
+		<table>
 			<!-- 販売日 -->
-			<p>
-				販売日
-				<input type="date"
-					   th:field="*{saleDate}">
-				<span th:errors="*{saleDate}">
-				</span>
-			</p>
+			<tr>
+				<th>販売日</th>
+				<td th:text="*{saleDate}"></td>
+			</tr>
 			
 			<!-- 担当 -->
-			<p>
-				担当
-				<select th:field="*{accountId}">
-					<option value="">
-						選択してください
-					</option>
-					<option th:each="account : ${accountList}"
-							th:value="${account.accountId}"
-							th:text="${account.name}">
-					</option>
-				</select>
-				<span th:errors="*{accountId}">
-				</span>
-			</p>
+			<tr>
+				<th>担当</th>
+				<td th:text="*{account.name}"></td>
+			</tr>
 
 			<!-- 商品カテゴリー -->
-			<p>
-				商品カテゴリー
-				<select th:field="*{categoryId}">
-					<option value="">
-						選択してください
-					</option>
-					<option th:each="category : ${categoryList}"
-							th:value="${category.categoryId}"
-							th:text="${category.categoryName}">
-					</option>
-				</select>
-				<span th:errors="*{categoryId}">
-				</span>
-			</p>
+			<tr>
+				<th>商品カテゴリー</th>
+				<td th:text="*{category.categoryName}"></td>
+			</tr>
 
 			<!-- 商品名 -->
-			<p>
-				商品名
-				<input type="text"
-					   th:field="*{tradeName}">
-				<span th:errors="*{tradeName}">
-				</span>
-			</p>
+			<tr>
+				<th>商品名</th>
+				<td th:text="*{tradeName}"></td>
+			</tr>
 
 			<!-- 単価 -->
-			<p>
-				単価
-				<input type="text"
-					   th:field="*{unitPrice}">
-				<span th:errors="*{unitPrice}">
-				</span>
-			</p>
+			<tr>
+				<th>単価</th>
+				<td th:text="*{unitPrice}"></td>
+			</tr>
 
 			<!-- 個数 -->
-			<p>
-				個数
-				<input type="text"
-					   th:field="*{saleNumber}">
-				<span th:errors="*{saleNumber}">
-				</span>
-			</p>
+			<tr>
+				<th>個数</th>
+				<td th:text="*{saleNumber}"></td>
+			</tr>
 
 			<!-- 小計 -->
-			<p>
-				小計
-				<input type="text"
-					   th:value="${sale.unitPrice != null && sale.saleNumber != null ? sale.unitPrice * sale.saleNumber : ''}"
-					   readonly>
-			</p>
+			<tr>
+				<th>小計</th>
+				<td th:text="${sale.unitPrice != null && sale.saleNumber != null ? sale.unitPrice * sale.saleNumber : ''}">
+			</tr>
 
 			<!-- 備考 -->
-			<p>
-				備考
-				<input type="text"
-					   th:field="*{note}">
-			</p>
+			<tr>
+				<th>備考</th>
+				<td th:text="*{note}"></td>
+			</tr>
+			
+			</table>
 
+		<form th:action="@{/salesCreate}"
+				th:object="${salesCreateForm}"
+				method="post">
+						  
+			<input type="hidden" th:field="*{saleDate}">
+			<input type="hidden" th:field="*{accountId}">
+			<input type="hidden" th:field="*{categoryId}">
+			<input type="hidden" th:field="*{tradeName}">
+			<input type="hidden" th:field="*{unitPrice}">
+			<input type="hidden" th:field="*{saleNumber}">
+			<input type="hidden" th:field="*{note}">
+					
 			<!-- ボタン -->
 			<button type="submit">
 				登録
