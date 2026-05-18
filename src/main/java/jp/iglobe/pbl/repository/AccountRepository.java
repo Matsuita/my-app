@@ -1,6 +1,7 @@
 package jp.iglobe.pbl.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,7 @@ public interface AccountRepository
 
 	// 一覧取得
 	List<Account> findAll();
+	
+//	テーブル検索
+	Optional<Account> findById(Integer accountId);
 }
