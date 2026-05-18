@@ -17,10 +17,13 @@
 		<tr>
 			<th>担当</th>
 				<td>
-				 <span th:each="account : ${accountList}">
-				    <input type="hidden" th:if="${account.accountId == sales.accountId}"
-				          th:value="${account.name}">
-				    </span>
+					<span th:each="account : ${accountList}">
+
+					    <span th:if="${account != null and account.accountId == sales.accountId}"
+					          th:text="${account.name}">
+					    </span>
+
+					</span>
 				</td>
 		</tr>
 		
@@ -28,10 +31,12 @@
 			<th>商品カテゴリー</th>
 				<td>
 					<span th:each="category : ${categoryList}">
-						<input type="hidden" th:if="${category.categoryId == sales.categoryId}"
-								th:value="${category.categoryName}">
-					 </span>
-					 
+
+					    <span th:if="${category != null and category.categoryId == sales.categoryId}"
+					          th:text="${category.categoryName}">
+					    </span>
+
+					</span>
 				</td>
 		</tr>
 		
@@ -65,12 +70,6 @@
 	<form th:action="@{/sales/delete/execute}" th:object="${sales}" method="post">
 		
 		<input type="hidden" name="saleId" th:value="${sales.saleId}">
-		
-		<input type="hidden" name="saleDate" th:value="${sales.saleDate}">
-		
-		<input type="hidden" name="accountName" th:value="${account.accountName}">
-											  
-		<input type="hidden" name="categoryName" th:value="${category.categoryName}">
 					
 		<input type="hidden" name="tradeName" th:value="${sales.tradeName}">
 			
@@ -80,7 +79,7 @@
 					
 		<input type="hidden" name="saleSum" th:value="${sales.unitPrice * sales.saleNumber}">
 					
-		<input type="hidden" name="saleNote" th:value="${sales.note}">
+		<input type="hidden" name="saleNumber" th:value="${sales.note}">
 
 		
 		<!--ボタン-->
