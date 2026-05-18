@@ -82,9 +82,15 @@ public class SearchController {
 	}
 	// 確認画面
 	@PostMapping("/accounts/delete")
-	public String deleteConfirm(AccountDeleteForm account, Model model) {
-		model.addAttribute("account", account);
-		return "S0044";
+	public String deleteConfirm(AccountDeleteForm form, Model model) {
+
+	    Account account = searchRepository
+	        .findById(form.getAccountId())
+	        .orElseThrow();
+
+	    model.addAttribute("account", account);
+
+	    return "S0044";
 	}
 
 	// 実際の削除

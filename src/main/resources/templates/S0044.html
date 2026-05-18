@@ -27,6 +27,18 @@
 			color: red;
 			font-size: 13px;
 		}
+		
+		.display-like-input {
+		    display: block;
+		    width: 100%;
+		    padding: 0.375rem 0.75rem;
+		    font-size: 1rem;
+		    line-height: 1.5;
+		    color: #212529;;
+		    background-color: #e9ecef;
+		    border: 1px solid #ced4da;
+		    border-radius: 0.375rem;
+		}
 	</style>
 </head>
 <div th:replace="fragment/navbar :: navbar('account/search')"></div>
@@ -39,6 +51,7 @@
 		<input type="hidden" th:field="*{accountId}">
 
 		<!-- 氏名 -->
+		
 		<div class="row mb-3 align-items-center">
 			<div class="col-auto label-col">
 				<label>氏名</label>
@@ -46,7 +59,7 @@
 			</div>
 			<div class="col">
 				<input type="hidden" name="name" class="form-control" th:field="*{name}">
-				<span th:text="*{name}"></span><!-- 表示用 -->
+				<span class="display-like-input" th:text="*{name}"></span><!-- 表示用 -->
 				<div class="error-text" th:if="${nameError}" th:text="${nameError}"></div>
 			</div>
 		</div>
@@ -59,35 +72,29 @@
 			</div>
 			<div class="col">
 				<input type="hidden" name="mail" class="form-control" th:field="*{mail}">
-				<span th:text="*{mail}"></span> <!-- 表示用 -->
+				<span class="display-like-input" th:text="*{mail}"></span><!-- 表示用 -->
 				<div class="error-text" th:if="${mailError}" th:text="${mailError}"></div>
 			</div>
 		</div>
 
-		<!-- パスワード 　-->
 		<div class="row mb-3 align-items-center">
-			<div class="col-auto label-col">
-				<label>パスワード</label>
-				<span class="partial-badge">必須</span>
-			</div>
-			<div class="col">
-				<input type="hidden" name="password" class="form-control" th:field="*{password}">
-				<span th:text="*{password}"></span> <!-- 表示用 -->
-				<div class="error-text" th:if="${passwordError}" th:text="${passwordError}"></div>
-			</div>
+		    <div class="col-auto label-col">
+		        <label>パスワード</label>
+		        <span class="partial-badge">必須</span>
+		    </div>
+		    <div class="col">
+		        <!-- hiddenはth:fieldだけ -->
+		        <input type="hidden" th:field="*{password}">
+
+		        <!-- ●表示にする -->
+				<span class="display-like-input" th:text="${account.password != null ? #strings.repeat('•', account.password.length()) : ''}"></span>
+
+		        <div class="error-text"
+		             th:if="${passwordError}"
+		             th:text="${passwordError}"></div>
+		    </div>
 		</div>
 
-		<!-- パスワード -->
-		<div class="row mb-3 align-items-center"></div>
-<div class="col-auto label-col">
-				<label>パスワード（確認）</label><span class="partial-badge">必須</span>
-
-			</div>
-		<div class="col">
-				<input type="hidden" name="passwordConfirm" class="form-control" th:field="*{passwordConfirm}">
-				<span th:text="*{passwordConfirm}"></span>  表示用 
-				<div class="error-text" th:if="${passwordConfirmError}" th:text="${passwordConfirmError}"></div>
-			</div>
 		
 
 		<!-- 権限 -->
@@ -98,10 +105,9 @@
 			</div>
 			<div class="col radio-group">
 				<input type="hidden" th:field="*{authority}">
-				<span th:if="*{authority == 0}">権限なし</span><!-- 表示用 -->
-				<span th:if="*{authority == 1}">売上登録</span><!-- 表示用 -->
-				<span th:if="*{authority == 2}">アカウント登録</span><!-- 表示用 -->
-
+				<span class="display-like-input" th:if="*{authority == 0}">権限なし</span>
+				<span class="display-like-input" th:if="*{authority == 1}">売上登録</span>
+				<span class="display-like-input" th:if="*{authority == 2}">アカウント登録</span>
 
 				<!--					<label>-->
 				<!--						<input type="radio" name="authority" value="0" th:checked="${account.authority == 0}"> 権限なし-->
@@ -117,8 +123,8 @@
 
 		<!-- ボタン -->
 		<div class="text-center">
-			<button type="submit" class="btn btn-primary">
-				×OK
+			<button type="submit" class="btn btn-danger">
+			   削除
 			</button>
 
 			<a th:href="@{/accounts/result}" class="btn btn-secondary">
