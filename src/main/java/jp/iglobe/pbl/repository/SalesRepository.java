@@ -67,6 +67,15 @@ public interface SalesRepository
     
     //  売上削除
     	List<Sale> deleteBySaleId(Integer saleId);
+    	
+    	// 売上登録済み担当ID取得
+    	@Query("""
+
+    	    SELECT DISTINCT s.accountId
+    	    FROM Sale s
+
+    	""")
+    	List<Integer> findUsedAccountIds();
     
 }
     

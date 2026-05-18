@@ -49,9 +49,7 @@ public class SalesController {
 
         // 画面へ渡す
         model.addAttribute("salesCreateForm", new Sale());
-
         model.addAttribute("accountList",accountList);
-
         model.addAttribute("categoryList",categoryList);
 
         return "S0010";
@@ -68,19 +66,23 @@ public class SalesController {
     	List<Category> categoryList =
                 categoryRepository.findAll();
     	
-    	Account account = accountRepository.findById(salesCreateForm.getAccountId())
-    			.orElse(null);
-    	
-    	Category category = categoryRepository.findById(salesCreateForm.getCategoryId())
-    			.orElse(null);
-    	
-//    	エラー
-    	if(account == null) {
-    		result.rejectValue("accountId", null, "アカウントテーブルに存在しません。");
+    	// アカウント存在チェック
+    	Account account = null;
+
+    	if(salesCreateForm.getAccountId() != null) {
+
+    	    account = accountRepository.findById(
+    	                    salesCreateForm.getAccountId())
+    	                    .orElse(null);
     	}
-    	
-    	if(category == null) {
-    		result.rejectValue("categoryId", null, "商品カテゴリーテーブルに存在しません。");
+
+    	// カテゴリ存在チェック
+    	Category category = null;
+
+    	if(salesCreateForm.getCategoryId() != null) {
+
+    	    category =categoryRepository.findById(
+    	                    salesCreateForm.getCategoryId()).orElse(null);
     	}
 
     	
@@ -127,6 +129,27 @@ public class SalesController {
     		@Valid
             @ModelAttribute
             SalesForm salesForm, BindingResult result, Model model) {
+    	
+    	// アカウント存在チェック
+    	Account account = null;
+
+    	if(salesForm.getAccountId() != null) {
+
+    	    account = accountRepository.findById(
+    	                    salesForm.getAccountId())
+    	                    .orElse(null);
+    	}
+
+    	// カテゴリ存在チェック
+    	Category category = null;
+
+    	if(salesForm.getCategoryId() != null) {
+
+    	    category =categoryRepository.findById(
+    	                    salesForm.getCategoryId())
+    	                    .orElse(null);
+    	}
+
 
         // 入力エラー
         if(result.hasErrors()){
