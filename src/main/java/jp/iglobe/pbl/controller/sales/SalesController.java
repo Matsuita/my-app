@@ -71,7 +71,8 @@ public class SalesController {
 
     	if(salesCreateForm.getAccountId() != null) {
 
-    	    account = accountRepository.findById(
+    	    account =
+    	            accountRepository.findById(
     	                    salesCreateForm.getAccountId())
     	                    .orElse(null);
     	}
@@ -81,8 +82,28 @@ public class SalesController {
 
     	if(salesCreateForm.getCategoryId() != null) {
 
-    	    category =categoryRepository.findById(
-    	                    salesCreateForm.getCategoryId()).orElse(null);
+    	    category =
+    	            categoryRepository.findById(
+    	                    salesCreateForm.getCategoryId())
+    	                    .orElse(null);
+    	}
+
+    	// アカウント存在しない
+    	if(account == null) {
+
+    	    result.rejectValue(
+    	            "accountId",
+    	            null,
+    	            "アカウントテーブルに存在しません。");
+    	}
+
+    	// 商品カテゴリ存在しない
+    	if(category == null) {
+
+    	    result.rejectValue(
+    	            "categoryId",
+    	            null,
+    	            "商品カテゴリーテーブルに存在しません。");
     	}
 
     	
@@ -107,6 +128,10 @@ public class SalesController {
         model.addAttribute("accountList", accountList);
         
         model.addAttribute("categoryList",categoryList);
+        
+        model.addAttribute("account", account);
+        
+        model.addAttribute("category", category);
         
         return "S0011";
     }
@@ -148,8 +173,24 @@ public class SalesController {
     	    category =categoryRepository.findById(
     	                    salesForm.getCategoryId())
     	                    .orElse(null);
-    	}
+    	 // アカウント存在しない
+    	    if(account == null) {
 
+    	        result.rejectValue(
+    	                "accountId",
+    	                null,
+    	                "アカウントテーブルに存在しません。");
+    	    }
+
+    	    // 商品カテゴリ存在しない
+    	    if(category == null) {
+
+    	        result.rejectValue(
+    	                "categoryId",
+    	                null,
+    	                "商品カテゴリーテーブルに存在しません。");
+    	    }
+    	}
 
         // 入力エラー
         if(result.hasErrors()){
