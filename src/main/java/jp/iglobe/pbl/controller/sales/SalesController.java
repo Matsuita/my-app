@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.category.Category;
 import jp.iglobe.pbl.model.sales.Sale;
+import jp.iglobe.pbl.model.sales.SalesCreateForm;
 import jp.iglobe.pbl.model.sales.SalesForm;
 import jp.iglobe.pbl.repository.AccountRepository;
 import jp.iglobe.pbl.repository.CategoryRepository;
@@ -47,7 +48,7 @@ public class SalesController {
                 categoryRepository.findAll();
 
         // 画面へ渡す
-        model.addAttribute("sale", new Sale());
+        model.addAttribute("salesCreateForm", new Sale());
 
         model.addAttribute("accountList",accountList);
 
@@ -60,16 +61,44 @@ public class SalesController {
 
     @PostMapping("/S0011")
     public String salesConfirm(@Valid
-            Sale sale, BindingResult result, Model model) {
+            SalesCreateForm salesCreateForm, BindingResult result, Model model) {
     	List<Account> accountList =
                 accountRepository.findAll();
     	
     	List<Category> categoryList =
                 categoryRepository.findAll();
     	
+    	Account account = accountRepository.findById(salesCreateForm.getAccountId())
+    			.orElse(null);
+    	
+    	Category category = categoryRepository.findById(salesCreateForm.getCategoryId())
+    			.orElse(null);
+    	
+//    	エラー
+    	if(account == null) {
+    		result.rejectValue("accountId", null, "アカウントテーブルに存在しません。");
+    	}
+    	
+    	if(category == null) {
+    		result.rejectValue("categoryId", null, "商品カテゴリーテーブルに存在しません。");
+    	}
+
+    	
     	if(result.hasErrors()) {
+    		
+    		model.addAttribute("salesCreateForm", salesCreateForm);
+    		
+    		model.addAttribute("accountList", accountList);
+            
+            model.addAttribute("categoryList",categoryList);
+
     		return "S0010";
     	}
+    	
+//    	String→Integer変換
+    	Sale sale = new Sale();
+    	sale.setUnitPrice(Integer.parseInt(salesCreateForm.getUnitPrice()));
+        sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
     	
         model.addAttribute("sale", sale);
         
