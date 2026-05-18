@@ -141,6 +141,7 @@
 			              th:text="${account.name}">
 			        </span>
 			    </span>
+			</td>
 
         </tr>
 
@@ -252,6 +253,9 @@
 
             <input type="hidden" name="saleId"
 			 th:value="${sales.saleId}">
+			 
+			 <input type="hidden" name="saleDate"
+			  th:value="${sales.saleDate}">
 				   
 			<input type="hidden" name="accountId"
 			 th:value="${sales.accountId}">
@@ -271,7 +275,7 @@
 			<input type="hidden" name="saleSum"
 			 th:value="${sales.unitPrice * sales.saleNumber}">
 			
-			<input type="hidden" name="saleNumber"
+			<input type="hidden" name="saleNote"
 			 th:value="${sales.note}">
 
 			
