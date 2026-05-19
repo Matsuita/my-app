@@ -24,6 +24,7 @@ public class SearchAccount {
 	@Column(name = "password")
 	private String password;
 
-	private Integer authority;
+	private Integer salesAuthority;
+	private Integer accountAuthority;
 
 }

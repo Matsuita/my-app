@@ -37,18 +37,45 @@
 		</p>
 
 
-		<p>権限
-		    <span class="partial-badge">必須</span>
-		    
-		    <!-- 1. 見た目用のラジオボタン（すべて disabled を付与して操作不能にする） -->
-		    <input type="radio" name="authority_view" value="0" th:checked="${accountForm.authority == 0}" disabled />権限なし
-		    <input type="radio" name="authority_view" value="1" th:checked="${accountForm.authority == 1}" disabled />売上登録
-		    <input type="radio" name="authority_view" value="2" th:checked="${accountForm.authority == 2}" disabled />アカウント登録
-		    <input type="radio" name="authority_view" value="3" th:checked="${accountForm.authority == 3}" disabled />売上登録＋アカウント登録
-
-		    <!-- 2. 実際にデータを送信するためのhiddenタグ（これがないと次の画面に値が渡りません） -->
-		    <input type="hidden" th:field="*{authority}" />
+		<p>売上権限
+			<span class="partial-badge">必須</span>
+			<input type="hidden" th:field="*{salesAuthority}" />
+			<input type="radio" th:field="*{salesAuthority}" value="0" th:checked="${accountForm.salesAuthority == 0}"
+				pointer-events:none />権限なし
+			<input type="radio" th:field="*{salesAuthority}" value="1" th:checked="${accountForm.salesAuthority == 1}"
+				pointer-events:none />閲覧のみ
+			<input type="radio" th:field="*{salesAuthority}" value="2" th:checked="${accountForm.salesAuthority == 2}"
+				pointer-events:none />登録・編集
 		</p>
+
+		<p>アカウント権限
+			<span class="partial-badge">必須</span>
+			<input type="hidden" th:field="*{accountsAuthority}" />
+			<input type="radio" th:field="*{accountsAuthority}" value="0"
+				th:checked="${accountForm.accountsAuthority == 0}" pointer-events:none />権限なし
+			<input type="radio" th:field="*{accountsAuthority}" value="1"
+				th:checked="${accountForm.accountsAuthority == 1}" pointer-events:none />閲覧のみ
+			<input type="radio" th:field="*{accountsAuthority}" value="2"
+				th:checked="${accountForm.accountsAuthority == 2}" pointer-events:none />登録・編集
+		</p>
+
+
+
+		<!--		disabledだと黒丸かもなのでpointer-events: none;-->
+
+
+
+		<!--		1. 見た目用のラジオボタン（すべて disabled を付与して操作不能にする）-->
+		<!--		<input type="radio" name="authority_view" value="0" th:checked="${accountForm.authority == 0}" disabled />権限なし-->
+		<!--		<input type="radio" name="authority_view" value="1" th:checked="${accountForm.authority == 1}" disabled />売上登録-->
+		<!--		<input type="radio" name="authority_view" value="2" th:checked="${accountForm.authority == 2}"-->
+		<!--			disabled />アカウント登録-->
+		<!--		<input type="radio" name="authority_view" value="3" th:checked="${accountForm.authority == 3}"-->
+		<!--			disabled />売上登録＋アカウント登録-->
+
+		<!--		2. 実際にデータを送信するためのhiddenタグ（これがないと次の画面に値が渡りません）-->
+		<!--		<input type="hidden" th:field="*{authority}" />-->
+		<!--		</p>-->
 
 		<!--		<p>権限：-->
 		<!--			<span class="partial-badge">必須</span>-->

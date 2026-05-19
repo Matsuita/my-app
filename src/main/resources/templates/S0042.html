@@ -97,24 +97,43 @@
 			</div>
 	
 
-	<!-- 権限 -->
+	<!-- 売上権限 -->
 	<div class="row mb-4 align-items-center">
 		<div class="col-auto label-col">
-			<label>権限</label>
+			<label>売上権限</label>
 			<span class="partial-badge">必須</span>
 		</div>
 		<div class="col radio-group">
 			<label>
-				<input type="radio" th:field="*{authority}" value="0">権限なし
+				<input type="radio" th:field="*{salesAuthority}" value="0">権限なし
 			</label>
 			<label>
-				<input type="radio" th:field="*{authority}" value="1"> 売上登録
+				<input type="radio" th:field="*{salesAuthority}" value="1"> 閲覧のみ
 			</label>
 			<label>
-				<input type="radio" th:field="*{authority}" value="2"> アカウント登録
+				<input type="radio" th:field="*{salesAuthority}" value="2"> 登録・編集
 			</label>
 		</div>
 	</div>
+	
+	<!-- アカウント権限 -->
+		<div class="row mb-4 align-items-center">
+			<div class="col-auto label-col">
+				<label>アカウント権限</label>
+				<span class="partial-badge">必須</span>
+			</div>
+			<div class="col radio-group">
+				<label>
+					<input type="radio" th:field="*{accountsAuthority}" value="0">権限なし
+				</label>
+				<label>
+					<input type="radio" th:field="*{accountsAuthority}" value="1"> 閲覧のみ
+				</label>
+				<label>
+					<input type="radio" th:field="*{accountsAuthority}" value="2"> 登録・編集
+				</label>
+			</div>
+		</div>
 
 	<!-- ボタン -->
 	<div class="text-center">

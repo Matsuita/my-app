@@ -25,8 +25,12 @@ public class Account {
     private String mail;
 
     private String password;
+    
+    private Integer salesAuthority;
+    
+    private Integer accountsAuthority;
 
-    private Integer authority;
+//    private Integer authority;
     
     @Transient
     private String passwordConfirm;

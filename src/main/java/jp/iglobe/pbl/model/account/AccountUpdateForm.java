@@ -4,6 +4,7 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import lombok.Data;
@@ -28,7 +29,13 @@ public class AccountUpdateForm {
 	@NotBlank(message = "パスワード（確認）を入力して下さい。")
 	@Transient
 	private String passwordConfirm;
-	private Integer authority;
+	
+	@NotNull(message = "売上権限を選択して下さい。")
+    private Integer salesAuthority;
+    
+    @NotNull(message = "アカウント権限を選択して下さい。")
+    private Integer accountsAuthority;
+//	private Integer authority;
 
 	@AssertTrue(message = "パスワードが一致していません。")
 	@AssertTrue(message = "パスワードが一致していません。")

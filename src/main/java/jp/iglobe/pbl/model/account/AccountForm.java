@@ -27,6 +27,11 @@ public class AccountForm {
     @NotBlank(message = "パスワード（確認）が未入力です。")
     private String passwordConfirm;
     
-    @NotNull(message = "権限を選択して下さい。")
-    private Integer authority;
+    @NotNull(message = "売上権限を選択して下さい。")
+    private Integer salesAuthority;
+    
+    @NotNull(message = "アカウント権限を選択して下さい。")
+    private Integer accountsAuthority;
+       
+    
 }

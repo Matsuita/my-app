@@ -10,17 +10,17 @@ import jp.iglobe.pbl.model.account.Account;
 
 public interface SearchRepository extends JpaRepository<Account, Integer> {
 
-	
 	@Query("""
 			SELECT a FROM Account a
 			WHERE (:name IS NULL OR a.name LIKE %:name%)
 			AND (:mail IS NULL OR a.mail LIKE %:mail%)
-			AND (:authority IS NULL OR a.authority = :authority)
+			AND (:salesAuthority IS NULL OR a.salesAuthority = :salesAuthority)
+			AND (:accountsAuthority IS NULL OR a.accountsAuthority = :accountsAuthority)
 			""")
-			List<Account> search(
-			    @Param("name") String name,
-			    @Param("mail") String mail,
-			    @Param("authority") Integer authority);
+	List<Account> search(
+			@Param("name") String name,
+			@Param("mail") String mail,
+			@Param("salesAuthority") Integer salesAuthority,
+			@Param("accountsAuthority") Integer accountsAuthority);
 
-	
 }

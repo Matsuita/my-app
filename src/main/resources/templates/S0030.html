@@ -47,20 +47,36 @@
 			<span class="partial-badge">必須</span>
 			<input type="password" th:field="*{passwordConfirm}" placeholder="パスワード（確認）">
 			<span class="error" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">
-						</span><!-- このタグでエラーの記述を呼び出す -->
-		</p>
-
-
-		<p>権限
-			<span class="partial-badge">必須</span>
-			<input type="radio" th:field="*{authority}" value="0" />権限なし
-			<input type="radio" th:field="*{authority}" value="1" />売上登録
-			<input type="radio" th:field="*{authority}" value="2" />アカウント登録
-			<input type="radio" th:field="*{authority}" value="3" />売上登録＋アカウント登録
-			<span class="error" th:if="${#fields.hasErrors('authority')}" th:errors="*{authority}">
 			</span><!-- このタグでエラーの記述を呼び出す -->
+		</p>
+
+		<p>売上権限
+			<span class="partial-badge">必須</span>
+			<input type="radio" th:field="*{salesAuthority}" value="0">権限なし
+			<input type="radio" th:field="*{salesAuthority}" value="1">閲覧のみ
+			<input type="radio" th:field="*{salesAuthority}" value="2">登録・編集
+			<span class="error" th:if="${#fields.hasErrors('salesAuthority')}" th:errors="*{salesAuthority}">-->
+			</span>
 
 		</p>
+
+		<p>アカウント権限
+			<span class="partial-badge">必須</span>
+			<input type="radio" th:field="*{accountsAuthority}" value="0">権限なし
+			<input type="radio" th:field="*{accountsAuthority}" value="1">閲覧のみ
+			<input type="radio" th:field="*{accountsAuthority}" value="2">登録・編集
+			<span class="error" th:if="${#fields.hasErrors('accountsAuthority')}" th:errors="*{accountsAuthority}">-->
+			</span>
+		</p>
+
+		<!--			<input type="radio" th:field="*{authority}" value="0" />権限なし-->
+		<!--			<input type="radio" th:field="*{authority}" value="1" />売上登録-->
+		<!--			<input type="radio" th:field="*{authority}" value="2" />アカウント登録-->
+		<!--			<input type="radio" th:field="*{authority}" value="3" />売上登録＋アカウント登録-->
+		<!--			<span class="error" th:if="${#fields.hasErrors('authority')}" th:errors="*{authority}">-->
+		<!--			</span> このタグでエラーの記述を呼び出す -->
+
+
 
 		<p><button type="submit">登録</button></p>
 
