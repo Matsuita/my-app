@@ -42,7 +42,7 @@ public class SalesController {
 
         // 担当一覧
         List<Account> accountList =
-                accountRepository.findAll();
+                accountRepository.findBySalesAuthority(2);
 
         // カテゴリ一覧
         List<Category> categoryList =
@@ -62,7 +62,7 @@ public class SalesController {
     public String salesConfirm(@Valid
             SalesCreateForm salesCreateForm, BindingResult result, Model model) {
     	List<Account> accountList =
-                accountRepository.findAll();
+                accountRepository.findBySalesAuthority(2);
     	
     	List<Category> categoryList =
                 categoryRepository.findAll();
