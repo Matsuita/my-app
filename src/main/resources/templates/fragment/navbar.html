@@ -22,17 +22,19 @@
            ダッシュボード
         </a>
 
-        <a class="nav-link"
-           th:classappend="${active == 'sales'} ? ' active'"
-           th:href="@{/S0010}">
-           売上登録
-        </a>
+		<a class="nav-link"
+		   th:if="${session.loginUser.salesAuthority == 2}"
+		   th:classappend="${active == 'sales'} ? ' active'"
+		   th:href="@{/S0010}">
+		   売上登録
+		</a>
 
-        <a class="nav-link"
-           th:classappend="${active == 'sales/search'} ? ' active'"
-           th:href="@{/S0020}">
-           売上検索
-        </a>
+		<a class="nav-link"
+		   th:if="${session.loginUser.salesAuthority >= 1}"
+		   th:classappend="${active == 'sales/search'} ? ' active'"
+		   th:href="@{/S0020}">
+		   売上検索
+		</a>
 
         <a class="nav-link"
            th:classappend="${active == 'S0030'} ? ' active'"
