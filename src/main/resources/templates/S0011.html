@@ -22,37 +22,37 @@
 			<!-- 販売日 -->
 			<tr>
 				<th>販売日</th>
-				<td th:text="*{saleDate}"></td>
+				<td th:text="${sale.saleDate}"></td>
 			</tr>
 			
 			<!-- 担当 -->
 			<tr>
 				<th>担当</th>
-				<td th:text="*{account.name}"></td>
+				<td th:text="${account.name}"></td>
 			</tr>
 
 			<!-- 商品カテゴリー -->
 			<tr>
 				<th>商品カテゴリー</th>
-				<td th:text="*{category.categoryName}"></td>
+				<td th:text="${category.categoryName}"></td>
 			</tr>
 
 			<!-- 商品名 -->
 			<tr>
 				<th>商品名</th>
-				<td th:text="*{tradeName}"></td>
+				<td th:text="${sale.tradeName}"></td>
 			</tr>
 
 			<!-- 単価 -->
 			<tr>
 				<th>単価</th>
-				<td th:text="*{unitPrice}"></td>
+				<td th:text="${sale.unitPrice}"></td>
 			</tr>
 
 			<!-- 個数 -->
 			<tr>
 				<th>個数</th>
-				<td th:text="*{saleNumber}"></td>
+				<td th:text="${sale.saleNumber}"></td>
 			</tr>
 
 			<!-- 小計 -->
@@ -64,7 +64,7 @@
 			<!-- 備考 -->
 			<tr>
 				<th>備考</th>
-				<td th:text="*{note}"></td>
+				<td th:text="${sale.note}"></td>
 			</tr>
 			
 			</table>
@@ -73,13 +73,13 @@
 				th:object="${salesCreateForm}"
 				method="post">
 						  
-			<input type="hidden" th:value="*{saleDate}">
-			<input type="hidden" th:value="*{accountId}">
-			<input type="hidden" th:value="*{categoryId}">
-			<input type="hidden" th:value="*{tradeName}">
-			<input type="hidden" th:value="*{unitPrice}">
-			<input type="hidden" th:value="*{saleNumber}">
-			<input type="hidden" th:value="*{note}">
+			<input type="hidden" th:field="*{saleDate}">
+			<input type="hidden" th:field="*{accountId}">
+			<input type="hidden" th:field="*{categoryId}">
+			<input type="hidden" th:field="*{tradeName}">
+			<input type="hidden" th:field="*{unitPrice}">
+			<input type="hidden" th:field="*{saleNumber}">
+			<input type="hidden" th:field="*{note}">
 					
 			<!-- ボタン -->
 			<button type="submit">
