@@ -69,7 +69,8 @@
 		<p>
 			商品名　＜必須＞
 			<input type="text"
-				   th:field="*{tradeName}">
+				   th:field="*{tradeName}"
+				   placeholder="商品名">
 			<span th:errors="*{tradeName}">
 			</span>
 		</p>
@@ -79,7 +80,8 @@
 		<p>
 			単価　＜必須＞
 			<input type="text"
-				   th:field="*{unitPrice}">
+				   th:field="*{unitPrice}"
+				   placeholder="単価">
 			<span th:errors="*{unitPrice}">
 			</span>
 		</p>
@@ -88,7 +90,8 @@
 		<p>
 			個数　＜必須＞
 			<input type="text"
-				   th:field="*{saleNumber}">
+				   th:field="*{saleNumber}"
+				   placeholder="個数">
 			<span th:errors="*{saleNumber}">
 			</span>
 		</p>
@@ -97,7 +100,8 @@
 		<p>
 			備考
 			<input type="text"
-				   th:field="*{note}">
+				   th:field="*{note}"
+				   placeholder="備考">
 		</p>
 
 		<!-- ボタン -->
