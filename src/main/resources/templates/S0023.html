@@ -344,8 +344,13 @@
 
 				<div class="input-area">
 
-					<textarea class="textarea-input" th:field="*{note}">
-                </textarea>
+					<textarea class="textarea-input"
+					          th:field="*{note}">
+					</textarea>
+
+					<div class="error-message"
+					     th:errors="*{note}">
+					</div>
 
 				</div>
 
