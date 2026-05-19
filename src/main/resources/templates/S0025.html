@@ -109,60 +109,58 @@
 
     <table>
 
-        <tr>
-            <th>販売日</th>
-            <td th:text="${sales.saleDate}"></td>
+		<tr>
+			<th>販売日</th>
+			<td th:text="${sales.saleDate}"></td>
         </tr>
-        <tr>
-
-            <th>担当</th>
-            <td>
-                <span th:each="account : ${accountList}">
-                    <span th:if="${account != null and account.accountId == sales.accountId}"
+		
+		<tr>
+			<th>担当</th>
+			<td>
+				<span th:each="account : ${accountList}">
+					<span th:if="${account != null and account.accountId == sales.accountId}"
                           th:text="${account.name}">
-                    </span>
-                </span>
-            </td>
-        </tr>
+					</span>
+				</span>
+			</td>
+		</tr>
 
-        <tr>
-
-            <th>商品カテゴリー</th>
-            <td>
-                <span th:each="category : ${categoryList}">
-                    <span th:if="${category != null and category.categoryId == sales.categoryId}"
+		<tr>
+			<th>商品カテゴリー</th>
+			<td>
+				<span th:each="category : ${categoryList}">
+					<span th:if="${category != null and category.categoryId == sales.categoryId}"
                           th:text="${category.categoryName}"></span>
-                </span>
-            </td>
-        </tr>
+				</span>
+			</td>
+		</tr>
 
-        <tr>
-            <th>商品名</th>
-            <td th:text="${sales.tradeName}"></td>
-        </tr>
+		<tr>
+			<th>商品名</th>
+			<td th:text="${sales.tradeName}"></td>
+		</tr>
 
-        <tr>
-            <th>単価</th>
-            <td th:text="${#numbers.formatInteger(sales.unitPrice, 0, 'COMMA')}"></td>
-        </tr>
+		<tr>
+			<th>単価</th>
+			<td th:text="${#numbers.formatInteger(sales.unitPrice, 0, 'COMMA')}"></td>
+		</tr>
 
-        <tr>
-            <th>個数</th>
-            <td th:text="${sales.saleNumber}"></td>
-        </tr>
+		<tr>
+			<th>個数</th>
+			<td th:text="${#numbers.formatInteger(sales.saleNumber, 0, 'COMMA')}"></td>
+		</tr>
 
-        <tr>
-            <th>小計</th>
-            <td th:text="${#numbers.formatInteger(sales.unitPrice * sales.saleNumber, 0, 'COMMA')}"></td>
-        </tr>
+		<tr>
+			<th>小計</th>
+			<td th:text="${#numbers.formatInteger(sales.unitPrice * sales.saleNumber, 0, 'COMMA')}"></td>
+		</tr>
 
-        <tr>
-            <th>備考</th>
-            <td th:text="${sales.note}">
-            </td>
-        </tr>
-
-    </table>
+		<tr>
+			<th>備考</th>
+			<td th:text="${sales.note}">
+			</td>
+		</tr>
+	</table>
 
     <!-- 送信用 -->
 
@@ -174,7 +172,7 @@
         <div class="button-area">
             <button type="submit" class="delete-btn">
                 <i class="bi bi-trash btn-icon"></i>削除</button>
-            <a th:href="@{/S0020}"class="cancel-btn">キャンセル</a>
+            <a th:href="@{/sales/detail(saleId=${sales.saleId})}"class="cancel-btn">キャンセル</a>
         </div>
 
     </form>
