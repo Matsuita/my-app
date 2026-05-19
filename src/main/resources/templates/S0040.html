@@ -60,15 +60,27 @@
 				</div>
 			</div>
 
-			<!-- 権限 -->
+			<!-- 売上権限 -->
 			<div class="row mb-4 align-items-center">
 				<div class="col-auto label-col">
-					<label>権限</label>
+					<label>売上権限</label>
 				</div>
 				<div class="col radio-group">
-					<label><input type="radio" name="authority" value="0"> 権限なし</label>
-					<label><input type="radio" name="authority" value="1"> 売上登録</label>
-					<label><input type="radio" name="authority" value="2"> アカウント登録</label>
+					<label><input type="radio" name="salesAuthority" value="0"> 権限なし</label>
+					<label><input type="radio" name="salesAuthority" value="1"> 閲覧のみ</label>
+					<label><input type="radio" name="salesAuthority" value="2"> 登録・編集</label>
+				</div>
+			</div>
+
+			<!-- アカウント権限 -->
+			<div class="row mb-4 align-items-center">
+				<div class="col-auto label-col">
+					<label>アカウント権限</label>
+				</div>
+				<div class="col radio-group">
+					<label><input type="radio" name="accountsAuthority" value="0"> 権限なし</label>
+					<label><input type="radio" name="accountsAuthority" value="1"> 閲覧のみ</label>
+					<label><input type="radio" name="accountsAuthority" value="2"> 登録・編集</label>
 				</div>
 			</div>
 

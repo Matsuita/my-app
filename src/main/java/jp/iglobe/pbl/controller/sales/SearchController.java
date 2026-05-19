@@ -21,16 +21,14 @@ import jp.iglobe.pbl.model.account.AccountSearchForm;
 import jp.iglobe.pbl.model.account.AccountUpdateForm;
 import jp.iglobe.pbl.repository.SearchRepository;
 
-
 @Controller
-@SessionAttributes({"accountSearchForm", "accountUpdateForm"})
+@SessionAttributes({ "accountSearchForm", "accountUpdateForm" })
 public class SearchController {
 
-    @ModelAttribute("accountSearchForm")
-    public AccountSearchForm setUpForm() {
-        return new AccountSearchForm();
-    }
-
+	@ModelAttribute("accountSearchForm")
+	public AccountSearchForm setUpForm() {
+		return new AccountSearchForm();
+	}
 
 	@Autowired
 	private SearchRepository searchRepository;
@@ -52,7 +50,8 @@ public class SearchController {
 		List<Account> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),
-				form.getAuthority());
+				form.getSalesAuthority(),
+				form.getAccountsAuthority());
 
 		model.addAttribute("accounts", list);
 		model.addAttribute("accountSearchForm", form);
@@ -62,26 +61,26 @@ public class SearchController {
 	@GetMapping("/accounts/edit/{id}")
 	public String edit(@PathVariable Integer id, Model model) {
 
-	    AccountUpdateForm sessionForm =
-	        (AccountUpdateForm) model.getAttribute("accountUpdateForm");
+		AccountUpdateForm sessionForm = (AccountUpdateForm) model.getAttribute("accountUpdateForm");
 
-	    // 🔥 同じIDのときだけ使う
-	    if (sessionForm != null && id.equals(sessionForm.getAccountId())) {
-	        return "S0042";
-	    }
+		// 🔥 同じIDのときだけ使う
+		if (sessionForm != null && id.equals(sessionForm.getAccountId())) {
+			return "S0042";
+		}
 
-	    // それ以外はDBから再取得
-	    Account account = searchRepository.findById(id).orElseThrow();
+		// それ以外はDBから再取得
+		Account account = searchRepository.findById(id).orElseThrow();
 
-	    AccountUpdateForm form = new AccountUpdateForm();
-	    form.setAccountId(account.getAccountId());
-	    form.setName(account.getName());
-	    form.setMail(account.getMail());
-	    form.setAuthority(account.getAuthority());
+		AccountUpdateForm form = new AccountUpdateForm();
+		form.setAccountId(account.getAccountId());
+		form.setName(account.getName());
+		form.setMail(account.getMail());
+		form.setSalesAuthority(account.getSalesAuthority());
+		form.setAccountsAuthority(account.getAccountsAuthority());
 
-	    model.addAttribute("accountUpdateForm", form);
+		model.addAttribute("accountUpdateForm", form);
 
-	    return "S0042";
+		return "S0042";
 	}
 
 	@PostMapping("/accounts/confirm")
@@ -99,10 +98,10 @@ public class SearchController {
 		if (result.hasErrors()) {
 			return "S0042"; // 入力画面に戻す
 		}
-		  // 🚨 ガード（直打ち対策）
-	    if (form.getAccountId() == null) {
-	        return "redirect:/accounts/search";
-	    }
+		// 🚨 ガード（直打ち対策）
+		if (form.getAccountId() == null) {
+			return "redirect:/accounts/search";
+		}
 		model.addAttribute("accountUpdateForm", form);
 		return "S0043"; // 確認画面
 	}
@@ -116,7 +115,8 @@ public class SearchController {
 
 		existing.setName(account.getName());
 		existing.setMail(account.getMail());
-		existing.setAuthority(account.getAuthority());
+		existing.setSalesAuthority(account.getSalesAuthority());
+		existing.setAccountsAuthority(account.getAccountsAuthority());
 		existing.setPassword(account.getPassword());
 
 		searchRepository.save(existing);
@@ -128,7 +128,6 @@ public class SearchController {
 	// 確認画面
 	@PostMapping("/accounts/delete")
 	public String deleteConfirm(AccountDeleteForm form, Model model) {
-		 
 
 		Account account = searchRepository
 				.findById(form.getAccountId())
@@ -149,52 +148,56 @@ public class SearchController {
 
 	@GetMapping("/accounts/result")
 	public String resultFromSession(
-	        @ModelAttribute AccountSearchForm form,
-	        Model model,
-	        SessionStatus sessionStatus // ←追加
+			@ModelAttribute AccountSearchForm form,
+			Model model,
+			SessionStatus sessionStatus // ←追加
 	) {
 
-	    sessionStatus.setComplete(); // 🔥ここで編集内容リセット
+		sessionStatus.setComplete(); // 🔥ここで編集内容リセット
 
-	    List<Account> list = searchRepository.search(
-	            form.getName(),
-	            form.getMail(),
-	            form.getAuthority());
+		List<Account> list = searchRepository.search(
+				form.getName(),
+				form.getMail(),
+				form.getSalesAuthority(),
+				form.getAccountsAuthority());
 
-	    model.addAttribute("accounts", list);
+		model.addAttribute("accounts", list);
 
-	    return "S0041";}
+		return "S0041";
+	}
+
 	@GetMapping("/accounts/delete")
 	public String deleteConfirmGet(AccountDeleteForm form, Model model) {
 
-	    // ガード
-	    if (form.getAccountId() == null) {
-	        return "redirect:/accounts/search";
-	    }
+		// ガード
+		if (form.getAccountId() == null) {
+			return "redirect:/accounts/search";
+		}
 
-	    Account account = searchRepository
-	            .findById(form.getAccountId())
-	            .orElse(null);
+		Account account = searchRepository
+				.findById(form.getAccountId())
+				.orElse(null);
 
-	    if (account == null) {
-	        return "redirect:/accounts/search";
-	    }
+		if (account == null) {
+			return "redirect:/accounts/search";
+		}
 
-	    model.addAttribute("account", account);
+		model.addAttribute("account", account);
 
-	    return "S0044";
+		return "S0044";
 	}
+
 	@GetMapping("/accounts/confirm")
 	public String confirmGet() {
-	    return "redirect:/accounts/search";
+		return "redirect:/accounts/search";
 	}
-	
+
 	@PostMapping("/accounts/edit/back")
 	public String back(SessionStatus sessionStatus) {
 
-	    sessionStatus.setComplete(); // ←これ追加🔥
+		sessionStatus.setComplete(); // ←これ追加🔥
 
-	    return "redirect:S0042";
+		return "redirect:S0042";
 	}
-	
+
 }

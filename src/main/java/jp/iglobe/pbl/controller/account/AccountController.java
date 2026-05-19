@@ -65,14 +65,16 @@ public class AccountController {
 	@PostMapping("/S0031_register")
 	public String register(@ModelAttribute AccountForm accountForm) {
 
-		// 1. Repositoryが扱う「Account」クラスに値をセット
+		// Repositoryが扱う「Account」クラスに値をセット
+		//（authorityはこのメソッドで生成）
 		Account account = new Account();
 		account.setName(accountForm.getName());
 		account.setMail(accountForm.getMail());
 		account.setPassword(accountForm.getPassword());
-		account.setAuthority(accountForm.getAuthority());
+		account.setSalesAuthority(accountForm.getSalesAuthority());
+		account.setAccountsAuthority(accountForm.getAccountsAuthority());
 
-		// 2. DBに保存実行！
+		// DB保存を実行
 		accountRepository.save(account);
 
 		return "redirect:/S0030";

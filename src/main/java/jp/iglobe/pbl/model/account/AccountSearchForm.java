@@ -11,6 +11,10 @@ public class AccountSearchForm {
 	private String name;
 	@Size(max = 100, message = "メールアドレスの指定が長すぎます。")
 	private String mail;
-	private Integer authority;
+	
+    private Integer salesAuthority;
+    
+    private Integer accountsAuthority;
+//	private Integer authority;
 
 }
