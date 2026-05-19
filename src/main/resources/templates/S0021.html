@@ -125,26 +125,26 @@
 
             <!-- 操作 -->
 
-            <td>
+			<td>
 
-                <form th:action="@{/sales/detail}"
-                      method="get">
+			    <form th:if="${session.loginUser.salesAuthority == 2}"
+			          th:action="@{/sales/detail}"
+			          method="get">
 
-                    <input type="hidden"
-                           name="saleId"
-                           th:value="${sales.saleId}">
+			        <input type="hidden"
+			               name="saleId"
+			               th:value="${sales.saleId}">
 
-                    <button type="submit"
-                            class="detail-btn">
+			        <button type="submit"
+			                class="detail-btn">
 
-                        <i class="bi bi-check-lg"></i>
-                        詳細
+			            詳細
 
-                    </button>
+			        </button>
 
-                </form>
+			    </form>
 
-            </td>
+			</td>
 
             <!-- No -->
 
