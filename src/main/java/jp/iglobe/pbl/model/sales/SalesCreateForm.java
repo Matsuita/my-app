@@ -32,12 +32,12 @@ public class SalesCreateForm {
 
 	@NotBlank(message = "単価を入力してください。")
 	@Size(max = 10, message = "単価が長すぎます。")
-	@Pattern(regexp = "^[0-9]+$", message = "単価を正しく入力してください。")
+	@Pattern(regexp = "(^$)|^[0-9]+$", message = "単価を正しく入力してください。")
 	private String unitPrice;
 
 	@NotBlank(message = "個数を入力してください。")
 	@Size(max = 10, message = "個数が長すぎます。")
-	@Pattern(regexp = "^[0-9]+$", message = "個数を正しく入力してください。")
+	@Pattern(regexp = "(^$)|^[0-9]+$", message = "個数を正しく入力してください。")
 	private String saleNumber;
 
 	@Size(max = 100, message = "備考が長すぎます。")
