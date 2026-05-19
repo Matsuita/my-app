@@ -367,9 +367,11 @@
 
 				</button>
 
-				<button type="button" class="cancel-btn" onclick="history.back()">
+				<button type="button"
+				        class="cancel-btn"
+				        th:onclick="|location.href='@{/sales/detail(saleId=${salesForm.saleId})}'|">
 
-					キャンセル
+				    キャンセル
 
 				</button>
 
