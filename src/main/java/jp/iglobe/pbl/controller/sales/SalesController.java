@@ -2,6 +2,7 @@ package jp.iglobe.pbl.controller.sales;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -263,10 +264,26 @@ public class SalesController {
     }
     
     @PostMapping("/sales/delete/execute")
-    public String salesDelete(Integer saleId) {
-    	
-    	salesRepository.deleteById(saleId);
-    	
-    	return "redirect:/sales/search";
+    public String salesDelete(
+
+            Integer saleId,
+
+            HttpSession session) {
+
+        // 削除
+        salesRepository.deleteById(
+                saleId);
+
+        // 一覧再取得
+        List<Sale> salesList =
+                salesRepository.findAll();
+
+        // session更新
+        session.setAttribute(
+                "salesList",
+                salesList);
+
+        // 一覧へ
+        return "redirect:/S0021";
     }
 }
