@@ -78,21 +78,7 @@ public class LoginController {
         return "C0010";
     }
 
-    // =========================
-    // ダッシュボード
-    // =========================
-
-    @GetMapping("/dashboard")
-    public String dashboard(HttpSession session) {
-    	
-    	// 未ログイン
-        if(session.getAttribute("loginUser") == null) {
-            return "redirect:/";
-        }
-
-
-        return "C0020";
-    }
+    
 
     // =========================
     // ログアウト
