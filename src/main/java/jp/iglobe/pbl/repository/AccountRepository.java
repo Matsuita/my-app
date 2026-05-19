@@ -20,4 +20,7 @@ public interface AccountRepository
 	
 //	テーブル検索
 	Optional<Account> findById(Integer accountId);
+	
+//	売上権限
+	List<Account> findBySalesAuthority(Integer salesAuthority);
 }
