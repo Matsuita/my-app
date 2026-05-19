@@ -8,64 +8,47 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
-	<style>
-		.form-area {
-			max-width: 700px;
-			margin: 80px auto;
-		}
-
-		/* ラベル幅 */
-		.label-col {
-			width: 160px;
-		}
-
-
-
-		/* ラジオの間隔調整 */
-		.radio-group label {
-			margin-right: 15px;
-		}
-	</style>
+	
 
 </head>
 
 <body>
 	<div th:replace="fragment/navbar :: navbar('account/search')"></div>
-	<div class="form-area">
+	<div class="main-box">
 
-		<h2 class="mb-4">アカウント検索条件入力</h2>
-
+		<div class="title">アカウント検索条件入力</div>
 
 		<form th:action="@{/accounts/result}" th:object="${accountSearchForm}" method="post">
-			<!-- 氏名-->
-			<div class="row mb-3 align-items-center">
-				<div class="col-auto label-col">
-					<label>氏名</label>
-					<span class="partial-badge">部分一致</span>
+
+			<!-- 氏名 -->
+			<div class="form-row">
+				<div class="form-label">
+					氏名
+					<span class="badge-gray">部分一致</span>
 				</div>
-				<div class="col">
-					<input type="text" th:field="*{name}" class="form-control" placeholder="氏名">
-					<div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+				<div class="form-input">
+					<input type="text" th:field="*{name}" placeholder="氏名">
+					<div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 				</div>
 			</div>
 
 			<!-- メール -->
-			<div class="row mb-3 align-items-center">
-				<div class="col-auto label-col">
-					<label>メールアドレス</label>
+			<div class="form-row">
+				<div class="form-label">
+					メールアドレス
 				</div>
-				<div class="col">
-					<input type="text" th:field="*{mail}" class="form-control" placeholder="メールアドレス">
-					<div class="text-danger" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></div>
+				<div class="form-input">
+					<input type="text" th:field="*{mail}" placeholder="メールアドレス">
+					<div class="error" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></div>
 				</div>
 			</div>
 
 			<!-- 売上権限 -->
-			<div class="row mb-4 align-items-center">
-				<div class="col-auto label-col">
-					<label>売上権限</label>
+			<div class="form-row">
+				<div class="form-label">
+					売上権限
 				</div>
-				<div class="col radio-group">
+				<div class="form-input radio-group">
 					<label><input type="radio" name="salesAuthority" value="0"> 権限なし</label>
 					<label><input type="radio" name="salesAuthority" value="1"> 閲覧のみ</label>
 					<label><input type="radio" name="salesAuthority" value="2"> 登録・編集</label>
@@ -73,11 +56,11 @@
 			</div>
 
 			<!-- アカウント権限 -->
-			<div class="row mb-4 align-items-center">
-				<div class="col-auto label-col">
-					<label>アカウント権限</label>
+			<div class="form-row">
+				<div class="form-label">
+					アカウント権限
 				</div>
-				<div class="col radio-group">
+				<div class="form-input radio-group">
 					<label><input type="radio" name="accountsAuthority" value="0"> 権限なし</label>
 					<label><input type="radio" name="accountsAuthority" value="1"> 閲覧のみ</label>
 					<label><input type="radio" name="accountsAuthority" value="2"> 登録・編集</label>
@@ -85,18 +68,17 @@
 			</div>
 
 			<!-- ボタン -->
-			<div class="text-center">
-				<div class="text-center">
-					<button type="submit" class="btn btn-primary px-4">
-						<i class="bi bi-search me-1"></i>検索
-					</button>
+			<div class="btn-area-center">
+				<button type="submit" class="btn btn-primary">
+					<i class="bi bi-search"></i> 検索
+				</button>
 
-					<button type="reset" class="btn btn-outline-secondary px-4 ms-2">
-						クリア
-					</button>
-				</div>
+				<button type="reset" class="btn btn-secondary">
+					クリア
+				</button>
 			</div>
 
+		
 		</form>
 	</div>
 

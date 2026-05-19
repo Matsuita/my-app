@@ -2,90 +2,232 @@
 
 /* 部分一致バッジ（スクショ寄せ） */
 .partial-badge {
-    display: inline-block;
-    background-color: #6c757d;
-    color: white;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 10px;
-    margin-left: 6px;
-    vertical-align: middle;
+	display: inline-block;
+	background-color: #6c757d;
+	color: white;
+	font-size: 11px;
+	padding: 2px 6px;
+	border-radius: 10px;
+	margin-left: 6px;
+	vertical-align: middle;
 }
+
 /*ヘッダーに<link rel="stylesheet" th:href="@{/teamb.css}">これいれて、
 <span class="partial-badge">部分一致</span> これ使ってね*/
 
 /* ===== 全体フォント ===== */
 body {
-    margin: 0;
-    padding-top: 60px;
+	margin: 0;
+	padding-top: 60px;
 
-    font-family:
-        "Yu Gothic UI",
-        "Yu Gothic",
-        "Meiryo",
-        "Hiragino Kaku Gothic ProN",
-        "Segoe UI",
-        sans-serif;
+	font-family:
+		"Yu Gothic UI",
+		"Yu Gothic",
+		"Meiryo",
+		"Hiragino Kaku Gothic ProN",
+		"Segoe UI",
+		sans-serif;
 }
 
 /* ===== ナビバー ===== */
 .navbar {
-    height: 60px;
-    padding: 0 20px;
+	height: 60px;
+	padding: 0 20px;
 
-    border-bottom: 1px solid #ccc;
-    background-color: #e9ecef !important;
+	border-bottom: 1px solid #ccc;
+	background-color: #e9ecef !important;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 /* ===== タイトル ===== */
 .navbar-brand {
-    font-size: 18px;
-    font-weight: 600;
-    color: #555 !important;
+	font-size: 18px;
+	font-weight: 600;
+	color: #555 !important;
 }
 
 /* ===== メニュー配置 ===== */
 .menu {
-    display: flex;
-    gap: 25px;
+	display: flex;
+	gap: 35px;
 }
+
 
 /* ===== リンク基本 ===== */
 .nav-link {
-    color: #555 !important;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 8px 5px;
+	color: #555 !important;
+	text-decoration: none;
 
-    transition: all 0.15s ease;
+	font-size: 18px;
+	/* ← 14 → 16にUP */
+	padding: 14px 14px;
+	/* ← 上下左右広げる */
+
+	transition: all 0.15s ease;
+	display: inline-block;
+	/* ← クリック範囲安定 */
 }
 
-/* ===== hover完全一致 ===== */
+/* ===== hover ===== */
 .nav-link:hover {
-    color: #222 !important;
-    border-bottom: 2px solid #666;
-    padding-bottom: 6px;
+	color: #222 !important;
+	border-bottom: 2px solid #666;
 }
 
 /* ===== ログアウト位置 ===== */
 .logout {
-    margin-left: auto;
+	margin-left: auto;
 }
 
-/* ===== 選択中メニュー ===== */
+/* ===== 選択中 ===== */
 .nav-link.active {
-    color: #222 !important;
-    font-weight: 600;
-    border-bottom: 2px solid #666;
-    padding-bottom: 6px;
+	color: #222 !important;
+	font-weight: 600;
+	border-bottom: 2px solid #666;
+}
+
+/*こっからhtnl*/
+
+/* ===== 全体 ===== */
+body {
+    margin: 0;
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    background: #ffffff;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
 }
 
 
 
+
+main-box {
+	.main-box {
+	    width: 900px;
+	    margin: 40px auto;
+	}
+}
+/* ===== タイトル ===== */
+.title {
+    font-size: 34px;          /* ← 少し大きめ */
+    font-weight: 600;
+    margin-bottom: 28px;
+    margin-left: -20px;
+    padding-left: 0;
+    border-left: none;        /* ← 青ライン削除 */
+    letter-spacing: 1px;
+}
+
+/* ===== フォーム行 ===== */
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+/* ===== ラベル ===== */
+.form-label {
+    width: 220px;
+    text-align: right;
+    padding-right: 16px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* ===== 入力エリア ===== */
+.form-input {
+    width: 420px;
+}
+
+/* ===== 入力欄 ===== */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    height: 32px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background: #fafafa;
+}
+
+/* フォーカス */
+input:focus {
+    outline: none;
+    border-color: #2f6fed;
+    box-shadow: 0 0 3px rgba(47,111,237,0.2);
+    background: #fff;
+}
+
+/* ===== ラジオ ===== */
+.radio-group {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+}
+
+/* ===== バッジ ===== */
+.badge-gray {
+    font-size: 10px;
+    background: #6c757d;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+
+/* ===== ボタンエリア ===== */
+.btn-area-center {
+    text-align: center;
+    margin-top: 28px;
+}
+
+/* ===== 共通ボタン ===== */
+.btn {
+    height: 34px;
+    min-width: 110px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* ===== 検索ボタン ===== */
+.btn-primary {
+    background: #2f6fed;
+    color: #fff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #1e55c4;
+}
+
+/* ===== クリアボタン（常に見える） ===== */
+.btn-secondary {
+    margin-left: 10px;
+    background: #f3f3f3;   /* ← 常に見える色 */
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+/* ===== エラー ===== */
+.error {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.mask {
+  -webkit-text-security: disc;
+}
 /*<nav class="navbar fixed-top">
 
     <!-- タイトル -->
