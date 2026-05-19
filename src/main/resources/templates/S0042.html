@@ -26,6 +26,11 @@
 			color: red;
 			font-size: 13px;
 		}
+		
+		.password-mask {
+		  -webkit-text-security: disc;
+	
+		}
 	</style>
 </head>
 
@@ -70,7 +75,8 @@
 					<span class="partial-badge">必須</span>
 				</div>
 				<div class="col">
-					<input type="password" th:field="*{password}" class="form-control">
+					
+						<input type="text" th:field="*{password}" class="form-control password-mask">
 					<div class="error-text" th:errors="*{password}"></div>
 				</div>
 			</div>
@@ -82,7 +88,7 @@
 					<span class="partial-badge">必須</span>
 				</div>
 				<div class="col">
-					<input type="password" th:field="*{passwordConfirm}" class="form-control">
+					<input type="text" th:field="*{passwordConfirm}" class="form-control password-mask">
 					<div class="error-text" th:errors="*{passwordConfirm}"></div>
 					<div class="error-text" th:if="${#fields.hasGlobalErrors()}"
 						th:each="err : ${#fields.globalErrors()}" th:text="${err}">

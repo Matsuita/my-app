@@ -23,7 +23,7 @@ import jp.iglobe.pbl.repository.SearchRepository;
 
 
 @Controller
-@SessionAttributes("accountSearchForm")
+@SessionAttributes({"accountSearchForm", "accountUpdateForm"})
 public class SearchController {
 
     @ModelAttribute("accountSearchForm")
@@ -62,10 +62,26 @@ public class SearchController {
 	@GetMapping("/accounts/edit/{id}")
 	public String edit(@PathVariable Integer id, Model model) {
 
-		Account account = searchRepository.findById(id).orElse(null);
-		model.addAttribute("accountUpdateForm", account);
+	    AccountUpdateForm sessionForm =
+	        (AccountUpdateForm) model.getAttribute("accountUpdateForm");
 
-		return "S0042";
+	    // 🔥 同じIDのときだけ使う
+	    if (sessionForm != null && id.equals(sessionForm.getAccountId())) {
+	        return "S0042";
+	    }
+
+	    // それ以外はDBから再取得
+	    Account account = searchRepository.findById(id).orElseThrow();
+
+	    AccountUpdateForm form = new AccountUpdateForm();
+	    form.setAccountId(account.getAccountId());
+	    form.setName(account.getName());
+	    form.setMail(account.getMail());
+	    form.setAuthority(account.getAuthority());
+
+	    model.addAttribute("accountUpdateForm", form);
+
+	    return "S0042";
 	}
 
 	@PostMapping("/accounts/confirm")
@@ -92,7 +108,7 @@ public class SearchController {
 	}
 
 	@PostMapping("/accounts/update")
-	public String update(@ModelAttribute AccountUpdateForm account) {
+	public String update(@ModelAttribute AccountUpdateForm account, SessionStatus sessionStatus) {
 
 		Account existing = searchRepository
 				.findById(account.getAccountId())
@@ -104,6 +120,7 @@ public class SearchController {
 		existing.setPassword(account.getPassword());
 
 		searchRepository.save(existing);
+		sessionStatus.setComplete(); // 🔥 これ必須
 
 		return "redirect:/accounts/result";
 	}
@@ -132,18 +149,21 @@ public class SearchController {
 
 	@GetMapping("/accounts/result")
 	public String resultFromSession(
-			@ModelAttribute AccountSearchForm form,
-			Model model) {
+	        @ModelAttribute AccountSearchForm form,
+	        Model model,
+	        SessionStatus sessionStatus // ←追加
+	) {
 
-		List<Account> list = searchRepository.search(
-				form.getName(),
-				form.getMail(),
-				form.getAuthority());
+	    sessionStatus.setComplete(); // 🔥ここで編集内容リセット
 
-		model.addAttribute("accounts", list);
+	    List<Account> list = searchRepository.search(
+	            form.getName(),
+	            form.getMail(),
+	            form.getAuthority());
 
-		return "S0041";
-	}
+	    model.addAttribute("accounts", list);
+
+	    return "S0041";}
 	@GetMapping("/accounts/delete")
 	public String deleteConfirmGet(AccountDeleteForm form, Model model) {
 
@@ -168,4 +188,13 @@ public class SearchController {
 	public String confirmGet() {
 	    return "redirect:/accounts/search";
 	}
+	
+	@PostMapping("/accounts/edit/back")
+	public String back(SessionStatus sessionStatus) {
+
+	    sessionStatus.setComplete(); // ←これ追加🔥
+
+	    return "redirect:S0042";
+	}
+	
 }
