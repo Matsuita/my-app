@@ -76,6 +76,55 @@ public interface SalesRepository
 
     	""")
     	List<Integer> findUsedAccountIds();
+    	
+    	@Query("""
+
+    			SELECT s
+    			FROM Sale s
+    			WHERE s.saleDate = :today
+
+    			""")
+    			List<Sale> findTodaySales(
+    			        LocalDate today);
+    	@Query("""
+
+    		    SELECT s.tradeName
+
+    		    FROM Sale s
+
+    		    GROUP BY s.tradeName
+
+    		    ORDER BY SUM(s.saleNumber) DESC
+
+    		""")
+    	List<String> findTopSellingProduct();
+    	
+    	@Query("""
+
+    		    SELECT s.tradeName
+
+    		    FROM Sale s
+
+    		    GROUP BY s.tradeName
+
+    		    ORDER BY SUM(s.saleNumber) ASC
+
+
+    		""")
+    	List<String> findWorstSellingProduct();
+    	
+    	@Query("""
+
+    		    SELECT s.tradeName
+
+    		    FROM Sale s
+
+    		    GROUP BY s.tradeName
+
+    		    ORDER BY SUM(s.saleNumber) DESC
+
+    		""")
+    		List<String> findTopProducts();
     
 }
     
