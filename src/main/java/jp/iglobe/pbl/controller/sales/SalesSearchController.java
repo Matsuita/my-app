@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.sales.Sale;
 import jp.iglobe.pbl.model.sales.SalesForm;
 import jp.iglobe.pbl.model.sales.SalesSearchForm;
@@ -39,6 +40,15 @@ public class SalesSearchController {
 		if (session.getAttribute("loginUser") == null) {
 			
 			return "redirect:/";
+		}
+		
+		Account loginUser =
+		        (Account) session.getAttribute(
+		                "loginUser");
+
+		if(loginUser.getSalesAuthority() < 1){
+
+		    return "redirect:/dashboard";
 		}
 
 		model.addAttribute(
@@ -85,6 +95,15 @@ public class SalesSearchController {
 
 			return "redirect:/";
 		}
+		
+		Account loginUser =
+		        (Account) session.getAttribute(
+		                "loginUser");
+
+		if(loginUser.getSalesAuthority() < 1){
+
+		    return "redirect:/dashboard";
+		}
 
 		// 開始日チェック
 
@@ -94,13 +113,11 @@ public class SalesSearchController {
 					"dateFromError",
 					"販売日（検索開始日）を正しく入力して下さい。");
 
-			model.addAttribute(
-					"accountList",
-					accountRepository.findAll());
+			List<Integer> accountIds =
+			        salesRepository.findUsedAccountIds();
 
-			model.addAttribute(
-					"categoryList",
-					categoryRepository.findAll());
+			model.addAttribute("accountList", accountRepository.findAllById(accountIds));
+			model.addAttribute("categoryList", categoryRepository.findAll());
 
 			return "S0020";
 		}
@@ -113,9 +130,10 @@ public class SalesSearchController {
 					"dateToError",
 					"販売日（検索終了日）を正しく入力して下さい。");
 
-			model.addAttribute(
-					"accountList",
-					accountRepository.findAll());
+			List<Integer> accountIds =
+			        salesRepository.findUsedAccountIds();
+
+			model.addAttribute("accountList", accountRepository.findAllById(accountIds));
 
 			model.addAttribute(
 					"categoryList",
@@ -136,9 +154,13 @@ public class SalesSearchController {
 					"dateRangeError",
 					"販売日（検索開始日）または販売日（検索終了日）を正しく入力して下さい。");
 
+			List<Integer> accountIds =
+			        salesRepository.findUsedAccountIds();
+
 			model.addAttribute(
-					"accountList",
-					accountRepository.findAll());
+			        "accountList",
+			        accountRepository.findAllById(
+			                accountIds));
 
 			model.addAttribute(
 					"categoryList",
@@ -171,9 +193,13 @@ public class SalesSearchController {
 					"searchError",
 					"検索結果はありません。");
 
+			List<Integer> accountIds =
+			        salesRepository.findUsedAccountIds();
+
 			model.addAttribute(
-					"accountList",
-					accountRepository.findAll());
+			        "accountList",
+			        accountRepository.findAllById(
+			                accountIds));
 
 			model.addAttribute(
 					"categoryList",
@@ -193,8 +219,8 @@ public class SalesSearchController {
 				salesList);
 
 		model.addAttribute(
-				"accountList",
-				accountRepository.findAll());
+		        "accountList",
+		        accountRepository.findAll());
 
 		model.addAttribute(
 				"categoryList",
@@ -215,6 +241,15 @@ public class SalesSearchController {
 
 			return "redirect:/";
 		}
+		
+		Account loginUser =
+		        (Account) session.getAttribute(
+		                "loginUser");
+
+		if(loginUser.getSalesAuthority() < 1){
+
+		    return "redirect:/dashboard";
+		}
 
 		// 詳細画面へ直接アクセス禁止
 		if (session.getAttribute("salesList") == null) {
@@ -225,9 +260,10 @@ public class SalesSearchController {
 		Sale sales = salesRepository.findById(saleId).orElse(null);
 
 		model.addAttribute("sales", sales);
+		
 		model.addAttribute(
-				"accountList",
-				accountRepository.findAll());
+		        "accountList",
+		        accountRepository.findAll());
 
 		model.addAttribute(
 				"categoryList",
@@ -238,7 +274,14 @@ public class SalesSearchController {
 
 	// 編集画面
 	@GetMapping("/sales/edit")
-	public String edit(Integer saleId, Model model) {
+	public String edit(HttpSession session, Integer saleId, Model model) {
+		
+		Account loginUser = (Account) session.getAttribute("loginUser");
+
+		if(loginUser.getSalesAuthority() != 2){
+
+		    return "redirect:/dashboard";
+		}
 		
 		if(saleId == null) {
 			return "redirect:/S0021";
@@ -270,9 +313,9 @@ public class SalesSearchController {
 
 		// 担当一覧
 		model.addAttribute(
-				"accountList",
-				accountRepository.findAll());
-
+		        "accountList",
+		        accountRepository.findAll());
+		
 		// 商品カテゴリー一覧
 		model.addAttribute(
 				"categoryList",
@@ -287,13 +330,26 @@ public class SalesSearchController {
 			@Valid 
 			@ModelAttribute 
 			SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
+		
+		Account loginUser =
+		        (Account) session.getAttribute(
+		                "loginUser");
+
+		if(loginUser.getSalesAuthority() != 2){
+
+		    return "redirect:/dashboard";
+		}
 
 	    
 	 // 単価形式チェック
 	    if(!salesForm.getUnitPrice().matches("^[0-9]+$")) {
 
 	        model.addAttribute("unitPriceError", "単価を正しく入力して下さい。");
-	        model.addAttribute("accountList", accountRepository.findAll());
+	        
+	        model.addAttribute(
+	                "accountList",
+	                accountRepository.findAll());
+	        
 	        model.addAttribute("categoryList", categoryRepository.findAll());
 
 	        return "S0023";
@@ -302,7 +358,11 @@ public class SalesSearchController {
 	    // 個数形式チェック
 	    if(!salesForm.getSaleNumber().matches("^[0-9]+$")) {
 	        model.addAttribute("saleNumberError", "個数を正しく入力して下さい。");
-	        model.addAttribute("accountList", accountRepository.findAll());
+	        
+	        model.addAttribute(
+	                "accountList",
+	                accountRepository.findAll());
+	        
 	        model.addAttribute("categoryList", categoryRepository.findAll());
 
 	        return "S0023";
@@ -318,7 +378,9 @@ public class SalesSearchController {
 		
 		// 入力エラー
 	    if(result.hasErrors()) {
-	        model.addAttribute("accountList", accountRepository.findAll());
+	    	model.addAttribute(
+	    	        "accountList",
+	    	        accountRepository.findAll());
 
 	        model.addAttribute("categoryList", categoryRepository.findAll());
 
@@ -358,9 +420,9 @@ public class SalesSearchController {
 				session.getAttribute("salesList"));
 
 		model.addAttribute(
-				"accountList",
-				accountRepository.findAll());
-
+		        "accountList",
+		        accountRepository.findAll());
+		
 		model.addAttribute(
 				"categoryList",
 				categoryRepository.findAll());
