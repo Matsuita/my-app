@@ -18,11 +18,11 @@
 	<div th:replace="fragment/navbar :: navbar('sales')"></div>
 
 		<h1>売上登録確認</h1>
-		<table>
+		<table th:object="${salesCreateForm}">
 			<!-- 販売日 -->
 			<tr>
 				<th>販売日</th>
-				<td th:text="${sale.saleDate}"></td>
+				<td th:text="*{saleDate}"></td>
 			</tr>
 			
 			<!-- 担当 -->
@@ -40,31 +40,33 @@
 			<!-- 商品名 -->
 			<tr>
 				<th>商品名</th>
-				<td th:text="${sale.tradeName}"></td>
+				<td th:text="*{tradeName}"></td>
 			</tr>
 
 			<!-- 単価 -->
 			<tr>
 				<th>単価</th>
-				<td th:text="${sale.unitPrice}"></td>
+				<td th:text="*{#numbers.formatInteger(unitPrice, 0, 'COMMA')}"></td>
 			</tr>
 
 			<!-- 個数 -->
 			<tr>
 				<th>個数</th>
-				<td th:text="${sale.saleNumber}"></td>
+				<td th:text="*{#numbers.formatInteger(saleNumber, 0, 'COMMA')}">
+				</td>
 			</tr>
 
 			<!-- 小計 -->
 			<tr>
 				<th>小計</th>
-				<td th:text="${sale.unitPrice != null && sale.saleNumber != null ? sale.unitPrice * sale.saleNumber : ''}">
+				<td th:text="${#numbers.formatInteger(total, 0, 'COMMA')}">
+				</td>
 			</tr>
 
 			<!-- 備考 -->
 			<tr>
 				<th>備考</th>
-				<td th:text="${sale.note}"></td>
+				<td th:text="*{note}"></td>
 			</tr>
 			
 			</table>

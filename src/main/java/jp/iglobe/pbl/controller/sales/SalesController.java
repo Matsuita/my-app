@@ -49,7 +49,7 @@ public class SalesController {
                 categoryRepository.findAll();
 
         // 画面へ渡す
-        model.addAttribute("salesCreateForm", new Sale());
+        model.addAttribute("salesCreateForm", new SalesCreateForm());
         model.addAttribute("accountList",accountList);
         model.addAttribute("categoryList",categoryList);
 
@@ -67,6 +67,36 @@ public class SalesController {
     	List<Category> categoryList =
                 categoryRepository.findAll();
     	
+    	
+    	// アカウント存在チェック
+    	Account account = null;
+    	if(salesCreateForm.getAccountId() != null) {
+
+    	    account =accountRepository.findById(
+    	                    salesCreateForm.getAccountId())
+    	                    .orElse(null);
+    	    
+    	    if(account == null) {
+
+        	    result.rejectValue("accountId", null,
+        	            "アカウントテーブルに存在しません。");
+        	}
+    	}
+
+    	// カテゴリ存在チェック
+    	Category category = null;
+    	if(salesCreateForm.getCategoryId() != null) {
+
+    	    category =categoryRepository.findById(
+    	                    salesCreateForm.getCategoryId())
+    	                    .orElse(null);
+    	    
+    	    if(category == null) {
+        	    result.rejectValue("categoryId",null,
+        	            "商品カテゴリーテーブルに存在しません。");
+        	}
+    	}
+    	
 //    	未入力エラー
     	if(result.hasErrors()) {
     		
@@ -77,50 +107,10 @@ public class SalesController {
     		return "S0010";
     	}
     	
-    	// アカウント存在チェック
-    	Account account = null;
-    	if(salesCreateForm.getAccountId() != null) {
-
-    	    account =accountRepository.findById(
-    	                    salesCreateForm.getAccountId())
-    	                    .orElse(null);
-    	}
-
-    	// カテゴリ存在チェック
-    	Category category = null;
-    	if(salesCreateForm.getCategoryId() != null) {
-
-    	    category =categoryRepository.findById(
-    	                    salesCreateForm.getCategoryId())
-    	                    .orElse(null);
-    	}
-
-    	// アカウント存在しない
-    	if(account == null) {
-
-    	    result.rejectValue("accountId", null,
-    	            "アカウントテーブルに存在しません。");
-    	}
-
-    	// 商品カテゴリ存在しない
-    	if(category == null) {
-
-    	    result.rejectValue("categoryId",null,
-    	            "商品カテゴリーテーブルに存在しません。");
-    	}
+    	Integer unitPrice = Integer.parseInt(salesCreateForm.getUnitPrice());
+    	Integer saleNumber = Integer.parseInt(salesCreateForm.getSaleNumber());
     	
-    	
-//    	String→Integer変換
-    	Sale sale = new Sale();
-    	sale.setSaleDate(salesCreateForm.getSaleDate());
-    	sale.setAccountId(salesCreateForm.getAccountId());
-        sale.setCategoryId(salesCreateForm.getCategoryId());
-        sale.setTradeName(salesCreateForm.getTradeName());
-    	sale.setUnitPrice(Integer.parseInt(salesCreateForm.getUnitPrice()));
-        sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
-    	sale.setNote(salesCreateForm.getNote());
-    	
-        model.addAttribute("sale", sale);
+    	model.addAttribute("total", unitPrice * saleNumber);
         model.addAttribute("salesCreateForm", salesCreateForm);
         model.addAttribute("accountList", accountList);
         model.addAttribute("categoryList",categoryList);
@@ -133,14 +123,23 @@ public class SalesController {
     // 売上登録実行
 
     @PostMapping("/salesCreate")
-    public String salesCreate(Sale sale) {
+    public String salesCreate(SalesCreateForm salesCreateForm) {
+    	
+//    	String→Integer変換
+    	Sale sale = new Sale();
+    	sale.setSaleDate(salesCreateForm.getSaleDate());
+    	sale.setAccountId(salesCreateForm.getAccountId());
+        sale.setCategoryId(salesCreateForm.getCategoryId());
+        sale.setTradeName(salesCreateForm.getTradeName());
+    	sale.setUnitPrice(Integer.parseInt(salesCreateForm.getUnitPrice()));
+        sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
+    	sale.setNote(salesCreateForm.getNote());
 
         salesRepository.save(sale);
 
         return "redirect:/S0010";
     }
 
-    // 売上詳細編集確認画面
 
  // 売上詳細編集確認画面
     @PostMapping("/S0024")
