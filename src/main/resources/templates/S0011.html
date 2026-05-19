@@ -22,37 +22,37 @@
 			<!-- 販売日 -->
 			<tr>
 				<th>販売日</th>
-				<td th:text="*{saleDate}"></td>
+				<td th:text="${sale.saleDate}"></td>
 			</tr>
 			
 			<!-- 担当 -->
 			<tr>
 				<th>担当</th>
-				<td th:text="*{account.name}"></td>
+				<td th:text="${account.name}"></td>
 			</tr>
 
 			<!-- 商品カテゴリー -->
 			<tr>
 				<th>商品カテゴリー</th>
-				<td th:text="*{category.categoryName}"></td>
+				<td th:text="${category.categoryName}"></td>
 			</tr>
 
 			<!-- 商品名 -->
 			<tr>
 				<th>商品名</th>
-				<td th:text="*{tradeName}"></td>
+				<td th:text="${sale.tradeName}"></td>
 			</tr>
 
 			<!-- 単価 -->
 			<tr>
 				<th>単価</th>
-				<td th:text="*{unitPrice}"></td>
+				<td th:text="${sale.unitPrice}"></td>
 			</tr>
 
 			<!-- 個数 -->
 			<tr>
 				<th>個数</th>
-				<td th:text="*{saleNumber}"></td>
+				<td th:text="${sale.saleNumber}"></td>
 			</tr>
 
 			<!-- 小計 -->
@@ -64,7 +64,7 @@
 			<!-- 備考 -->
 			<tr>
 				<th>備考</th>
-				<td th:text="*{note}"></td>
+				<td th:text="${sale.note}"></td>
 			</tr>
 			
 			</table>

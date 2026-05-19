@@ -66,24 +66,30 @@ public class SalesController {
     	List<Category> categoryList =
                 categoryRepository.findAll();
     	
+//    	未入力エラー
+    	if(result.hasErrors()) {
+    		
+    		model.addAttribute("salesCreateForm", salesCreateForm);
+    		model.addAttribute("accountList", accountList);
+            model.addAttribute("categoryList",categoryList);
+
+    		return "S0010";
+    	}
+    	
     	// アカウント存在チェック
     	Account account = null;
-
     	if(salesCreateForm.getAccountId() != null) {
 
-    	    account =
-    	            accountRepository.findById(
+    	    account =accountRepository.findById(
     	                    salesCreateForm.getAccountId())
     	                    .orElse(null);
     	}
 
     	// カテゴリ存在チェック
     	Category category = null;
-
     	if(salesCreateForm.getCategoryId() != null) {
 
-    	    category =
-    	            categoryRepository.findById(
+    	    category =categoryRepository.findById(
     	                    salesCreateForm.getCategoryId())
     	                    .orElse(null);
     	}
@@ -91,46 +97,33 @@ public class SalesController {
     	// アカウント存在しない
     	if(account == null) {
 
-    	    result.rejectValue(
-    	            "accountId",
-    	            null,
+    	    result.rejectValue("accountId", null,
     	            "アカウントテーブルに存在しません。");
     	}
 
     	// 商品カテゴリ存在しない
     	if(category == null) {
 
-    	    result.rejectValue(
-    	            "categoryId",
-    	            null,
+    	    result.rejectValue("categoryId",null,
     	            "商品カテゴリーテーブルに存在しません。");
     	}
-
     	
-    	if(result.hasErrors()) {
-    		
-    		model.addAttribute("salesCreateForm", salesCreateForm);
-    		
-    		model.addAttribute("accountList", accountList);
-            
-            model.addAttribute("categoryList",categoryList);
-
-    		return "S0010";
-    	}
     	
 //    	String→Integer変換
     	Sale sale = new Sale();
+    	sale.setSaleDate(salesCreateForm.getSaleDate());
+    	sale.setAccountId(salesCreateForm.getAccountId());
+        sale.setCategoryId(salesCreateForm.getCategoryId());
+        sale.setTradeName(salesCreateForm.getTradeName());
     	sale.setUnitPrice(Integer.parseInt(salesCreateForm.getUnitPrice()));
         sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
+    	sale.setNote(salesCreateForm.getNote());
     	
         model.addAttribute("sale", sale);
-        
+        model.addAttribute("salesCreateForm", salesCreateForm);
         model.addAttribute("accountList", accountList);
-        
         model.addAttribute("categoryList",categoryList);
-        
         model.addAttribute("account", account);
-        
         model.addAttribute("category", category);
         
         return "S0011";

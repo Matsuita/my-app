@@ -31,8 +31,11 @@ public class AccountUpdateForm {
 	private Integer authority;
 
 	@AssertTrue(message = "パスワードが一致していません。")
+	@AssertTrue(message = "パスワードが一致していません。")
 	public boolean isPasswordValid() {
-		return password != null && password.equals(passwordConfirm);
-
+	    if (password == null || passwordConfirm == null) {
+	        return false;
+	    }
+	    return password.equals(passwordConfirm);
 	}
 }

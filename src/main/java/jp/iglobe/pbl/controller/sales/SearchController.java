@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountDeleteForm;
@@ -19,9 +21,16 @@ import jp.iglobe.pbl.model.account.AccountSearchForm;
 import jp.iglobe.pbl.model.account.AccountUpdateForm;
 import jp.iglobe.pbl.repository.SearchRepository;
 
-@Controller
 
+@Controller
+@SessionAttributes("accountSearchForm")
 public class SearchController {
+
+    @ModelAttribute("accountSearchForm")
+    public AccountSearchForm setUpForm() {
+        return new AccountSearchForm();
+    }
+
 
 	@Autowired
 	private SearchRepository searchRepository;
@@ -62,48 +71,62 @@ public class SearchController {
 	@PostMapping("/accounts/confirm")
 	public String confirm(
 			@Valid @ModelAttribute AccountUpdateForm form,
-	        BindingResult result,
-	        Model model) {
+			BindingResult result,
+			Model model) {
+		if (!result.hasFieldErrors("password")
+				&& !result.hasFieldErrors("passwordConfirm")) {
 
-	    if (result.hasErrors()) {
-	        return "S0042"; // 入力画面に戻す
+			if (!form.getPassword().equals(form.getPasswordConfirm())) {
+				result.rejectValue("passwordConfirm", null, "パスワードが一致していません。");
+			}
+		}
+		if (result.hasErrors()) {
+			return "S0042"; // 入力画面に戻す
+		}
+		  // 🚨 ガード（直打ち対策）
+	    if (form.getAccountId() == null) {
+	        return "redirect:/accounts/search";
 	    }
-	    model.addAttribute("accountUpdateForm", form);
-	    return "S0043"; // 確認画面
+		model.addAttribute("accountUpdateForm", form);
+		return "S0043"; // 確認画面
 	}
+
 	@PostMapping("/accounts/update")
 	public String update(@ModelAttribute AccountUpdateForm account) {
 
-	    Account existing = searchRepository
-	            .findById(account.getAccountId())
-	            .orElseThrow();
+		Account existing = searchRepository
+				.findById(account.getAccountId())
+				.orElseThrow();
 
-	    existing.setName(account.getName());
-	    existing.setMail(account.getMail());
-	    existing.setAuthority(account.getAuthority());
-	    existing.setPassword(account.getPassword());
+		existing.setName(account.getName());
+		existing.setMail(account.getMail());
+		existing.setAuthority(account.getAuthority());
+		existing.setPassword(account.getPassword());
 
-	    searchRepository.save(existing);
+		searchRepository.save(existing);
 
-	    return "redirect:/accounts/result";
+		return "redirect:/accounts/result";
 	}
+
 	// 確認画面
 	@PostMapping("/accounts/delete")
 	public String deleteConfirm(AccountDeleteForm form, Model model) {
+		 
 
-	    Account account = searchRepository
-	        .findById(form.getAccountId())
-	        .orElseThrow();
+		Account account = searchRepository
+				.findById(form.getAccountId())
+				.orElseThrow();
 
-	    model.addAttribute("account", account);
+		model.addAttribute("account", account);
 
-	    return "S0044";
+		return "S0044";
 	}
 
 	// 実際の削除
 	@PostMapping("/accounts/delete/execute")
-	public String deleteExecute(@ModelAttribute AccountDeleteForm account) {
+	public String deleteExecute(@ModelAttribute AccountDeleteForm account, SessionStatus sessionStatus) {
 		searchRepository.deleteById(account.getAccountId());
+		sessionStatus.setComplete();
 		return "redirect:/accounts/result";
 	}
 
@@ -111,8 +134,7 @@ public class SearchController {
 	public String resultFromSession(
 			@ModelAttribute AccountSearchForm form,
 			Model model) {
-		
-		
+
 		List<Account> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),
@@ -121,5 +143,29 @@ public class SearchController {
 		model.addAttribute("accounts", list);
 
 		return "S0041";
+	}
+	@GetMapping("/accounts/delete")
+	public String deleteConfirmGet(AccountDeleteForm form, Model model) {
+
+	    // ガード
+	    if (form.getAccountId() == null) {
+	        return "redirect:/accounts/search";
+	    }
+
+	    Account account = searchRepository
+	            .findById(form.getAccountId())
+	            .orElse(null);
+
+	    if (account == null) {
+	        return "redirect:/accounts/search";
+	    }
+
+	    model.addAttribute("account", account);
+
+	    return "S0044";
+	}
+	@GetMapping("/accounts/confirm")
+	public String confirmGet() {
+	    return "redirect:/accounts/search";
 	}
 }

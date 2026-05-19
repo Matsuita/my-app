@@ -47,7 +47,7 @@
 	<h2 class="mb-4">アカウント詳細削除確認</h2>
 
 	<form th:action="@{/accounts/delete/execute}" th:object="${account}" method="post">
-		<p>ID: <span th:text="${account.accountId}"></span></p>
+		
 		<input type="hidden" th:field="*{accountId}">
 
 		<!-- 氏名 -->
@@ -55,7 +55,7 @@
 		<div class="row mb-3 align-items-center">
 			<div class="col-auto label-col">
 				<label>氏名</label>
-				<span class="partial-badge">必須</span>
+				
 			</div>
 			<div class="col">
 				<input type="hidden" name="name" class="form-control" th:field="*{name}">
@@ -68,7 +68,7 @@
 		<div class="row mb-3 align-items-center">
 			<div class="col-auto label-col">
 				<label>メールアドレス</label>
-				<span class="partial-badge">必須</span>
+				
 			</div>
 			<div class="col">
 				<input type="hidden" name="mail" class="form-control" th:field="*{mail}">
@@ -80,7 +80,7 @@
 		<div class="row mb-3 align-items-center">
 		    <div class="col-auto label-col">
 		        <label>パスワード</label>
-		        <span class="partial-badge">必須</span>
+		        
 		    </div>
 		    <div class="col">
 		        <!-- hiddenはth:fieldだけ -->
@@ -101,23 +101,28 @@
 		<div class="row mb-4 align-items-center">
 			<div class="col-auto label-col">
 				<label>権限</label>
-				<span class="partial-badge">必須</span>
+				
 			</div>
 			<div class="col radio-group">
-				<input type="hidden" th:field="*{authority}">
-				<span class="display-like-input" th:if="*{authority == 0}">権限なし</span>
-				<span class="display-like-input" th:if="*{authority == 1}">売上登録</span>
-				<span class="display-like-input" th:if="*{authority == 2}">アカウント登録</span>
+<!--				<input type="hidden" th:field="*{authority}">-->
+<!--				<span class="display-like-input" th:if="*{authority == 0}">権限なし</span>-->
+<!--				<span class="display-like-input" th:if="*{authority == 1}">売上登録</span>-->
+<!--				<span class="display-like-input" th:if="*{authority == 2}">アカウント登録</span>-->
 
-				<!--					<label>-->
-				<!--						<input type="radio" name="authority" value="0" th:checked="${account.authority == 0}"> 権限なし-->
-				<!--					</label>-->
-				<!--					<label>-->
-				<!--						<input type="radio" name="authority" value="1" th:checked="${account.authority == 1}"> 売上登録-->
-				<!--					</label>-->
-				<!--					<label>-->
-				<!--						<input type="radio" name="authority" value="2" th:checked="${account.authority == 2}"> アカウント登録-->
-				<!--					</label>-->
+<input type="hidden" name="authority" th:value="${account.authority}">
+
+<label>
+  <input type="radio" value="0"
+         th:checked="${account.authority == 0}" disabled> 権限なし
+</label>
+<label>
+  <input type="radio" value="1"
+         th:checked="${account.authority == 1}" disabled> 売上登録
+</label>
+<label>
+  <input type="radio" value="2"
+         th:checked="${account.authority == 2}" disabled> アカウント登録
+</label>
 			</div>
 		</div>
 
