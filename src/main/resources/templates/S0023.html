@@ -366,10 +366,11 @@
 					更新
 
 				</button>
+				<button type="button"
+				        class="cancel-btn"
+				        th:onclick="|location.href='@{/sales/detail(saleId=${salesForm.saleId})}'|">
 
-				<button type="button" class="cancel-btn" onclick="history.back()">
-
-					キャンセル
+				    キャンセル
 
 				</button>
 
