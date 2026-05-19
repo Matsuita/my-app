@@ -185,19 +185,21 @@
 
             <!-- 単価 -->
 
-            <td th:text="${sales.unitPrice}">
+            <td th:text="${#numbers.formatInteger(sales.unitPrice, 0, 'COMMA')}">
+				
             </td>
 
             <!-- 個数 -->
 
-            <td th:text="${sales.saleNumber}">
+            <td th:text="${#numbers.formatInteger(sales.saleNumber, 0, 'COMMA')}">
             </td>
 
             <!-- 小計 -->
 
-            <td class="subtotal"
-                th:text="${sales.unitPrice * sales.saleNumber}">
-            </td>
+			<td class="subtotal"
+			    th:text="${#numbers.formatDecimal(sales.unitPrice * sales.saleNumber,
+			        0,'COMMA',0,'POINT')}">
+			</td>
 
         </tr>
 

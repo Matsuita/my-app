@@ -181,8 +181,7 @@
 
             <th>単価</th>
 
-            <td th:text="${sales.unitPrice}">
-            </td>
+			<td th:text="${#numbers.formatInteger(sales.unitPrice, 0, 'COMMA')}"></td>
 
         </tr>
 
@@ -192,8 +191,7 @@
 
             <th>個数</th>
 
-            <td th:text="${sales.saleNumber}">
-            </td>
+			<td th:text="${#numbers.formatInteger(sales.saleNumber, 0, 'COMMA')}"></td>
 
         </tr>
 
@@ -203,8 +201,8 @@
 
             <th>小計</th>
 
-            <td th:text="${sales.unitPrice * sales.saleNumber}">
-            </td>
+			<td th:text="${#numbers.formatDecimal(sales.unitPrice * sales.saleNumber,
+						        0,'COMMA',0,'POINT')}"></td>
 
         </tr>
 

@@ -20,22 +20,25 @@
 
     <style>
 
-        body{
-            background:#f5f5f5;
-            font-family:"Yu Gothic",sans-serif;
-            padding-bottom:50px;
-        }
+		body{
+		    background:
+		    linear-gradient(
+		        135deg,
+		        #f5f7fa,
+		        #e4ecf5);
+		}
 
         .dashboard-container{
             width:1200px;
             margin:40px auto;
         }
 
-        h1{
-            font-size:48px;
-            font-weight:bold;
-            margin-bottom:10px;
-        }
+		h1{
+		    font-size:48px;
+		    font-weight:bold;
+		    margin-bottom:20px;
+		    color:#1f2937;
+		}
 
         .welcome-message{
             background:white;
@@ -59,12 +62,17 @@
             margin-bottom:30px;
         }
 
-        .dashboard-card{
-            background:white;
-            border-radius:18px;
-            padding:25px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.05);
-        }
+		.dashboard-card{
+		    background:white;
+		    border-radius:20px;
+		    padding:28px;
+		    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+		    transition:0.2s;
+		}
+		
+		.dashboard-card:hover{
+		    transform:translateY(-4px);
+		}
 
         .card-title{
             font-size:16px;
@@ -84,13 +92,13 @@
             color:#888;
         }
 
-        .chart-area{
-            background:white;
-            border-radius:18px;
-            padding:30px;
-            margin-bottom:30px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.05);
-        }
+		.chart-area{
+		    background:white;
+		    border-radius:20px;
+		    padding:35px;
+		    margin-bottom:30px;
+		    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+			}
 
         .ranking-area{
             display:grid;
@@ -126,6 +134,42 @@
         .hot-text{
             color:#ff7b00;
         }
+		
+		.sales-card{
+		    border-left:6px solid #2f80c9;
+		}
+
+		.count-card{
+		    border-left:6px solid #27ae60;
+		}
+
+		.hot-card{
+		    border-left:6px solid #ff7b00;
+		}
+
+		.danger-card{
+		    border-left:6px solid #d9534f;
+		}
+		
+		.quote-text{
+		    font-size:24px;
+		    line-height:1.8;
+		    color:#444;
+		    padding-top:25px;
+		    font-weight:bold;
+		    text-align:center;
+		}
+		
+		.ranking-title{
+		    font-size:24px;
+		    font-weight:bold;
+		    margin-bottom:20px;
+		}
+		
+		.ranking-item:hover{
+		    background:#f8fafc;
+		    border-radius:10px;
+		}
 
     </style>
 
@@ -159,7 +203,7 @@
 
     <div class="card-grid">
 
-        <div class="dashboard-card">
+        <div class="dashboard-card sales-card">
 
             <div class="card-title">
                 <i class="bi bi-cash-stack"></i>
@@ -176,7 +220,7 @@
 
         </div>
 
-        <div class="dashboard-card">
+        <div class="dashboard-card count-card">
 
             <div class="card-title">
                 <i class="bi bi-cart-check"></i>
@@ -193,7 +237,7 @@
 
         </div>
 
-        <div class="dashboard-card">
+        <div class="dashboard-card hot-card">
 
             <div class="card-title">
                 <i class="bi bi-fire"></i>
@@ -210,7 +254,7 @@
 
         </div>
 
-        <div class="dashboard-card">
+        <div class="dashboard-card danger-card">
 
             <div class="card-title">
                 <i class="bi bi-emoji-dizzy"></i>
@@ -256,12 +300,7 @@
 
 	        </div>
 
-	        <div style="
-	            font-size:22px;
-	            line-height:1.8;
-	            color:#444;
-	            padding-top:20px;
-	            font-weight:bold;">
+	        <div class="quote-text">
 
 	            「[[${todayMessage}]]」
 
