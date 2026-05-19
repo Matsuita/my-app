@@ -122,69 +122,57 @@
 
         <!-- 表示 -->
 
-        <table>
-
-            <tr>
-                <th>販売日</th>
-                <td th:text="*{saleDate}">					
+		<table>
+			<tr>
+				<th>販売日</th>
+				<td th:text="*{saleDate}">	
 				</td>
             </tr>
 
             <tr>
+				<th>担当</th>
+				<td>
+					<span th:each="account : ${accountList}">
+						<span th:if="${account.accountId == salesForm.accountId}" th:text="${account.name}">
+						</span>
+					</span>
+				</td>
+			 </tr>
 
-                <th>担当</th>
-                <td>
-                    <span th:each="account : ${accountList}">
-                        <span th:if="${account.accountId == salesForm.accountId}" th:text="${account.name}">
-                        </span>
-                    </span>
+			<tr>
+				<th>商品カテゴリー</th>
+				<td>
+					<span th:each="category : ${categoryList}">
+						<span th:if="${category.categoryId == salesForm.categoryId}" th:text="${category.categoryName}">
+						</span>
+					</span>
+				</td>
+			</tr>
 
-                </td>
-
+            <tr>
+				<th>商品名</th>
+				<td th:text="*{tradeName}">
+				</td>
             </tr>
 
             <tr>
-
-                <th>商品カテゴリー</th>
-
-                <td>
-                    <span th:each="category : ${categoryList}">
-                        <span th:if="${category.categoryId == salesForm.categoryId}" th:text="${category.categoryName}">
-                        </span>
-                    </span>
-
-                </td>
-
-            </tr>
+				<th>単価</th>
+				<td th:text="*{#numbers.formatInteger(unitPrice, 0, 'COMMA')}">
+				</td>
+			</tr>
 
             <tr>
-                <th>商品名</th>
-                <td th:text="*{tradeName}">
-                </td>
-            </tr>
+				<th>個数</th>
+				<td th:text="*{#numbers.formatInteger(saleNumber, 0, 'COMMA')}">
+				</td>
+			</tr>
 
-            <tr>
-
-                <th>単価</th>
-                <td th:text="*{unitPrice}">
-                </td>
-            </tr>
-
-            <tr>
-
-                <th>個数</th>
-                <td th:text="*{saleNumber}">
-                </td>
-
-            </tr>
-
-            <tr>
-                <th>備考</th>
-                <td th:text="*{note}">
-                </td>
-            </tr>
-
-        </table>
+			<tr>
+				<th>備考</th>
+				<td th:text="*{note}">
+				</td>
+			</tr>
+		</table>
 
         <!-- ボタン -->
 

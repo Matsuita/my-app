@@ -25,16 +25,16 @@
 		  method="post">
 
 		<!-- 販売日 -->
-		<p>
+		<div>
 			販売日　＜必須＞
 			<input type="date"
 				   th:field="*{saleDate}">
-			<span th:errors="*{saleDate}">
-			</span>
-		</p>
+			<div th:errors="*{saleDate}">
+			</div>
+		</div>
 
 		<!-- 担当 -->
-		<p>
+		<div>
 			担当　＜必須＞
 			<select th:field="*{accountId}">
 				<option value="">
@@ -45,12 +45,12 @@
 						th:text="${account.name}">
 				</option>
 			</select>
-			<span th:errors="*{accountId}">
-			</span>
-		</p>
+			<div th:errors="*{accountId}">
+			</div>
+		</div>
 
 		<!-- 商品カテゴリー -->
-		<p>
+		<div>
 			商品カテゴリー　＜必須＞
 			<select th:field="*{categoryId}">
 				<option value="">
@@ -61,50 +61,50 @@
 						th:text="${category.categoryName}">
 				</option>
 			</select>
-			<span th:errors="*{categoryId}">
-			</span>
-		</p>
+			<div th:errors="*{categoryId}">
+			</div>
+		</div>
 
 		<!-- 商品名 -->
-		<p>
+		<div>
 			商品名　＜必須＞
 			<input type="text"
 				   th:field="*{tradeName}"
 				   placeholder="商品名">
-			<span th:errors="*{tradeName}">
-			</span>
-		</p>
+			<div th:errors="*{tradeName}">
+			</div>
+		</div>
 
 		<!-- 単価 -->
 
-		<p>
+		<div>
 			単価　＜必須＞
 			<input type="text"
 				   th:field="*{unitPrice}"
 				   placeholder="単価">
-			<span th:errors="*{unitPrice}">
-			</span>
-		</p>
+			<div th:errors="*{unitPrice}">
+			</div>
+		</div>
 		
 		<!-- 個数 -->
-		<p>
+		<div>
 			個数　＜必須＞
 			<input type="text"
 				   th:field="*{saleNumber}"
 				   placeholder="個数">
-			<span th:errors="*{saleNumber}">
-			</span>
-		</p>
+			<div th:errors="*{saleNumber}">
+			</div>
+		</div>
 
 		<!-- 備考 -->
-		<p>
+		<div>
 			備考
 			<input type="text"
 				   th:field="*{note}"
 				   placeholder="備考">
-			<span th:errors="*{note}">
-			</span>
-		</p>
+			<div th:errors="*{note}">
+			</div>
+		</div>
 
 		<!-- ボタン -->
 		<button type="submit">
