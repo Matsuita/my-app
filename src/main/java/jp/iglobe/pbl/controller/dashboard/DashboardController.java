@@ -85,21 +85,20 @@ public class DashboardController {
 
             final int targetMonth = month;
 
-            int total =
-                    salesList.stream()
+            int total = salesList.stream()
                     .filter(s ->s.getSaleDate().getMonthValue()== targetMonth)
                     .mapToInt(s -> s.getUnitPrice() * s.getSaleNumber()).sum();
             monthlySales.add(total);
         }
         String[] messages = {
 
-        	    "今日も一日気張ってこう！",
+        	    "今日も一日頑張りましょう！",
 
-        	    "二言目いいっすか？",
+        	    "まだ舞える",
 
         	    "エラーは仕様です。",
 
-        	    "その残業、未来ありますか？",
+        	    "売って売って売りまくれ",
 
         	    "松井くんは顔があかんわ",
 
@@ -115,6 +114,68 @@ public class DashboardController {
         	            random.nextInt(
         	                messages.length)
         	        ];
+        	
+        	int target = 100000;
+
+        	int achievementRate =
+        	        todaySales * 100 / target;
+
+        	if(achievementRate > 100){
+
+        	    achievementRate = 100;
+        	}
+        	
+        	String salesRank;
+
+        	if(achievementRate >= 90){
+
+        	    salesRank = "SS";
+
+        	}else if(achievementRate >= 70){
+
+        	    salesRank = "S";
+
+        	}else if(achievementRate >= 50){
+
+        	    salesRank = "A";
+
+        	}else if(achievementRate >= 30){
+
+        	    salesRank = "B";
+
+        	}else{
+
+        	    salesRank = "C";
+        	}
+        	
+        	String salesComment;
+
+        	if(achievementRate >= 90){
+
+        	    salesComment =
+        	            "今日は覚醒しています。";
+
+        	}else if(achievementRate >= 70){
+
+        	    salesComment =
+        	            "かなり好調です。";
+
+        	}else if(achievementRate >= 50){
+
+        	    salesComment =
+        	            "順調に売れています。";
+
+        	}else if(achievementRate >= 30){
+
+        	    salesComment =
+        	            "まだ伸びしろがあります。";
+
+        	}else{
+
+        	    salesComment =
+        	            "ここから巻き返しです。";
+        	}
+   	
 
 
         // モデルへ
@@ -141,6 +202,18 @@ public class DashboardController {
     	model.addAttribute(
     	        "todayMessage",
     	        todayMessage);
+    	
+    	model.addAttribute(
+    	        "achievementRate",
+    	        achievementRate);
+    	
+    	model.addAttribute(
+    	        "salesRank",
+    	        salesRank);
+    	
+    	model.addAttribute(
+    	        "salesComment",
+    	        salesComment);
 
         
         model.addAttribute("jan", monthlySales.get(0));

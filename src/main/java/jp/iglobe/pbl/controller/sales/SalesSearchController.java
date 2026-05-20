@@ -35,9 +35,13 @@ public class SalesSearchController {
 	// 検索画面
 	@GetMapping("/S0020")
 	public String search(HttpSession session, Model model) {
+		
+		
 
 		// 未ログイン
 		if (session.getAttribute("loginUser") == null) {
+			
+			
 			
 			return "redirect:/";
 		}
@@ -73,9 +77,25 @@ public class SalesSearchController {
 	}
 
 	@GetMapping("/sales/search")
-	public String searchRedirect(Model model) {
+	public String searchRedirect(HttpSession session, Model model) {
+		
+		if(session.getAttribute("loginUser")
+		        == null){
+
+		    return "redirect:/";
+		}
+
+		Account loginUser =
+		        (Account) session.getAttribute(
+		                "loginUser");
+
+		if(loginUser.getSalesAuthority() < 1){
+
+		    return "redirect:/dashboard";
+		}
 
 		List<Sale> salesList = salesRepository.findAll();
+		session.setAttribute("salesList", salesList);
 
 		model.addAttribute("salesList", salesList);
 
@@ -88,11 +108,9 @@ public class SalesSearchController {
 
 			HttpSession session,
 
-			@Valid @ModelAttribute SalesSearchForm salesSearchForm,
-
-			BindingResult result,
-
-			Model model) {
+			@Valid 
+			@ModelAttribute 
+			SalesSearchForm salesSearchForm,BindingResult result,Model model) {
 
 		// 未ログイン
 		if (session.getAttribute("loginUser") == null) {
@@ -216,6 +234,9 @@ public class SalesSearchController {
 		session.setAttribute(
 				"salesList",
 				salesList);
+		session.setAttribute(
+		        "searched",
+		        true);
 
 		// 結果
 		model.addAttribute(
@@ -239,12 +260,13 @@ public class SalesSearchController {
 
 	// 詳細画面
 	@GetMapping("/sales/detail")
-	public String detail(HttpSession session, Integer saleId, Model model) {
+	public String detail(HttpSession session, Integer saleId,Model model) {
 
-		if (session.getAttribute("loginUser") == null) {
+	    if(session.getAttribute("loginUser")
+	            == null){
 
-			return "redirect:/";
-		}
+	        return "redirect:/";
+	    }
 		
 		Account loginUser =
 		        (Account) session.getAttribute(
@@ -302,6 +324,12 @@ public class SalesSearchController {
 	        HttpSession session,
 	        Integer saleId,
 	        Model model) {
+		
+		if(session.getAttribute("loginUser")
+		        == null){
+
+		    return "redirect:/";
+		}
 
 	    Account loginUser =
 	            (Account) session.getAttribute(
@@ -414,6 +442,12 @@ public class SalesSearchController {
 			@ModelAttribute 
 			SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
 		
+		if(session.getAttribute("loginUser")
+		        == null){
+
+		    return "redirect:/";
+		}
+		
 		Account loginUser =
 		        (Account) session.getAttribute(
 		                "loginUser");
@@ -494,6 +528,25 @@ public class SalesSearchController {
 		        == null) {
 
 		    return "redirect:/";
+		}
+		
+		model.addAttribute(
+		        "accountList",
+		        accountRepository.findAll());
+		
+		if(session.getAttribute("searched")
+		        == null){
+
+		    return "redirect:/S0020";
+		}
+		
+		Account loginUser =
+		        (Account) session.getAttribute(
+		                "loginUser");
+
+		if(loginUser.getSalesAuthority() < 1){
+
+		    return "redirect:/dashboard";
 		}
 
 
