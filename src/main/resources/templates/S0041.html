@@ -9,83 +9,93 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
 
-	
+
 </head>
 
 <body>
 	<div th:replace="fragment/navbar :: navbar('account/search')"></div>
 	<div class="main-box">
 		<div class="form-box">
-	    <div class="title">アカウント検索結果表示</div>
-</div>
-</div>
-<div class="result-wide">
-	    <div class="form-row">
-	        <div class="form-input" style="width: 100%;">
-	            
-	            <table class="table align-middle">
-	                <thead class="table-light">
-	                    <tr>
-	                        <th>操作</th>
-	                        <th>No</th>
-	                        <th>氏名</th>
-	                        <th>メールアドレス</th>
-	                        <th>売上権限</th>
-	                        <th>アカウント権限</th>
-	                    </tr>
-	                </thead>
+			<div class="title">アカウント検索結果表示</div>
+		</div>
+	</div>
+	<div class="result-wide">
+		<div class="form-row">
+			<div class="form-input" style="width: 100%;">
 
-	                <tbody>
+				<table class="table align-middle">
+					<thead class="table-light">
+						<tr>
+							<th>操作</th>
+							<th>No</th>
+							<th>氏名</th>
+							<th>メールアドレス</th>
+							<th>売上権限</th>
+							<th>アカウント権限</th>
+						</tr>
+					</thead>
 
-	                    <!-- データ表示 -->
-	                    <tr th:each="a, stat : ${accounts}">
-	                        <td>
+					<tbody>
 
-	                            <a th:href="@{/accounts/edit/{id}(id=${a.accountId})}" class="btn btn-primary btn-sm">
-	                                <i class="bi bi-pencil"></i> 編集
-	                            </a>
+						<!-- データ表示 -->
+						<tr th:each="a, stat : ${accounts}">
+							<td>
 
-	                            <form th:action="@{/accounts/delete}" method="post" style="display:inline;">
-	                                <input type="hidden" name="accountId" th:value="${a.accountId}">
-	                                <input type="hidden" name="name" th:value="${a.name}">
-	                                <input type="hidden" name="mail" th:value="${a.mail}">
-	                                <input type="hidden" name="salesAuthority" th:value="${a.salesAuthority}">
-	                                <input type="hidden" name="accountsAuthority" th:value="${a.accountsAuthority}">
-	                                <input type="hidden" name="password" th:value="${a.password}">
-	                                <input type="hidden" name="passwordConfirm" th:value="${a.passwordConfirm}">
+								<a th:if="${session.loginUser.accountsAuthority == 2}"
+									th:href="@{/accounts/edit/{id}(id=${a.accountId})}" class="btn btn-primary btn-sm">
+									<i class="bi bi-pencil"></i> 編集
+								</a>
 
-	                                <button type="submit" class="btn btn-danger btn-sm">
-	                                    <i class="bi bi-x"></i> 削除
-	                                </button>
-	                            </form>
-	                        </td>
+								<form th:if="${session.loginUser.accountsAuthority == 2}"
+									th:action="@{/accounts/delete}" method="post" style="display:inline;">
+									<input type="hidden" name="accountId" th:value="${a.accountId}">
+									<input type="hidden" name="name" th:value="${a.name}">
+									<input type="hidden" name="mail" th:value="${a.mail}">
+									<input type="hidden" name="salesAuthority" th:value="${a.salesAuthority}">
+									<input type="hidden" name="accountsAuthority" th:value="${a.accountsAuthority}">
+									<input type="hidden" name="password" th:value="${a.password}">
+									<input type="hidden" name="passwordConfirm" th:value="${a.passwordConfirm}">
 
-	                        <td th:text="${a.accountId}">1</td>
-	                        <td th:text="${a.name}">山田 太郎</td>
-	                        <td th:text="${a.mail}">test@test.com</td>
+									<button type="submit" class="btn btn-danger btn-sm">
+										<i class="bi bi-x"></i> 削除
+									</button>
+								</form>
+							</td>
 
-	                        <td th:switch="${a.salesAuthority}">
-	                            <span th:case="0">権限なし</span>
-	                            <span th:case="1">閲覧のみ</span>
-	                            <span th:case="2">登録・編集</span>
-	                        </td>
-	                        <td th:switch="${a.accountsAuthority}">
-	                            <span th:case="0">権限なし</span>
-	                            <span th:case="1">閲覧のみ</span>
-	                            <span th:case="2">登録・編集</span>
-	                        </td>
-	                    </tr>
+							<td th:text="${a.accountId}">1</td>
+							<td th:text="${a.name}">山田 太郎</td>
+							<td th:text="${a.mail}">test@test.com</td>
 
-	                    <!-- データなし -->
-	                    <tr th:if="${accounts == null or #lists.isEmpty(accounts)}">
-	                        <td colspan="6" class="text-center">データがありません</td>
-	                    </tr>
+							<td th:switch="${a.salesAuthority}">
+								<span th:case="0">権限なし</span>
+								<span th:case="1">閲覧のみ</span>
+								<span th:case="2">登録・編集</span>
+							</td>
+							<td th:switch="${a.accountsAuthority}">
+								<span th:case="0">権限なし</span>
+								<span th:case="1">閲覧のみ</span>
+								<span th:case="2">登録・編集</span>
+							</td>
+						</tr>
 
-	                </tbody>
-	            </table>
+						<!-- データなし -->
+						<tr th:if="${accounts == null or #lists.isEmpty(accounts)}">
+							<td colspan="6" class="text-center">データがありません</td>
+						</tr>
 
-	        </div>
-	    </div>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</div>
+	</div>
+
+</body>
+
+</html>		</div>
+		</div>
 
 	</div>
 	</div>
