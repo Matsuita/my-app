@@ -58,7 +58,11 @@ public class SalesSearchController {
 		// 担当一覧
 		List<Integer> accountIds = salesRepository.findUsedAccountIds();
 
-		model.addAttribute("accountList", accountRepository.findAllById(accountIds));
+		model.addAttribute(
+			    "accountList",
+			    accountRepository
+			        .findByAccountIdInAndIsActiveTrue(
+			            accountIds));
 
 		// カテゴリー一覧
 		model.addAttribute(
@@ -116,7 +120,7 @@ public class SalesSearchController {
 			List<Integer> accountIds =
 			        salesRepository.findUsedAccountIds();
 
-			model.addAttribute("accountList", accountRepository.findAllById(accountIds));
+			model.addAttribute("accountList", accountRepository .findByAccountIdInAndIsActiveTrue(accountIds));
 			model.addAttribute("categoryList", categoryRepository.findAll());
 
 			return "S0020";
@@ -133,7 +137,7 @@ public class SalesSearchController {
 			List<Integer> accountIds =
 			        salesRepository.findUsedAccountIds();
 
-			model.addAttribute("accountList", accountRepository.findAllById(accountIds));
+			model.addAttribute("accountList", accountRepository.findByAccountIdInAndIsActiveTrue(accountIds));
 
 			model.addAttribute(
 					"categoryList",
@@ -258,6 +262,26 @@ public class SalesSearchController {
 		}
 
 		Sale sales = salesRepository.findById(saleId).orElse(null);
+		
+		Account account = accountRepository.findById(sales.getAccountId()).orElse(null);
+
+		String accountName;
+
+		if(account == null
+		        || !account.getIsActive()){
+
+		    accountName =
+		        "（退職済みユーザー）";
+
+		}else{
+
+		    accountName =
+		        account.getName();
+		}
+
+		model.addAttribute(
+		        "accountName",
+		        accountName);
 
 		model.addAttribute("sales", sales);
 		
@@ -288,6 +312,29 @@ public class SalesSearchController {
 		}
 
 		Sale sales = salesRepository.findById(saleId).orElse(null);
+		
+		Account account =
+		        accountRepository
+		            .findById(sales.getAccountId())
+		            .orElse(null);
+
+		String accountName;
+
+		if(account == null
+		        || !account.getIsActive()){
+
+		    accountName =
+		        "（退職済みユーザー）";
+
+		}else{
+
+		    accountName =
+		        account.getName();
+		}
+
+		model.addAttribute(
+		        "accountName",
+		        accountName);
 		
 		if(sales == null) {
 			return "redirect:/S0021";
