@@ -42,11 +42,21 @@
 		}
 
 		body{
+
+		    font-family:
+		        "Yu Gothic UI",
+		        "Meiryo",
+		        sans-serif;
+
 		    background:
 		    linear-gradient(
 		        135deg,
 		        #f5f7fa,
 		        #e4ecf5);
+
+		    color:#1f2937;
+
+		    letter-spacing:0.03em;
 		}
 		
 		.dashboard-card{
@@ -132,11 +142,16 @@
             color:#222;
         }
 
-        .card-comment{
-            margin-top:10px;
-            font-size:13px;
-            color:#888;
-        }
+		.card-comment{
+
+		    margin-top:12px;
+
+		    font-size:14px;
+
+		    color:#6b7280;
+
+		    line-height:1.7;
+		}
 		
 		.chart-title{
 
@@ -422,8 +437,9 @@
 		    <div class="side-info-card">
 
 		        <div class="side-title">
-
-		            🏆 売上ランク
+					
+					<i class="bi bi-trophy"></i>
+					売上ランク
 
 		        </div>
 
@@ -473,7 +489,8 @@
 
 		        <div class="side-title">
 
-		            ⚡ 本日の状態
+					<i class="bi bi-activity"></i>
+					本日の状態
 
 		        </div>
 
@@ -591,7 +608,8 @@
 
 	        <div class="ranking-title">
 
-	            💬 今日のひとこと
+				<i class="bi bi-chat-left-text"></i>
+				今日のひとこと
 
 	        </div>
 
@@ -609,7 +627,8 @@
 
 	        <div class="ranking-title hot-text">
 
-	            🔥 爆売れ商品 TOP3
+				<i class="bi bi-bar-chart-line"></i>
+				爆売れ商品 TOP3
 
 	        </div>
 
@@ -619,15 +638,14 @@
 	            <span>
 
 	                <span th:if="${stat.index == 0}">
-	                    🥇
-	                </span>
+						<i class="bi bi-1-circle-fill"></i>	                </span>
 
 	                <span th:if="${stat.index == 1}">
-	                    🥈
+	                    <i class="bi bi-2-circle-fill"></i>
 	                </span>
 
 	                <span th:if="${stat.index == 2}">
-	                    🥉
+	                    <i class="bi bi-3-circle-fill"></i>
 	                </span>
 
 	                [[${product}]]
