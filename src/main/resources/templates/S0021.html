@@ -159,9 +159,22 @@
             <!-- 担当 -->
 
 			<td>
-			    <span th:each="account : ${accountList}">
-			        <span th:if="${account.accountId == sales.accountId}" th:text="${account.name}">
+
+			    <span th:with="found=false">
+
+			        <span th:each="account : ${accountList}">
+
+			            <span th:if="${account.accountId == sales.accountId}"
+			                  th:text="${account.name}">
+			            </span>
+
 			        </span>
+
+			    </span>
+
+			    <span th:unless="${#lists.contains(accountList.![accountId], sales.accountId)}">
+
+			        （退職済みユーザー）
 
 			    </span>
 

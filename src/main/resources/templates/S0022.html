@@ -138,10 +138,21 @@
 			<td>
 
 			    <span th:each="account : ${accountList}">
+
 			        <span th:if="${account.accountId == sales.accountId}"
 			              th:text="${account.name}">
 			        </span>
+
 			    </span>
+
+			    <span th:unless="${#lists.contains(
+			            accountList.![accountId],
+			            sales.accountId)}">
+
+			        （退職済みユーザー）
+
+			    </span>
+
 			</td>
 
         </tr>

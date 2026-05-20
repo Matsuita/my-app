@@ -60,13 +60,26 @@ public class LoginController {
         // メール検索
         Account account = accountRepository.findByMail(loginForm.getMail());
 
-        // ログイン成功
+     // ログイン成功
         if (account != null) {
 
-            if (account.getPassword().equals(loginForm.getPassword())) {
+            // 論理削除チェック
+            if(!account.getIsActive()){
+
+                model.addAttribute(
+                        "errorMessage",
+                        "利用できないアカウントです。");
+
+                return "C0010";
+            }
+
+            if (account.getPassword().equals(
+                    loginForm.getPassword())) {
 
                 // Session保存
-                session.setAttribute("loginUser", account);
+                session.setAttribute(
+                        "loginUser",
+                        account);
 
                 return "redirect:/dashboard";
             }

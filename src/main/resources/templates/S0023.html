@@ -183,34 +183,49 @@
 
 			<div class="form-row">
 
-				<div class="label-area">
+			    <div class="label-area">
 
-					担当
+			        担当
 
-					<span class="required-badge">
-						必須
-					</span>
+			        <span class="required-badge">
+			            必須
+			        </span>
 
-				</div>
+			    </div>
 
-				<div class="input-area">
+			    <div class="input-area">
 
-					<select th:field="*{accountId}">
+			        <div th:if="${accountName == '（退職済みユーザー）'}">
 
-						<option value="">
-							選択してください
-						</option>
+			            <input type="text"
+			                   class="form-control"
+			                   value="（退職済みユーザー）"
+			                   readonly>
 
-						<option th:each="account : ${accountList}" th:value="${account.accountId}"
-							th:text="${account.name}">
-						</option>
+			            <input type="hidden"
+			                   th:field="*{accountId}">
 
-					</select>
+			        </div>
 
-					<div class="error-message" th:errors="*{accountId}">
-					</div>
+			        <select th:unless="${accountName == '（退職済みユーザー）'}"
+			                th:field="*{accountId}">
 
-				</div>
+			            <option value="">
+			                選択してください
+			            </option>
+
+			            <option th:each="account : ${accountList}"
+			                    th:value="${account.accountId}"
+			                    th:text="${account.name}">
+			            </option>
+
+			        </select>
+
+			        <div class="error-message"
+			             th:errors="*{accountId}">
+			        </div>
+
+			    </div>
 
 			</div>
 
