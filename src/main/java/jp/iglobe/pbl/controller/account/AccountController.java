@@ -1,5 +1,7 @@
 package jp.iglobe.pbl.controller.account;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +22,14 @@ public class AccountController {
 
 	//	アカウント登録
 	@GetMapping("/S0030")
-	public String account(Model model) {
+	public String account(HttpSession session, Model model) {
+
+		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 2) {
+			return "redirect:/dashboard";
+		}
+
 		model.addAttribute("accountForm", new AccountForm());
 		return "S0030";
 	}
@@ -34,7 +43,13 @@ public class AccountController {
 
 	//	アカウント登録確認画面へ直接は飛ばず、アカウント登録画面へ遷移
 	@GetMapping("S0031")
-	public String confirm(Model model) {
+	public String confirm(HttpSession session, Model model) {
+		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 2) {
+			return "redirect:/dashboard";
+		}
+
 		model.addAttribute("accountForm", new AccountForm());
 		return "redirect:/S0030";
 	}
@@ -55,13 +70,12 @@ public class AccountController {
 			result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードとパスワード（確認）の入力値が異なります。");
 			return "S0030"; // 入力画面へ戻る
 		}
-		
+
 		// データベースに同じメールアドレスがあるか直接チェックする
-	    if (accountRepository.existsByMail(accountForm.getMail())) {
-	        result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のパスワードで登録してください。");
-	        return "S0030"; // 重複していたら入力画面（S0030）へ戻る
-	    }
-			
+		if (accountRepository.existsByMail(accountForm.getMail())) {
+			result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のパスワードで登録してください。");
+			return "S0030"; // 重複していたら入力画面（S0030）へ戻る
+		}
 
 		// 全てOKなら確認画面（S0031）へ
 		return "S0031";
@@ -79,7 +93,7 @@ public class AccountController {
 		account.setPassword(accountForm.getPassword());
 		account.setSalesAuthority(accountForm.getSalesAuthority());
 		account.setAccountsAuthority(accountForm.getAccountsAuthority());
-		
+
 		// DB保存を実行
 		account.setActive(true);
 		accountRepository.save(account);

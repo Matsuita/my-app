@@ -2,6 +2,7 @@ package jp.iglobe.pbl.controller.sales;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,13 @@ public class SearchController {
 	private SearchRepository searchRepository;
 
 	@GetMapping("/accounts/search")
-	public String init(Model model) {
+	public String init(HttpSession session, Model model) {
+
+		// アカウント権限「閲覧のみ」「登録・編集」（accountsAuthorityが1か2）にならない人を弾く
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 1) {
+			return "redirect:/dashboard";
+		}
 		model.addAttribute("accountSearchForm", new AccountSearchForm());
 		return "S0040";
 	}
@@ -59,7 +66,13 @@ public class SearchController {
 	}
 
 	@GetMapping("/accounts/edit/{id}")
-	public String edit(@PathVariable Integer id, Model model) {
+	public String edit(@PathVariable Integer id, HttpSession session, Model model) {
+
+		// アカウント権限「登録・編集」（accountsAuthorityが1か2）にならない人を弾く
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 2) {
+			return "redirect:/dashboard";
+		}
 
 		AccountUpdateForm sessionForm = (AccountUpdateForm) model.getAttribute("accountUpdateForm");
 
@@ -149,21 +162,26 @@ public class SearchController {
 	//	アカウント論理削除
 	@PostMapping("/accounts/delete/execute")
 	public String deleteExecute(@ModelAttribute AccountDeleteForm account, SessionStatus sessionStatus) {
-	    // 修正前：searchRepository.deleteById(account.getAccountId());
-	    // 修正後：新しく作った論理削除のメソッドを呼び出す
-	    searchRepository.logicalDeleteById(account.getAccountId());
-	    
-	    sessionStatus.setComplete();
-	    return "redirect:/accounts/result";
+		// 修正前：searchRepository.deleteById(account.getAccountId());
+		// 修正後：新しく作った論理削除のメソッドを呼び出す
+		searchRepository.logicalDeleteById(account.getAccountId());
+
+		sessionStatus.setComplete();
+		return "redirect:/accounts/result";
 	}
-	
 
 	@GetMapping("/accounts/result")
 	public String resultFromSession(
+			HttpSession session,
 			@ModelAttribute AccountSearchForm form,
 			Model model,
 			SessionStatus sessionStatus // ←追加
 	) {
+		// アカウント権限「閲覧のみ」「登録・編集」（accountsAuthorityが2）にならない人を弾く
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 1) {
+			return "redirect:/dashboard";
+		}
 
 		sessionStatus.setComplete(); // 🔥ここで編集内容リセット
 
@@ -179,7 +197,13 @@ public class SearchController {
 	}
 
 	@GetMapping("/accounts/delete")
-	public String deleteConfirmGet(AccountDeleteForm form, Model model) {
+	public String deleteConfirmGet(HttpSession session, AccountDeleteForm form, Model model) {
+
+		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 2) {
+			return "redirect:/dashboard";
+		}
 
 		// ガード
 		if (form.getAccountId() == null) {
