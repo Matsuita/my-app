@@ -73,8 +73,9 @@ public class AccountController {
 		account.setPassword(accountForm.getPassword());
 		account.setSalesAuthority(accountForm.getSalesAuthority());
 		account.setAccountsAuthority(accountForm.getAccountsAuthority());
-
+		
 		// DB保存を実行
+		account.setActive(true);
 		accountRepository.save(account);
 
 		return "redirect:/S0030";

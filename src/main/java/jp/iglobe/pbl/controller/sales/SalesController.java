@@ -221,16 +221,16 @@ public class SalesController {
 
         account = accountRepository.findById
         		(salesForm.getAccountId()).orElse(null);
-        String salesName;
+        String saleName;
         
         if(account != null && account.isActive()) {
-            salesName = account.getName();
+            saleName = account.getName();
         }else {
-        	salesName = "退職済みユーザー";
+        	saleName = "退職済みユーザー";
         }
         
         model.addAttribute("salesForm",salesForm);
-        model.addAttribute("salesName", salesName);
+        model.addAttribute("saleName", saleName);
         model.addAttribute("accountList", 
         		accountRepository.findAll());
         model.addAttribute("categoryList", 
@@ -247,16 +247,16 @@ public class SalesController {
     	Sale sales = salesRepository.findById(saleId).orElseThrow();
     	Account account = accountRepository.findById
     			(sales.getAccountId()).orElse(null);
-    	String salesName;
+    	String saleName;
     	
     	if (account != null && account.isActive()) {
-            salesName = account.getName();
+            saleName = account.getName();
         }else {
-        	salesName = "退職済みユーザー";
+        	saleName = "退職済みユーザー";
         }
     	
         model.addAttribute("sales", sales);
-        model.addAttribute("salesName", salesName);
+        model.addAttribute("saleName", saleName);
         model.addAttribute("accountList", 
         		accountRepository.findAll());
         model.addAttribute("categoryList", 
