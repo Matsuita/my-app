@@ -138,13 +138,25 @@ public class SearchController {
 		return "S0044";
 	}
 
-	// 実際の削除
+	// 実際の削除 (←物理削除なので変更します。5月20日)
+	//	@PostMapping("/accounts/delete/execute")
+	//	public String deleteExecute(@ModelAttribute AccountDeleteForm account, SessionStatus sessionStatus) {
+	//		searchRepository.deleteById(account.getAccountId());
+	//		sessionStatus.setComplete();
+	//		return "redirect:/accounts/result";
+	//	}
+
+	//	アカウント論理削除
 	@PostMapping("/accounts/delete/execute")
 	public String deleteExecute(@ModelAttribute AccountDeleteForm account, SessionStatus sessionStatus) {
-		searchRepository.deleteById(account.getAccountId());
-		sessionStatus.setComplete();
-		return "redirect:/accounts/result";
+	    // 修正前：searchRepository.deleteById(account.getAccountId());
+	    // 修正後：新しく作った論理削除のメソッドを呼び出す
+	    searchRepository.logicalDeleteById(account.getAccountId());
+	    
+	    sessionStatus.setComplete();
+	    return "redirect:/accounts/result";
 	}
+	
 
 	@GetMapping("/accounts/result")
 	public String resultFromSession(

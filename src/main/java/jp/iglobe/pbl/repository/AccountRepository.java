@@ -17,14 +17,18 @@ public interface AccountRepository
 
 	// 一覧取得
 	List<Account> findAll();
-	
-//	テーブル検索
+
+	//	テーブル検索
 	Optional<Account> findById(Integer accountId);
-	
-//	検索用
+
+	//	検索用
 	List<Account> findByAccountIdInAndIsActiveTrue(List<Integer> accountIds);
-	
-//	登録用（×売上権限・退職済み）
+
+	//	登録用（×売上権限・退職済み）
 	List<Account> findBySalesAuthorityAndIsActive(Integer salesAuthority, boolean isActive);
-	
+
+	//	既に登録されているメールアドレスを弾くための記述
+	// mailカラムに存在するかどうかを真偽値で返す
+	boolean existsByMail(String mail);
+
 }
