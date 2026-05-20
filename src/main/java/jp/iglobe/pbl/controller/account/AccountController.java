@@ -55,7 +55,13 @@ public class AccountController {
 			result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードとパスワード（確認）の入力値が異なります。");
 			return "S0030"; // 入力画面へ戻る
 		}
-		//		
+		
+		// データベースに同じメールアドレスがあるか直接チェックする
+	    if (accountRepository.existsByMail(accountForm.getMail())) {
+	        result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のパスワードで登録してください。");
+	        return "S0030"; // 重複していたら入力画面（S0030）へ戻る
+	    }
+			
 
 		// 全てOKなら確認画面（S0031）へ
 		return "S0031";
