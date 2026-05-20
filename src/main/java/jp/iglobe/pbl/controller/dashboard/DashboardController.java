@@ -215,7 +215,6 @@ public class DashboardController {
     	        "salesComment",
     	        salesComment);
 
-        
         model.addAttribute("jan", monthlySales.get(0));
         model.addAttribute("feb", monthlySales.get(1));
         model.addAttribute("mar", monthlySales.get(2));

@@ -360,8 +360,7 @@ public class SalesSearchController {
 	    }
 
 	    // アカウント取得
-	    Account account =
-	            accountRepository
+	    Account account = accountRepository
 	                .findById(
 	                    sales.getAccountId())
 	                .orElse(null);
