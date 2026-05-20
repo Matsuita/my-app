@@ -53,8 +53,7 @@
 						<div class="form-row">
 							<div class="form-label">担当</div>
 							<div class="form-input">
-								<input type="text" readonly th:each="account : ${accountList}"
-									th:if="${account.accountId == salesForm.accountId}" th:value="${account.name}">
+								<input type="text" readonly th:value="${saleName}">
 							</div>
 						</div>
 
@@ -99,7 +98,7 @@
 
             <button type="submit" class="btn btn-primary">
                 <i class="bi bi-check-lg btn-icon"></i>更新</button>
-            <a th:href="@{/sales/edit}"class="btn btn-secondary">キャンセル</a>
+            <a th:href="@{/sales/detail(saleId=${salesForm.saleId})}"class="btn btn-secondary">キャンセル</a>
         </div>
 
     </form>

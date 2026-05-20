@@ -58,6 +58,22 @@ public class SalesController {
 
         return "S0010";
     }
+    
+//    売上確認→キャンセルボタン時
+    @PostMapping("/S0010")
+    public String cancel(SalesCreateForm salesCreateForm, Model model) {
+
+        List<Account> accountList =
+                accountRepository.findBySalesAuthorityAndIsActive(2, true);
+        List<Category> categoryList =
+                categoryRepository.findAll();
+
+        model.addAttribute("salesCreateForm", salesCreateForm);
+        model.addAttribute("accountList",accountList);
+        model.addAttribute("categoryList",categoryList);
+
+        return "S0010";
+    }
 
     // 売上登録確認画面
     @PostMapping("/S0011")
