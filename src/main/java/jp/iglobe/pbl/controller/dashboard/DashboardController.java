@@ -115,7 +115,7 @@ public class DashboardController {
         	                messages.length)
         	        ];
         	
-        	int target = 100000;
+        	int target = 30000;
 
         	int achievementRate =
         	        todaySales * 100 / target;
