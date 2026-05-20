@@ -36,9 +36,7 @@
 				<div class="form-label">担当</div>
 				<div class="form-input">
 					<input type="text" readonly
-						th:each="account : ${accountList}"
-						th:if="${account != null and account.accountId == sales.accountId}"
-						th:value="${account.name}">
+						th:value="${saleName}">
 				</div>
 			</div>
 
