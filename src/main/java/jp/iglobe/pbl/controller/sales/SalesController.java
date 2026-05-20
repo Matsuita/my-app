@@ -17,6 +17,7 @@ import jp.iglobe.pbl.model.category.Category;
 import jp.iglobe.pbl.model.sales.Sale;
 import jp.iglobe.pbl.model.sales.SalesCreateForm;
 import jp.iglobe.pbl.model.sales.SalesForm;
+import jp.iglobe.pbl.model.sales.SalesSearchForm;
 import jp.iglobe.pbl.repository.AccountRepository;
 import jp.iglobe.pbl.repository.CategoryRepository;
 import jp.iglobe.pbl.repository.SalesRepository;
@@ -25,25 +26,27 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class SalesController {
-
     // 担当
     private final AccountRepository accountRepository;
-
     // 商品カテゴリ
     private final CategoryRepository categoryRepository;
-
     // 売上
     private final SalesRepository salesRepository;
 
     // 売上登録画面
-
     @GetMapping("/S0010")
-    public String newSale(Model model) {
+    public String newSale(HttpSession session, Model model) {
+    	
+    	Account loginUser =	(Account) session.getAttribute("loginUser");
+   	    // 権限チェック
+   	    if(loginUser.getSalesAuthority() != 2){
+
+   	    	return "redirect:/dashboard";
+   	    }
 
         // 担当一覧
         List<Account> accountList =
                 accountRepository.findBySalesAuthorityAndIsActive(2, true);
-
         // カテゴリ一覧
         List<Category> categoryList =
                 categoryRepository.findAll();
@@ -57,7 +60,6 @@ public class SalesController {
     }
 
     // 売上登録確認画面
-
     @PostMapping("/S0011")
     public String salesConfirm(@Valid
             SalesCreateForm salesCreateForm, BindingResult result, Model model) {
@@ -66,7 +68,6 @@ public class SalesController {
     	
     	List<Category> categoryList =
                 categoryRepository.findAll();
-    	
     	
     	// アカウント存在チェック
     	Account account = null;
@@ -97,7 +98,7 @@ public class SalesController {
         	}
     	}
     	
-//    	未入力エラー
+//    	入力エラー
     	if(result.hasErrors()) {
     		
     		model.addAttribute("salesCreateForm", salesCreateForm);
@@ -119,9 +120,23 @@ public class SalesController {
         
         return "S0011";
     }
+    
+//    直接URL入力の場合、売上登録へ
+    @GetMapping("/S0011")
+    public String getS0011(Model model){
+    	List<Account> accountList =
+                accountRepository.findBySalesAuthorityAndIsActive(2, true);
+    	List<Category> categoryList =
+                categoryRepository.findAll();
+    	
+    	model.addAttribute("salesCreateForm", new SalesCreateForm());
+        model.addAttribute("accountList",accountList);
+        model.addAttribute("categoryList",categoryList);
+    	
+    	return "redirect:/S0010";
+    }
 
     // 売上登録実行
-
     @PostMapping("/salesCreate")
     public String salesCreate(SalesCreateForm salesCreateForm) {
     	
@@ -138,6 +153,21 @@ public class SalesController {
         salesRepository.save(sale);
 
         return "redirect:/S0010";
+    }
+    
+//  直接URL入力の場合、売上登録へ
+    @GetMapping("/salesCreate")
+    public String getCreate(Model model){
+    	List<Account> accountList =
+                accountRepository.findBySalesAuthorityAndIsActive(2, true);
+    	List<Category> categoryList =
+                categoryRepository.findAll();
+    	
+    	model.addAttribute("salesCreateForm", new SalesCreateForm());
+        model.addAttribute("accountList",accountList);
+        model.addAttribute("categoryList",categoryList);
+    	
+    	return "redirect:/S0010";
     }
 
 
@@ -176,7 +206,7 @@ public class SalesController {
     	    }
     	}
 
-        // 未入力エラー
+        // 入力エラー
         if(result.hasErrors()){
 
             model.addAttribute("accountList",
@@ -238,9 +268,24 @@ public class SalesController {
      
         return "S0024";
     }
+    
+//    直接URL入力の場合、検索画面へ
+    @GetMapping("/S0024")
+  public String getEditConfirm(Model model) {
+    	model.addAttribute("salesSearchForm", new SalesSearchForm());
+    	
+    	//担当一覧
+    	List<Integer> accountIds = salesRepository.findUsedAccountIds();
+		model.addAttribute("accountList", accountRepository
+			        .findByAccountIdInAndIsActiveTrue(accountIds));
+		// カテゴリー一覧
+		model.addAttribute("categoryList", categoryRepository.findAll());
+		
+    	return "redirect:/S0020";
+    }
+    
 
     // 売上詳細削除確認画面
-
     @PostMapping("/sales/delete")
     public String deleteConfirm(Integer saleId, Model model) {
 
@@ -265,6 +310,21 @@ public class SalesController {
         return "S0025";
     }
     
+//    直接URL入力の場合、検索画面へ
+    @GetMapping("/sales/delete")
+    public String getDelete(Model model) {
+    	model.addAttribute("salesSearchForm", new SalesSearchForm());
+    	//担当一覧
+    	List<Integer> accountIds = salesRepository.findUsedAccountIds();
+		model.addAttribute("accountList", accountRepository
+			        .findByAccountIdInAndIsActiveTrue(accountIds));
+		// カテゴリー一覧
+		model.addAttribute("categoryList", categoryRepository.findAll());
+		
+    	return "redirect:/S0020";
+    }
+    
+//    削除実行
     @PostMapping("/sales/delete/execute")
     public String salesDelete(Integer saleId,HttpSession session) {
         // 削除
@@ -279,4 +339,19 @@ public class SalesController {
         // 一覧へ
         return "redirect:/S0021";
     }
+    
+//    直接URL入力の場合、検索画面へ
+    @GetMapping("/sales/delete/execute")
+    public String getExecute(Model model) {
+    	model.addAttribute("salesSearchForm", new SalesSearchForm());
+    	//担当一覧
+    	List<Integer> accountIds = salesRepository.findUsedAccountIds();
+		model.addAttribute("accountList", accountRepository
+			        .findByAccountIdInAndIsActiveTrue(accountIds));
+		// カテゴリー一覧
+		model.addAttribute("categoryList", categoryRepository.findAll());
+		
+    	return "redirect:/S0020";
+    }
+    
 }
