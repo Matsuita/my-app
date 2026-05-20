@@ -16,308 +16,108 @@
     <link rel="stylesheet"
           th:href="@{/teamb.css}">
 
-    <style>
-
-        body{
-            background:#f5f5f5;
-            font-family:"Yu Gothic",sans-serif;
-        }
-
-		.search-container{
-		    width:760px;
-		    margin:60px auto 40px auto;
-		}
-
-		h1{
-		    font-size:42px;
-		    margin-bottom:30px;
-		    color:#222;
-		}
-
-		.form-row{
-		    display:flex;
-		    align-items:flex-start;
-		    margin-bottom:16px;
-		}
-
-		.label-area{
-		    width:180px;
-		    text-align:right;
-		    margin-right:20px;
-		    font-size:16px;
-		    font-weight:bold;
-		    color:#222;
-		    padding-top:10px;
-		}
-
-		.input-area{
-		    width:460px;
-		}
-
-		input[type="date"]{
-		    width:170px;
-		    height:44px;
-		    border:1px solid #d6d6d6;
-		    border-radius:5px;
-		    padding:8px 12px;
-		    font-size:15px;
-		    background:white;
-		}
-
-		select{
-		    width:100%;
-		    height:44px;
-		    border:1px solid #d6d6d6;
-		    border-radius:5px;
-		    padding-left:14px;
-		    font-size:15px;
-		    background:white;
-		}
-
-		input[type="text"]{
-		    width:100%;
-		    height:44px;
-		    border:1px solid #d6d6d6;
-		    border-radius:5px;
-		    padding-left:14px;
-		    font-size:15px;
-		    background:white;
-		}
-
-		.wave{
-		    margin:0 18px;
-		    font-size:22px;
-		}
-
-		.partial-badge{
-		    background:#7c7c7c;
-		    color:white;
-		    border-radius:20px;
-		    font-size:11px;
-		    padding:2px 8px;
-		    margin-left:6px;
-		    font-weight:normal;
-		}
-
-		.button-area{
-		    margin-top:25px;
-		    margin-left:200px;
-		}
-
-		.search-btn{
-		    width:110px;
-		    height:44px;
-		    background:#2f80c9;
-		    border:none;
-		    border-radius:5px;
-		    color:white;
-		    font-size:16px;
-		    font-weight:bold;
-		    margin-right:10px;
-		}
-
-		.clear-btn{
-		    width:110px;
-		    height:44px;
-		    background:white;
-		    border:1px solid #ccc;
-		    border-radius:5px;
-		    font-size:16px;
-		    font-weight:bold;
-		}
-
-		.error-message{
-		    color:red;
-		    font-size:12px;
-		    margin-left:200px;
-		    margin-top:4px;
-		}
-
-    </style>
-
+    
 </head>
 
 <body>
 
 <div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-<div class="search-container">
+<div class="main-box">
 
-    <h1>売上検索条件入力</h1>
+    <div class="title">売上検索条件入力</div>
 
     <form th:action="@{/sales/search}"
           th:object="${salesSearchForm}"
-          method="post">
+          method="post"
+          class="form-area">
 
         <!-- 販売日 -->
+        <div class="form-row">
+            <div class="form-label">販売日</div>
 
-		<!-- 販売日 -->
+            <div class="form-input">
+                <input type="date" th:field="*{saleDateFrom}">
+                <span class="wave">～</span>
+                <input type="date" th:field="*{saleDateTo}">
+            </div>
+        </div>
 
-		<div class="form-row">
-
-		    <div class="label-area">
-		        販売日
-		    </div>
-
-		    <div class="input-area">
-
-		        <input type="date"
-		               th:field="*{saleDateFrom}">
-
-		        <span class="wave">～</span>
-
-		        <input type="date"
-		               th:field="*{saleDateTo}">
-
-		    </div>
-
-		</div>
-
-		<!-- エラー -->
-
-		<div class="error-message"
-		     th:text="${dateFromError}">
-		</div>
-
-		<div class="error-message"
-		     th:text="${dateToError}">
-		</div>
-		
-		<div class="error-message"
-		     th:text="${dateRangeError}">
-		</div>
+        <!-- エラー -->
+        <div class="error" th:text="${dateFromError}"></div>
+        <div class="error" th:text="${dateToError}"></div>
+        <div class="error" th:text="${dateRangeError}"></div>
 
         <!-- 担当 -->
-
         <div class="form-row">
-
-            <div class="label-area">
-                担当
-            </div>
-
-            <div class="input-area">
-
+            <div class="form-label">担当</div>
+            <div class="form-input">
                 <select th:field="*{accountId}">
-
-                    <option value="">
-                        選択してください
-                    </option>
-
+                    <option value="">選択してください</option>
                     <option th:each="account : ${accountList}"
                             th:value="${account.accountId}"
                             th:text="${account.name}">
                     </option>
-
                 </select>
-
             </div>
-
         </div>
 
         <!-- 商品カテゴリー -->
-
         <div class="form-row">
-
-            <div class="label-area">
-                商品カテゴリー
-            </div>
-
-            <div class="input-area">
-
+            <div class="form-label">商品カテゴリー</div>
+            <div class="form-input">
                 <select th:field="*{categoryId}">
-
-                    <option value="">
-                        選択してください
-                    </option>
-
+                    <option value="">選択してください</option>
                     <option th:each="category : ${categoryList}"
                             th:value="${category.categoryId}"
                             th:text="${category.categoryName}">
                     </option>
-
                 </select>
-
             </div>
-
         </div>
 
         <!-- 商品名 -->
-
         <div class="form-row">
-
-            <div class="label-area">
-
+            <div class="form-label">
                 商品名
-
-                <span class="partial-badge">
-                    部分一致
-                </span>
-
+                <span class="partial-badge">部分一致</span>
             </div>
-
-            <div class="input-area">
-
+            <div class="form-input">
                 <input type="text"
-                       placeholder="商品名"
-                       th:field="*{tradeName}">
-
+                       th:field="*{tradeName}"
+                       placeholder="商品名">
             </div>
-
         </div>
 
         <!-- 備考 -->
-
         <div class="form-row">
-
-            <div class="label-area">
-
+            <div class="form-label">
                 備考
-
-                <span class="partial-badge">
-                    部分一致
-                </span>
-
+                <span class="partial-badge">部分一致</span>
             </div>
-
-            <div class="input-area">
-
+            <div class="form-input">
                 <input type="text"
-                       placeholder="備考"
-                       th:field="*{note}">
-
+                       th:field="*{note}"
+                       placeholder="備考">
             </div>
-
         </div>
 
+        <!-- エラー -->
+        <div class="error" th:text="${searchError}"></div>
+
         <!-- ボタン -->
-		
-		<div class="error-message"
-		     th:text="${searchError}">
-		</div>
-
-        <div class="button-area">
-
-            <button type="submit"
-                    class="search-btn">
-
-                <i class="bi bi-search"></i>
-                検索
-
+        <div class="btn-area-center">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> 検索
             </button>
 
-            <button type="reset"
-                    class="clear-btn">
-
+            <button type="reset" class="btn btn-secondary">
                 クリア
-
             </button>
-
         </div>
 
     </form>
-
 </div>
-
 </body>
 
 </html>
