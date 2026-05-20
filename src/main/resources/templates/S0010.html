@@ -16,103 +16,111 @@
 </head>
 
 <body>
-	<div th:replace="fragment/navbar :: navbar('sales')"></div>
+    <div th:replace="fragment/navbar :: navbar('sales')"></div>
 
-	<h1>売上登録</h1>
+    <div class="main-box">
 
-	<form th:action="@{/S0011}"
-		  th:object="${salesCreateForm}"
-		  method="post">
+        <!-- タイトル -->
+        <div class="title">売上登録</div>
 
-		<!-- 販売日 -->
-		<div>
-			販売日　＜必須＞
-			<input type="date"
-				   th:field="*{saleDate}">
-			<div th:errors="*{saleDate}">
-			</div>
-		</div>
+        <!-- フォーム -->
+        <form th:action="@{/S0011}"
+              th:object="${salesCreateForm}"
+              method="post"
+              class="form-area">
 
-		<!-- 担当 -->
-		<div>
-			担当　＜必須＞
-			<select th:field="*{accountId}">
-				<option value="">
-					選択してください
-				</option>
-				<option th:each="account : ${accountList}"
-						th:value="${account.accountId}"
-						th:text="${account.name}">
-				</option>
-			</select>
-			<div th:errors="*{accountId}">
-			</div>
-		</div>
+            <!-- 販売日 -->
+            <div class="form-row">
+                <div class="form-label">販売日 <span class="badge-gray">必須</span></div>
+                <div class="form-input short">
+                    <input type="date" th:field="*{saleDate}">
+                    <div class="error" th:errors="*{saleDate}"></div>
+                </div>
+            </div>
 
-		<!-- 商品カテゴリー -->
-		<div>
-			商品カテゴリー　＜必須＞
-			<select th:field="*{categoryId}">
-				<option value="">
-					選択してください
-				</option>
-				<option th:each="category : ${categoryList}"
-						th:value="${category.categoryId}"
-						th:text="${category.categoryName}">
-				</option>
-			</select>
-			<div th:errors="*{categoryId}">
-			</div>
-		</div>
+            <!-- 担当 -->
+            <div class="form-row">
+                <div class="form-label">担当 <span class="badge-gray">必須</span></div>
+                <div class="form-input">
+                    <select th:field="*{accountId}">
+                        <option value="">選択してください</option>
+                        <option th:each="account : ${accountList}"
+                                th:value="${account.accountId}"
+                                th:text="${account.name}">
+                        </option>
+                    </select>
+                    <div class="error" th:errors="*{accountId}"></div>
+                </div>
+            </div>
 
-		<!-- 商品名 -->
-		<div>
-			商品名　＜必須＞
-			<input type="text"
-				   th:field="*{tradeName}"
-				   placeholder="商品名">
-			<div th:errors="*{tradeName}">
-			</div>
-		</div>
+            <!-- 商品カテゴリー -->
+            <div class="form-row">
+                <div class="form-label">商品カテゴリー <span class="badge-gray">必須</span></div>
+                <div class="form-input">
+                    <select th:field="*{categoryId}">
+                        <option value="">選択してください</option>
+                        <option th:each="category : ${categoryList}"
+                                th:value="${category.categoryId}"
+                                th:text="${category.categoryName}">
+                        </option>
+                    </select>
+                    <div class="error" th:errors="*{categoryId}"></div>
+                </div>
+            </div>
 
-		<!-- 単価 -->
+            <!-- 商品名 -->
+            <div class="form-row">
+                <div class="form-label">商品名 <span class="badge-gray">必須</span></div>
+                <div class="form-input">
+                    <input type="text"
+                           th:field="*{tradeName}"
+                           placeholder="商品名">
+                    <div class="error" th:errors="*{tradeName}"></div>
+                </div>
+            </div>
 
-		<div>
-			単価　＜必須＞
-			<input type="text"
-				   th:field="*{unitPrice}"
-				   placeholder="単価">
-			<div th:errors="*{unitPrice}">
-			</div>
-		</div>
-		
-		<!-- 個数 -->
-		<div>
-			個数　＜必須＞
-			<input type="text"
-				   th:field="*{saleNumber}"
-				   placeholder="個数">
-			<div th:errors="*{saleNumber}">
-			</div>
-		</div>
+            <!-- 単価 -->
+            <div class="form-row">
+                <div class="form-label">単価 <span class="badge-gray">必須</span></div>
+                <div class="form-input short">
+                    <input type="text"
+                           th:field="*{unitPrice}"
+                           placeholder="単価">
+                    <div class="error" th:errors="*{unitPrice}"></div>
+                </div>
+            </div>
 
-		<!-- 備考 -->
-		<div>
-			備考
-			<input type="text"
-				   th:field="*{note}"
-				   placeholder="備考">
-			<div th:errors="*{note}">
-			</div>
-		</div>
+            <!-- 個数 -->
+            <div class="form-row">
+                <div class="form-label">個数 <span class="badge-gray">必須</span></div>
+                <div class="form-input short">
+                    <input type="text"
+                           th:field="*{saleNumber}"
+                           placeholder="個数">
+                    <div class="error" th:errors="*{saleNumber}"></div>
+                </div>
+            </div>
 
-		<!-- ボタン -->
-		<button type="submit">
-			登録
-		</button>
+            <!-- 備考 -->
+            <div class="form-row">
+                <div class="form-label">備考</div>
+                <div class="form-input">
+                    <input type="text"
+                           th:field="*{note}"
+                           placeholder="備考">
+                    <div class="error" th:errors="*{note}"></div>
+                </div>
+            </div>
 
-	</form>
+            <!-- ボタン -->
+            <div class="btn-area-center">
+                <button type="submit" class="btn btn-primary">
+                    ✓登録
+                </button>
+            </div>
 
+        </form>
+    </div>
 </body>
 
 </html>

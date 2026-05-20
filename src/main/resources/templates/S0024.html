@@ -3,190 +3,101 @@
 
 <head>
 
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
 
-<title>売上詳細編集確認画面</title>
+	<title>売上詳細編集確認画面</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<link rel="stylesheet"
-      th:href="@{/teamb.css}">
+	<link rel="stylesheet" th:href="@{/teamb.css}">
 
-<style>
 
-    body{
-        background:transparent;
-        font-family:"Yu Gothic",sans-serif;
-    }
-
-    .confirm-container{
-        width:760px;
-        margin:60px auto 40px auto;
-    }
-
-    h1{
-        font-size:42px;
-        margin-bottom:30px;
-        color:#222;
-    }
-
-	table{
-	    width:100%;
-	    border-collapse:collapse;
-	}
-
-    tr{
-        border-bottom:1px solid #ddd;
-    }
-
-	th{
-	    width:220px;
-	    padding:16px;
-	    text-align:left;
-	    font-size:16px;
-	    font-weight:bold;
-	    color:#222;
-	    background:transparent;
-	}
-
-    td{
-        padding:16px;
-        font-size:15px;
-        color:#333;
-    }
-
-    .button-area{
-        margin-top:25px;
-        text-align:center;
-    }
-
-    .update-btn{
-        width:110px;
-        height:44px;
-        border:none;
-        border-radius:5px;
-        background:#2f80c9;
-        color:white;
-        font-size:16px;
-        font-weight:bold;
-        margin-right:10px;
-    }
-
-    .cancel-btn{
-        width:120px;
-        height:44px;
-        border:1px solid #ccc;
-        border-radius:5px;
-        background:white;
-        color:#333;
-        font-size:16px;
-        font-weight:bold;
-        text-decoration:none;
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-    }
-
-    .btn-icon{
-        margin-right:4px;
-    }
-
-</style>
 
 </head>
 
 <body>
 
-<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
+	<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-<div class="confirm-container">
+	<div class="main-box">
+		<div class="form-box">
+			<div class="title">売上詳細編集確認</div>
 
-    <h1>売上詳細編集確認</h1>
+			<form th:action="@{/sales/update}" th:object="${salesForm}" method="post">
 
-    <form th:action="@{/sales/update}" th:object="${salesForm}" method="post">
+				<!-- hidden -->
+				<input type="hidden" th:field="*{saleId}">
+				<input type="hidden" th:field="*{authority}">
+				<input type="hidden" th:field="*{saleDate}">
+				<input type="hidden" th:field="*{accountId}">
+				<input type="hidden" th:field="*{categoryId}">
+				<input type="hidden" th:field="*{tradeName}">
+				<input type="hidden" th:field="*{unitPrice}">
+				<input type="hidden" th:field="*{saleNumber}">
+				<input type="hidden" th:field="*{note}">
 
-        <!-- hidden -->
-        <input type="hidden" th:field="*{saleId}">
-        <input type="hidden" th:field="*{authority}">
-        <input type="hidden" th:field="*{saleDate}">
-        <input type="hidden" th:field="*{accountId}">
-        <input type="hidden" th:field="*{categoryId}">
-        <input type="hidden" th:field="*{tradeName}">
-        <input type="hidden" th:field="*{unitPrice}">
-        <input type="hidden" th:field="*{saleNumber}">
-        <input type="hidden" th:field="*{note}">
+				<div class="form-row">
+					<div class="form-label">販売日</div>
+					<div class="form-input short">
+						<input type="date" th:value="*{saleDate}" readonly>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-label">担当</div>
+					<div class="form-input">
+						<input type="text" readonly th:each="account : ${accountList}"
+							th:if="${account.accountId == salesForm.accountId}" th:value="${account.name}">
+					</div>
+				</div>
 
-        <!-- 表示 -->
+				<div class="form-row">
+					<div class="form-label">商品カテゴリー</div>
+					<div class="form-input">
+						<input type="text" readonly th:each="category : ${categoryList}"
+							th:if="${category.categoryId == salesForm.categoryId}" th:value="${category.categoryName}">
+					</div>
+				</div>
 
-		<table>
-			<tr>
-				<th>販売日</th>
-				<td th:text="*{saleDate}">	
-				</td>
-            </tr>
+				<div class="form-row">
+					<div class="form-label">商品名</div>
+					<div class="form-input">
+						<input type="text" th:value="*{tradeName}" readonly>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-label">単価</div>
+					<div class="form-input short">
+						<input type="text" th:value="*{#numbers.formatInteger(unitPrice, 0, 'COMMA')}" readonly>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-label">個数</div>
+					<div class="form-input short">
+						<input type="text" th:value="*{#numbers.formatInteger(saleNumber, 0, 'COMMA')}" readonly>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-label">備考</div>
 
-            <tr>
-				<th>担当</th>
-				<td>
-					<span th:each="account : ${accountList}">
-						<span th:if="${account.accountId == salesForm.accountId}" th:text="${account.name}">
-						</span>
-					</span>
-				</td>
-			 </tr>
+					<div class="form-input">
+						<textarea readonly th:text="*{note}"></textarea>
+					</div>
+				</div>
 
-			<tr>
-				<th>商品カテゴリー</th>
-				<td>
-					<span th:each="category : ${categoryList}">
-						<span th:if="${category.categoryId == salesForm.categoryId}" th:text="${category.categoryName}">
-						</span>
-					</span>
-				</td>
-			</tr>
+				<div class="btn-area-center">
+					<button type="submit" class="btn btn-primary">
+						<i class="bi bi-check-lg"></i> 更新
+					</button>
+					<a th:href="@{/sales/edit}" class="btn btn-secondary">キャンセル</a>
+				</div>
 
-            <tr>
-				<th>商品名</th>
-				<td th:text="*{tradeName}">
-				</td>
-            </tr>
+			</form>
 
-            <tr>
-				<th>単価</th>
-				<td th:text="*{#numbers.formatInteger(unitPrice, 0, 'COMMA')}">
-				</td>
-			</tr>
 
-            <tr>
-				<th>個数</th>
-				<td th:text="*{#numbers.formatInteger(saleNumber, 0, 'COMMA')}">
-				</td>
-			</tr>
-
-			<tr>
-				<th>備考</th>
-				<td th:text="*{note}">
-				</td>
-			</tr>
-		</table>
-
-        <!-- ボタン -->
-
-        <div class="button-area">
-
-            <button type="submit" class="update-btn">
-                <i class="bi bi-check-lg btn-icon"></i>更新</button>
-            <a th:href="@{/sales/edit}"class="cancel-btn">キャンセル</a>
-        </div>
-
-    </form>
-
-</div>
-
+		</div>
+	</div>
 </body>
 
 </html>
