@@ -21,6 +21,10 @@ public interface AccountRepository
 //	テーブル検索
 	Optional<Account> findById(Integer accountId);
 	
-//	売上権限
-	List<Account> findBySalesAuthority(Integer salesAuthority);
+//	検索用
+	List<Account> findByIdInAndIsActivTrue(List<Integer> accountIds);
+	
+//	登録用（×売上権限・退職済み）
+	List<Account> findBySalesAuthorityAndIsActive(Integer salesAuthority, boolean isActive);
+	
 }

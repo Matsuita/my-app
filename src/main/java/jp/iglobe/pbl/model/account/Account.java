@@ -29,6 +29,8 @@ public class Account {
     private Integer salesAuthority;
     
     private Integer accountsAuthority;
+    
+    private boolean isActive;
 
 //    private Integer authority;
     
