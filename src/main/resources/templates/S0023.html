@@ -13,126 +13,7 @@
 
 	<link rel="stylesheet" th:href="@{/teamb.css}">
 
-	<style>
-		body {
-			background: #f5f5f5;
-			font-family: "Yu Gothic", sans-serif;
-			padding-bottom: 80px;
-		}
 
-		.edit-container {
-			width: 760px;
-			margin: 60px auto 40px auto;
-		}
-
-		h1 {
-			font-size: 42px;
-			margin-bottom: 30px;
-			color: #222;
-		}
-
-		.form-row {
-			display: flex;
-			align-items: flex-start;
-			margin-bottom: 16px;
-		}
-
-		.label-area {
-			width: 180px;
-			text-align: right;
-			margin-right: 20px;
-			font-size: 16px;
-			font-weight: bold;
-			color: #222;
-			padding-top: 10px;
-		}
-
-		.required-badge {
-			background: #7b7b7b;
-			color: white;
-			border-radius: 20px;
-			font-size: 11px;
-			padding: 2px 8px;
-			margin-left: 6px;
-		}
-
-		.input-area {
-			width: 460px;
-		}
-
-		.text-input {
-			width: 100%;
-			height: 44px;
-			border: 1px solid #d6d6d6;
-			border-radius: 5px;
-			padding-left: 14px;
-			font-size: 15px;
-			background: white;
-		}
-
-		.small-input {
-			width: 170px;
-		}
-
-		.textarea-input {
-			width: 100%;
-			height: 130px;
-			border: 1px solid #d6d6d6;
-			border-radius: 5px;
-			padding: 12px;
-			font-size: 15px;
-			resize: none;
-			background: white;
-		}
-
-		select {
-			width: 100%;
-			height: 44px;
-			border: 1px solid #d6d6d6;
-			border-radius: 5px;
-			padding-left: 14px;
-			font-size: 15px;
-			background: white;
-		}
-
-		.error-message {
-			color: red;
-			font-size: 12px;
-			margin-top: 4px;
-		}
-
-		.button-area {
-			margin-top: 25px;
-			margin-left: 200px;
-		}
-
-		.update-btn {
-			width: 110px;
-			height: 44px;
-			border: none;
-			border-radius: 5px;
-			background: #2f80c9;
-			color: white;
-			font-size: 16px;
-			font-weight: bold;
-			margin-right: 10px;
-		}
-
-		.cancel-btn {
-			width: 120px;
-			height: 44px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			background: white;
-			color: #333;
-			font-size: 16px;
-			font-weight: bold;
-		}
-
-		.btn-icon {
-			margin-right: 4px;
-		}
-	</style>
 
 </head>
 
@@ -140,9 +21,10 @@
 
 	<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-	<div class="edit-container">
+	<div class="main-box">
 
-		<h1>売上詳細編集</h1>
+		<!-- ★タイトルもclass合わせる -->
+		<div class="title">売上詳細編集</div>
 
 		<form th:action="@{/S0024}" th:object="${salesForm}" method="post">
 
@@ -157,164 +39,103 @@
 			<!-- 販売日 -->
 
 			<div class="form-row">
-
-				<div class="label-area">
-
-					販売日
-
-					<span class="required-badge">
-						必須
-					</span>
-
+				<div class="form-label">
+					販売日 <span class="badge-gray">必須</span>
 				</div>
-
-				<div class="input-area">
-
-					<input type="date" class="text-input small-input" th:field="*{saleDate}">
-
-					<div class="error-message" th:errors="*{saleDate}">
-					</div>
-
+				<div class="form-input short">
+					<input type="date" th:field="*{saleDate}">
+					<div class="error" th:errors="*{saleDate}"></div>
 				</div>
-
 			</div>
+
 
 			<!-- 担当 -->
 
 			<div class="form-row">
+				<div class="form-label">
+					担当 <span class="badge-gray">必須</span>
+				</div>
+				<div class="form-input">
 
-			    <div class="label-area">
 
-			        担当
 
-			        <span class="required-badge">
-			            必須
-			        </span>
 
-			    </div>
+					<div th:if="${accountName == '（退職済みユーザー）'}">
 
-			    <div class="input-area">
+						<input type="text" class="form-control" value="（退職済みユーザー）" readonly>
 
-			        <div th:if="${accountName == '（退職済みユーザー）'}">
+						<input type="hidden" th:field="*{accountId}">
 
-			            <input type="text"
-			                   class="form-control"
-			                   value="（退職済みユーザー）"
-			                   readonly>
+					</div>
 
-			            <input type="hidden"
-			                   th:field="*{accountId}">
+					<select th:unless="${accountName == '（退職済みユーザー）'}" th:field="*{accountId}">
 
-			        </div>
+						<option value="">
+							選択してください
+						</option>
 
-			        <select th:unless="${accountName == '（退職済みユーザー）'}"
-			                th:field="*{accountId}">
+						<option th:each="account : ${accountList}" th:value="${account.accountId}"
+							th:text="${account.name}">
+						</option>
 
-			            <option value="">
-			                選択してください
-			            </option>
+					</select>
 
-			            <option th:each="account : ${accountList}"
-			                    th:value="${account.accountId}"
-			                    th:text="${account.name}">
-			            </option>
+					<div class="error" th:errors="*{accountId}">
+					</div>
 
-			        </select>
-
-			        <div class="error-message"
-			             th:errors="*{accountId}">
-			        </div>
-
-			    </div>
+				</div>
 
 			</div>
 
 			<!-- 商品カテゴリー -->
 
 			<div class="form-row">
-
-				<div class="label-area">
-
-					商品カテゴリー
-
-					<span class="required-badge">
-						必須
-					</span>
-
+				<div class="form-label">
+					商品カテゴリー <span class="badge-gray">必須</span>
 				</div>
-
-				<div class="input-area">
-
+				<div class="form-input">
 					<select th:field="*{categoryId}">
-
-						<option value="">
-							選択してください
-						</option>
-
+						<option value="">選択してください</option>
 						<option th:each="category : ${categoryList}" th:value="${category.categoryId}"
 							th:text="${category.categoryName}">
 						</option>
-
 					</select>
-
-					<div class="error-message" th:errors="*{categoryId}">
-					</div>
-
+					<div class="error" th:errors="*{categoryId}"></div>
 				</div>
-
 			</div>
 
 			<!-- 商品名 -->
 
 			<div class="form-row">
-
-				<div class="label-area">
-
-					商品名
-
-					<span class="required-badge">
-						必須
-					</span>
-
+				<div class="form-label">
+					商品名 <span class="badge-gray">必須</span>
 				</div>
-
-				<div class="input-area">
-
-					<input type="text" class="text-input" th:field="*{tradeName}">
-
-					<div class="error-message" th:errors="*{tradeName}">
-					</div>
-
+				<div class="form-input">
+					<input type="text" th:field="*{tradeName}">
+					<div class="error" th:errors="*{tradeName}"></div>
 				</div>
-
 			</div>
+
 
 			<!-- 単価 -->
 
 			<div class="form-row">
-
-				<div class="label-area">
-
-					単価
-
-					<span class="required-badge">
-						必須
-					</span>
-
+				<div class="form-label">
+					単価 <span class="badge-gray">必須</span>
 				</div>
 
-				<div class="input-area">
+				<div class="form-input short">
 
-					<input type="text" class="text-input small-input" th:field="*{unitPrice}">
+					<input type="text" th:field="*{unitPrice}">
 
 					<!-- BeanValidation -->
 
-					<div class="error-message" th:errors="*{unitPrice}">
+					<div class="error" th:errors="*{unitPrice}">
 					</div>
 
 					<!-- 形式エラー -->
 
-					<div class="error-message" th:text="${unitPriceError}">
+					<div class="error" th:text="${unitPriceError}">
 					</div>
 
 				</div>
@@ -324,25 +145,19 @@
 			<!-- 個数 -->
 
 			<div class="form-row">
-
-				<div class="label-area">
-
-					個数
-
-					<span class="required-badge">
-						必須
-					</span>
-
+				<div class="form-label">
+					個数 <span class="badge-gray">必須</span>
 				</div>
 
-				<div class="input-area">
 
-					<input type="text" class="text-input small-input" th:field="*{saleNumber}">
+				<div class="form-input short">
 
-					<div class="error-message" th:errors="*{saleNumber}">
+
+					<input type="text" th:field="*{saleNumber}">
+
+					<div class="error" th:errors="*{saleNumber}">
 					</div>
-					<div class="error-message"
-					     th:text="${saleNumberError}">
+					<div class="error" th:text="${saleNumberError}">
 					</div>
 
 				</div>
@@ -352,23 +167,11 @@
 			<!-- 備考 -->
 
 			<div class="form-row">
-
-				<div class="label-area">
-					備考
+				<div class="form-label">備考</div>
+				<div class="form-input">
+					<textarea th:field="*{note}"></textarea>
+					<div class="error" th:errors="*{note}"></div>
 				</div>
-
-				<div class="input-area">
-
-					<textarea class="textarea-input"
-					          th:field="*{note}">
-					</textarea>
-
-					<div class="error-message"
-					     th:errors="*{note}">
-					</div>
-
-				</div>
-
 			</div>
 
 			<!-- 権限エラー -->
@@ -378,20 +181,19 @@
 
 			<!-- ボタン -->
 
-			<div class="button-area">
+			<div class="btn-area-center">
 
-				<button type="submit" class="update-btn">
+				<button type="submit" class="btn btn-primary">
 
 					<i class="bi bi-check-lg btn-icon"></i>
 					更新
 
 				</button>
-				<button type="button"
-				        class="cancel-btn"
-				        th:onclick="|location.href='@{/sales/detail(saleId=${salesForm.saleId})}'|">
+				<button type="button" class="btn btn-secondary"
+					th:onclick="|location.href='@{/sales/detail(saleId=${salesForm.saleId})}'|">
 
 
-				    キャンセル
+					キャンセル
 
 				</button>
 
