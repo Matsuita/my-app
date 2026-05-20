@@ -42,7 +42,7 @@ public class SalesController {
 
         // 担当一覧
         List<Account> accountList =
-                accountRepository.findBySalesAuthority(2);
+                accountRepository.findBySalesAuthorityAndIsActive(2, true);
 
         // カテゴリ一覧
         List<Category> categoryList =
@@ -62,7 +62,7 @@ public class SalesController {
     public String salesConfirm(@Valid
             SalesCreateForm salesCreateForm, BindingResult result, Model model) {
     	List<Account> accountList =
-                accountRepository.findBySalesAuthority(2);
+                accountRepository.findBySalesAuthorityAndIsActive(2, true);
     	
     	List<Category> categoryList =
                 categoryRepository.findAll();
@@ -83,7 +83,7 @@ public class SalesController {
         	}
     	}
 
-    	// カテゴリ存在チェック
+    	// カテゴリー存在チェック
     	Category category = null;
     	if(salesCreateForm.getCategoryId() != null) {
 
@@ -150,51 +150,39 @@ public class SalesController {
     	
     	// アカウント存在チェック
     	Account account = null;
-
     	if(salesForm.getAccountId() != null) {
 
     	    account = accountRepository.findById(
     	                    salesForm.getAccountId())
     	                    .orElse(null);
+       	 // アカウント存在しない
+    	    if(account == null) {
+    	        result.rejectValue("accountId",null,
+    	                "アカウントテーブルに存在しません。");
+    	    }
     	}
-
     	// カテゴリ存在チェック
     	Category category = null;
-
     	if(salesForm.getCategoryId() != null) {
 
     	    category =categoryRepository.findById(
     	                    salesForm.getCategoryId())
     	                    .orElse(null);
-    	 // アカウント存在しない
-    	    if(account == null) {
-
-    	        result.rejectValue(
-    	                "accountId",
-    	                null,
-    	                "アカウントテーブルに存在しません。");
-    	    }
 
     	    // 商品カテゴリ存在しない
     	    if(category == null) {
-
-    	        result.rejectValue(
-    	                "categoryId",
-    	                null,
+    	        result.rejectValue("categoryId",null,
     	                "商品カテゴリーテーブルに存在しません。");
     	    }
     	}
 
-        // 入力エラー
+        // 未入力エラー
         if(result.hasErrors()){
 
-            model.addAttribute(
-                    "accountList",
-                    accountRepository.findAll());
-
-            model.addAttribute(
-                    "categoryList",
-                    categoryRepository.findAll());
+            model.addAttribute("accountList",
+            		accountRepository.findAll());
+            model.addAttribute("categoryList",
+            		categoryRepository.findAll());
 
             return "S0023";
         }
@@ -203,16 +191,13 @@ public class SalesController {
         if(!salesForm.getUnitPrice()
                 .matches("^[0-9]+$")) {
 
-            model.addAttribute(
-                    "unitPriceError",
+            model.addAttribute("unitPriceError",
                     "単価を正しく入力して下さい。");
 
-            model.addAttribute(
-                    "accountList",
+            model.addAttribute("accountList",
                     accountRepository.findAll());
 
-            model.addAttribute(
-                    "categoryList",
+            model.addAttribute("categoryList",
                     categoryRepository.findAll());
 
             return "S0023";
@@ -222,26 +207,34 @@ public class SalesController {
         if(!salesForm.getSaleNumber()
                 .matches("^[0-9]+$")) {
 
-            model.addAttribute(
-                    "saleNumberError",
+            model.addAttribute("saleNumberError",
                     "個数を正しく入力して下さい。");
 
-            model.addAttribute(
-                    "accountList",
+            model.addAttribute("accountList",
                     accountRepository.findAll());
 
-            model.addAttribute(
-                    "categoryList",
+            model.addAttribute("categoryList",
                     categoryRepository.findAll());
 
             return "S0023";
         }
 
-        model.addAttribute(
-                "salesForm",
-                salesForm);
-     model.addAttribute("accountList", accountRepository.findAll());
-     model.addAttribute("categoryList", categoryRepository.findAll());
+        account = accountRepository.findById
+        		(salesForm.getAccountId()).orElse(null);
+        String salesName;
+        
+        if(account != null && account.isActive()) {
+            salesName = account.getName();
+        }else {
+        	salesName = "退職済みユーザー";
+        }
+        
+        model.addAttribute("salesForm",salesForm);
+        model.addAttribute("salesName", salesName);
+        model.addAttribute("accountList", 
+        		accountRepository.findAll());
+        model.addAttribute("categoryList", 
+        		categoryRepository.findAll());
      
         return "S0024";
     }
@@ -251,36 +244,37 @@ public class SalesController {
     @PostMapping("/sales/delete")
     public String deleteConfirm(Integer saleId, Model model) {
 
-    	Sale sales = salesRepository.findById(saleId).orElse(null);
+    	Sale sales = salesRepository.findById(saleId).orElseThrow();
+    	Account account = accountRepository.findById
+    			(sales.getAccountId()).orElse(null);
+    	String salesName;
+    	
+    	if (account != null && account.isActive()) {
+            salesName = account.getName();
+        }else {
+        	salesName = "退職済みユーザー";
+        }
     	
         model.addAttribute("sales", sales);
-        
-        model.addAttribute("accountList", accountRepository.findAll());
-
-        model.addAttribute("categoryList", categoryRepository.findAll());
+        model.addAttribute("salesName", salesName);
+        model.addAttribute("accountList", 
+        		accountRepository.findAll());
+        model.addAttribute("categoryList", 
+        		categoryRepository.findAll());
 
         return "S0025";
     }
     
     @PostMapping("/sales/delete/execute")
-    public String salesDelete(
-
-            Integer saleId,
-
-            HttpSession session) {
-
+    public String salesDelete(Integer saleId,HttpSession session) {
         // 削除
-        salesRepository.deleteById(
-                saleId);
+        salesRepository.deleteById(saleId);
 
         // 一覧再取得
-        List<Sale> salesList =
-                salesRepository.findAll();
+        List<Sale> salesList =salesRepository.findAll();
 
         // session更新
-        session.setAttribute(
-                "salesList",
-                salesList);
+        session.setAttribute("salesList",salesList);
 
         // 一覧へ
         return "redirect:/S0021";
