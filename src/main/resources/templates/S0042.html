@@ -30,7 +30,7 @@
 			    </div>
 			    <div class="form-input">
 			        <input type="text" th:field="*{name}">
-			        <div class="error-text" th:errors="*{name}"></div>
+			        <div class="error" th:errors="*{name}"></div>
 			    </div>
 			</div>
 
@@ -42,7 +42,7 @@
 			    </div>
 			    <div class="form-input">
 			        <input type="text" th:field="*{mail}">
-			        <div class="error-text" th:errors="*{mail}"></div>
+			        <div class="error" th:errors="*{mail}"></div>
 			    </div>
 			</div>
 			
@@ -56,7 +56,7 @@
 			    </div>
 			    <div class="form-input">
 			        <input type="text" th:field="*{password}"class="mask">
-			        <div class="error-text" th:errors="*{password}"></div>
+			        <div class="error" th:errors="*{password}"></div>
 			    </div>
 			</div>
 
@@ -68,8 +68,8 @@
 				</div>
 				<div class="form-input">
 					<input type="text" th:field="*{passwordConfirm}" class="mask">
-					<div class="error-text" th:errors="*{passwordConfirm}"></div>
-					<div class="error-text" th:if="${#fields.hasGlobalErrors()}"
+					<div class="error" th:errors="*{passwordConfirm}"></div>
+					<div class="error" th:if="${#fields.hasGlobalErrors()}"
 						th:each="err : ${#fields.globalErrors()}" th:text="${err}">
 					</div>
 				</div>

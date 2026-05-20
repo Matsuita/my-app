@@ -103,11 +103,11 @@ body {
 
 
 
-main-box {
-	.main-box {
+.main-box {
+	
 	    width: 900px;
 	    margin: 40px auto;
-	}
+	
 }
 /* ===== タイトル ===== */
 .title {
@@ -228,6 +228,37 @@ input:focus {
 .mask {
   -webkit-text-security: disc;
 }
+
+.form-area.wide {
+    width: 100%;
+	max-width: none;
+}
+
+.form-area.wide form {
+    width: 100%;
+}
+
+/* 入力行を左寄せにする */
+.form-area.wide .form-row {
+    justify-content: flex-start;
+}
+
+.result-wide {
+    width: 95%;
+    margin: 0 auto;   /* 中央寄せ */
+}
+.table td,
+.table th {
+    border-left: none !important;
+    border-right: none !important;
+	border-color: #dee2e6 !important;
+}
+
+.table {
+    border: none;
+}
+
+
 /*<nav class="navbar fixed-top">
 
     <!-- タイトル -->
