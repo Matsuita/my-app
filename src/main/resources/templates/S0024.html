@@ -131,12 +131,7 @@
 
             <tr>
 				<th>担当</th>
-				<td>
-					<span th:each="account : ${accountList}">
-						<span th:if="${account.accountId == salesForm.accountId}" th:text="${account.name}">
-						</span>
-					</span>
-				</td>
+				<td th:text = "${saleName}"></td>
 			 </tr>
 
 			<tr>

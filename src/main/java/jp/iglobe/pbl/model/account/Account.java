@@ -30,7 +30,7 @@ public class Account {
     
     private Integer accountsAuthority;
     
-    private boolean isActive;
+    private boolean isActive = true;
 
 //    private Integer authority;
     
