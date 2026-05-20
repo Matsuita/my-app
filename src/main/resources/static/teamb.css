@@ -227,12 +227,6 @@ input:focus {
 	background: #fff;
 }
 
-/* ===== ラジオ ===== */
-.radio-group {
-	display: flex;
-	gap: 24px;
-	font-size: 14px;
-}
 
 /* ===== バッジ ===== */
 .badge-gray {
@@ -337,6 +331,61 @@ input:focus {
 	flex-shrink: 0;
 }
 
+/* ===== ラジオ ===== */
+.radio-group {
+	display: flex;
+	gap: 24px;
+	font-size: 14px;
+	flex-wrap: nowrap; /* ← これ重要 */
+}
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+	white-space: nowrap; /* ← 折り返し禁止 */
+}
+/* ハンバーガー（PCでは非表示） */
+.menu-toggle {
+	display: none;
+	font-size: 22px;
+	cursor: pointer;
+}
+
+
+.menu {
+	display: flex;
+	gap: 35px;
+}
+
+.menu-toggle {
+	display: none;
+}
+
+/* ===== スマホ ===== */
+@media screen and (max-width: 768px) {
+
+	.menu {
+		display: none;
+		flex-direction: column;
+		position: absolute;
+		top: 60px;
+		left: 0;
+		width: 100%;
+		background: #e9ecef;
+	}
+
+	.menu.active {
+		display: flex;
+	}
+
+	.menu-toggle {
+		display: block;
+		font-size: 22px;
+		cursor: pointer;
+	}
+}
+
+
 /*<nav class="navbar fixed-top">
 
     <!-- タイトル -->
@@ -386,3 +435,4 @@ input:focus {
     </a>
 
 </nav>
+

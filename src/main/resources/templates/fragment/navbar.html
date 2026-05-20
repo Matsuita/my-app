@@ -13,7 +13,8 @@
     <span class="navbar-brand">
         物品売上管理システム
     </span>
-
+	<!-- ハンバーガー -->
+	    <div class="menu-toggle">☰</div>
     <div class="menu">
 
         <a class="nav-link"
@@ -48,13 +49,26 @@
            アカウント検索
         </a>
 
-    </div>
-
+   
+ </div>
     <a class="nav-link logout" th:href="@{/logout}">
         ログアウト
     </a>
 
 </nav>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
 
+	const btn = document.querySelector(".menu-toggle");
+	const menu = document.querySelector(".menu");
+
+	if (btn && menu) {
+		btn.addEventListener("click", function() {
+			menu.classList.toggle("active");
+		});
+	}
+
+});
+</script>
 </body>
 </html>
