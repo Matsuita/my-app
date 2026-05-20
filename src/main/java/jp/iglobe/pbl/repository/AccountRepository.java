@@ -22,7 +22,7 @@ public interface AccountRepository
 	Optional<Account> findById(Integer accountId);
 	
 //	検索用
-	List<Account> findByIdInAndIsActivTrue(List<Integer> accountIds);
+	List<Account> findByAccountIdInAndIsActiveTrue(List<Integer> accountIds);
 	
 //	登録用（×売上権限・退職済み）
 	List<Account> findBySalesAuthorityAndIsActive(Integer salesAuthority, boolean isActive);

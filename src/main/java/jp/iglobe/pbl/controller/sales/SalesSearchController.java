@@ -268,7 +268,7 @@ public class SalesSearchController {
 		String accountName;
 
 		if(account == null
-		        || !account.getIsActive()){
+		        || !account.isActive()){
 
 		    accountName =
 		        "（退職済みユーザー）";
@@ -298,77 +298,113 @@ public class SalesSearchController {
 
 	// 編集画面
 	@GetMapping("/sales/edit")
-	public String edit(HttpSession session, Integer saleId, Model model) {
-		
-		Account loginUser = (Account) session.getAttribute("loginUser");
+	public String edit(
+	        HttpSession session,
+	        Integer saleId,
+	        Model model) {
 
-		if(loginUser.getSalesAuthority() != 2){
+	    Account loginUser =
+	            (Account) session.getAttribute(
+	                    "loginUser");
 
-		    return "redirect:/dashboard";
-		}
-		
-		if(saleId == null) {
-			return "redirect:/S0021";
-		}
+	    // 権限チェック
+	    if(loginUser.getSalesAuthority() != 2){
 
-		Sale sales = salesRepository.findById(saleId).orElse(null);
-		
-		Account account =
-		        accountRepository
-		            .findById(sales.getAccountId())
-		            .orElse(null);
+	        return "redirect:/dashboard";
+	    }
 
-		String accountName;
+	    // saleIdなし
+	    if(saleId == null) {
 
-		if(account == null
-		        || !account.getIsActive()){
+	        return "redirect:/S0021";
+	    }
 
-		    accountName =
-		        "（退職済みユーザー）";
+	    // 売上取得
+	    Sale sales =
+	            salesRepository
+	                .findById(saleId)
+	                .orElse(null);
 
-		}else{
+	    // 売上なし
+	    if(sales == null) {
 
-		    accountName =
-		        account.getName();
-		}
+	        return "redirect:/S0021";
+	    }
 
-		model.addAttribute(
-		        "accountName",
-		        accountName);
-		
-		if(sales == null) {
-			return "redirect:/S0021";
-		}
+	    // アカウント取得
+	    Account account =
+	            accountRepository
+	                .findById(
+	                    sales.getAccountId())
+	                .orElse(null);
 
-		SalesForm form = new SalesForm();
+	    // 担当名
+	    String accountName;
 
-		form.setSaleId(sales.getSaleId());
-		form.setSaleDate(sales.getSaleDate().toString());
-		form.setAccountId(sales.getAccountId());
-		form.setCategoryId(sales.getCategoryId());
-		form.setTradeName(sales.getTradeName());
-		form.setUnitPrice(String.valueOf(sales.getUnitPrice()));
-		form.setSaleNumber(String.valueOf(sales.getSaleNumber()));
-		form.setNote(sales.getNote());
+	    if(account == null
+	            || !account.isActive()){
 
-		// 更新権限
-		form.setAuthority("更新");
+	        accountName =
+	                "（退職済みユーザー）";
 
-		model.addAttribute(
-				"salesForm",
-				form);
+	    }else{
 
-		// 担当一覧
-		model.addAttribute(
-		        "accountList",
-		        accountRepository.findAll());
-		
-		// 商品カテゴリー一覧
-		model.addAttribute(
-				"categoryList",
-				categoryRepository.findAll());
+	        accountName =
+	                account.getName();
+	    }
 
-		return "S0023";
+	    model.addAttribute(
+	            "accountName",
+	            accountName);
+
+	    // Formへセット
+	    SalesForm form = new SalesForm();
+
+	    form.setSaleId(
+	            sales.getSaleId());
+
+	    form.setSaleDate(
+	            sales.getSaleDate()
+	                .toString());
+
+	    form.setAccountId(
+	            sales.getAccountId());
+
+	    form.setCategoryId(
+	            sales.getCategoryId());
+
+	    form.setTradeName(
+	            sales.getTradeName());
+
+	    form.setUnitPrice(
+	            String.valueOf(
+	                    sales.getUnitPrice()));
+
+	    form.setSaleNumber(
+	            String.valueOf(
+	                    sales.getSaleNumber()));
+
+	    form.setNote(
+	            sales.getNote());
+
+	    // 更新権限
+	    form.setAuthority("更新");
+
+	    model.addAttribute(
+	            "salesForm",
+	            form);
+
+	    // 担当一覧
+	    model.addAttribute(
+	            "accountList",
+	            accountRepository.findAll());
+
+	    // カテゴリ一覧
+	    model.addAttribute(
+	            "categoryList",
+	            categoryRepository.findAll());
+
+	    return "S0023";
 	}
 
 	// 更新処理

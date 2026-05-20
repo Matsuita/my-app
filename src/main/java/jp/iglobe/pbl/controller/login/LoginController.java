@@ -64,7 +64,7 @@ public class LoginController {
         if (account != null) {
 
             // 論理削除チェック
-            if(!account.getIsActive()){
+            if(!account.isActive()){
 
                 model.addAttribute(
                         "errorMessage",
