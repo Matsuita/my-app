@@ -70,8 +70,11 @@ public class SearchController {
 
 		// アカウント権限「登録・編集」（accountsAuthorityが1か2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser.getAccountsAuthority() < 2) {
+		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
+		}
+		if (loginUser.getAccountsAuthority() == 1) {
+			return "redirect:/accounts/search";
 		}
 
 		AccountUpdateForm sessionForm = (AccountUpdateForm) model.getAttribute("accountUpdateForm");
@@ -201,8 +204,11 @@ public class SearchController {
 
 		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser.getAccountsAuthority() < 2) {
+		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
+		}
+		if (loginUser.getAccountsAuthority() == 1) {
+			return "redirect:/accounts/search";
 		}
 
 		// ガード
@@ -228,12 +234,12 @@ public class SearchController {
 		return "redirect:/accounts/search";
 	}
 
-	@PostMapping("/accounts/edit/back")
-	public String back(SessionStatus sessionStatus) {
-
-		sessionStatus.setComplete(); // ←これ追加🔥
-
-		return "redirect:S0042";
-	}
+	//	@PostMapping("/accounts/edit/back")
+	//	public String back(SessionStatus sessionStatus) {
+	//
+	//		sessionStatus.setComplete(); // ←これ追加🔥
+	//
+	//		return "redirect:S0042";
+	//	}
 
 }

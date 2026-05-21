@@ -32,8 +32,8 @@ public interface SearchRepository extends JpaRepository<Account, Integer> {
 	@Query("""
 			UPDATE Account a
 			SET a.isActive = false
-			WHERE a.accountId = :id
+			WHERE a.accountId = :accountId
 			""") // ← 💡ここでis_activeを 0（false）に更新する
-	void logicalDeleteById(@Param("id") Integer id);
+	void logicalDeleteById(@Param("accountId") Integer accountId);
 
 }
