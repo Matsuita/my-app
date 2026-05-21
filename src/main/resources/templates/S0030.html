@@ -8,102 +8,100 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
-	
+
 </head>
 
 <body>
 	<div th:replace="fragment/navbar :: navbar('/accounts')"></div>
 	<div class="main-box">
 
-	    <div class="title">アカウント登録</div>
+		<div class="title">アカウント登録</div>
 
-	    <form th:action="@{/accounts/confirm}"
-	          th:object="${accountForm}"
-	          method="post"
-	          class="form-area">
+		<form th:action="@{/accounts/confirm}" th:object="${accountForm}" method="post" class="form-area">
 
-	        <!-- 氏名 -->
-	        <div class="form-row">
-	            <div class="form-label">
-	                氏名 <span class="badge-gray">必須</span>
-	            </div>
-	            <div class="form-input">
-	                <input type="text" th:field="*{name}" placeholder="氏名">
-	                <div class="error" th:errors="*{name}"></div>
-	            </div>
-	        </div>
+			<!-- 氏名 -->
+			<div class="form-row">
+				<div class="form-label">
+					氏名 <span class="badge-gray">必須</span>
+				</div>
+				<div class="form-input">
+					<input type="text" th:field="*{name}" placeholder="氏名">
+					<div class="error" th:errors="*{name}"></div>
+				</div>
+			</div>
 
-	        <!-- メール -->
-	        <div class="form-row">
-	            <div class="form-label">
-	                メールアドレス <span class="badge-gray">必須</span>
-	            </div>
-	            <div class="form-input">
-	                <input type="text" th:field="*{mail}" placeholder="メールアドレス">
-	                <div class="error" th:errors="*{mail}"></div>
-	            </div>
-	        </div>
+			<!-- メール -->
+			<div class="form-row">
+				<div class="form-label">
+					メールアドレス <span class="badge-gray">必須</span>
+				</div>
+				<div class="form-input">
+					<input type="text" th:field="*{mail}" placeholder="メールアドレス">
+					<div class="error" th:errors="*{mail}"></div>
+				</div>
+			</div>
 
-	        <!-- パスワード -->
-	        <div class="form-row">
-	            <div class="form-label">
-	                パスワード <span class="badge-gray">必須</span>
-	            </div>
-	            <div class="form-input">
-					<input type="text" th:field="*{password}"class="mask" placeholder="パスワード">
-	                <div class="error" th:errors="*{password}"></div>
-	            </div>
-	        </div>
+			<!-- パスワード -->
+			<div class="form-row">
+				<div class="form-label">
+					パスワード <span class="badge-gray">必須</span>
+				</div>
+				<div class="form-input">
+					<input type="text" th:field="*{password}" class="mask" placeholder="パスワード">
+					<div class="error" th:errors="*{password}"></div>
+				</div>
+			</div>
 
-	        <!-- 確認 -->
-	        <div class="form-row">
-	            <div class="form-label">
-	                パスワード（確認） <span class="badge-gray">必須</span>
-	            </div>
-	            <div class="form-input">
+			<!-- 確認 -->
+			<div class="form-row">
+				<div class="form-label">
+					パスワード（確認） <span class="badge-gray">必須</span>
+				</div>
+				<div class="form-input">
 					<input type="text" th:field="*{passwordConfirm}" class="mask" placeholder="パスワード（確認）">
-	                <div class="error" th:errors="*{passwordConfirm}"></div>
-	            </div>
-	        </div>
+					<div class="error" th:errors="*{passwordConfirm}"></div>
+				</div>
+			</div>
 
-	        <!-- 売上権限 -->
-	        <div class="form-row">
-	            <div class="form-label">
-	                売上権限 <span class="badge-gray">必須</span>
-	            </div>
-	            <div class="form-input">
+			<!-- 売上権限 -->
+			<div class="form-row">
+				<div class="form-label">
+					売上権限 <span class="badge-gray">必須</span>
+				</div>
+				<div class="form-input">
 					<div class="radio-group">
-	                <label><input type="radio" th:field="*{salesAuthority}" value="0"> 権限なし</label>
-	                <label><input type="radio" th:field="*{salesAuthority}" value="1"> 閲覧のみ</label>
-	                <label><input type="radio" th:field="*{salesAuthority}" value="2"> 登録・編集</label>
-	                </div>
+						<label><input type="radio" th:field="*{salesAuthority}" value="0"> 権限なし</label>
+						<label><input type="radio" th:field="*{salesAuthority}" value="1"> 閲覧のみ</label>
+						<label><input type="radio" th:field="*{salesAuthority}" value="2"> 登録・編集</label>
+					</div>
 					<div class="error" th:errors="*{salesAuthority}"></div>
-	            </div>
-	        </div>
+				</div>
+			</div>
 
-	        <!-- アカウント権限 -->
-	        <div class="form-row">
-	            <div class="form-label">
-	                アカウント権限 <span class="badge-gray">必須</span>
-	            </div>
-	            <div class="form-input">
+			<!-- アカウント権限 -->
+			<div class="form-row">
+				<div class="form-label">
+					アカウント権限 <span class="badge-gray">必須</span>
+				</div>
+				<div class="form-input">
 					<div class="radio-group">
-	                <label><input type="radio" th:field="*{accountsAuthority}" value="0"> 権限なし</label>
-	                <label><input type="radio" th:field="*{accountsAuthority}" value="1"> 閲覧のみ</label>
-	                <label><input type="radio" th:field="*{accountsAuthority}" value="2"> 登録・編集</label>
-	               </div>
-				   <div class="error" th:errors="*{accountsAuthority}"></div>
-	            </div>
-	        </div>
+						<label><input type="radio" th:field="*{accountsAuthority}" value="0"> 権限なし</label>
+						<label><input type="radio" th:field="*{accountsAuthority}" value="1"> 閲覧のみ</label>
+						<label><input type="radio" th:field="*{accountsAuthority}" value="2"> 登録・編集</label>
+					</div>
+					<div class="error" th:errors="*{accountsAuthority}"></div>
+				</div>
+			</div>
 
-	        <!-- ボタン -->
-	        <div class="btn-area-center">
-	            <button type="submit" class="btn btn-primary">
-	                ✓ 登録
-	            </button>
-	        </div>
+			<!-- ボタン -->
+			<div class="btn-area-center">
+				<button type="submit" class="btn btn-primary">
+					<!--	                ✓ -->
+					確認
+				</button>
+			</div>
 
-	    </form>
+		</form>
 	</div>
 </body>
 

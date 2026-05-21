@@ -51,15 +51,15 @@
 				</div>
 
 				<!-- パスワード確認 -->
-				<div class="form-row">
-					<div class="form-label">パスワード（確認） <span class="badge-gray">必須</span></div>
-					<div class="form-input">
-						<input type="hidden" th:field="*{passwordConfirm}">
-						<input type="text"
-							th:value="${accountForm.passwordConfirm != null ? #strings.repeat('•', accountForm.passwordConfirm.length()) : ''}"
-							readonly>
-					</div>
-				</div>
+<!--				<div class="form-row">-->
+<!--					<div class="form-label">パスワード（確認） <span class="badge-gray">必須</span></div>-->
+<!--					<div class="form-input">-->
+<!--						<input type="hidden" th:field="*{passwordConfirm}">-->
+<!--						<input type="text"-->
+<!--							th:value="${accountForm.passwordConfirm != null ? #strings.repeat('•', accountForm.passwordConfirm.length()) : ''}"-->
+<!--							readonly>-->
+<!--					</div>-->
+<!--				</div>-->
 
 				<!-- 売上権限 -->
 				<div class="form-row">

@@ -51,7 +51,7 @@ public class AccountController {
 		}
 
 		model.addAttribute("accountForm", new AccountForm());
-		return "redirect:/S0030";
+		return "redirect:/accounts";
 	}
 
 	//	アカウント登録確認
