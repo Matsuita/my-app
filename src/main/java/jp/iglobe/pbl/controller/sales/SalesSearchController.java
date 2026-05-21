@@ -258,7 +258,7 @@ public class SalesSearchController {
 		// 詳細画面へ直接アクセス禁止
 		if (session.getAttribute("salesList") == null) {
 
-			return "redirect:/";
+			return "redirect:/sales/search";
 		}
 
 		Sale sales = salesRepository.findById(saleId).orElse(null);
@@ -316,6 +316,12 @@ public class SalesSearchController {
 
 	        return "redirect:/dashboard";
 	    }
+	    
+	 // 詳細画面へ直接アクセス禁止
+	 		if (session.getAttribute("salesList") == null) {
+
+	 			return "redirect:/sales/search";
+	 		}
 
 	    // saleIdなし
 	    if(saleId == null) {
@@ -523,7 +529,12 @@ public class SalesSearchController {
 
 		    return "redirect:/dashboard";
 		}
+		
+		// 詳細画面へ直接アクセス禁止
+ 		if (session.getAttribute("salesList") == null) {
 
+ 			return "redirect:/sales/search";
+ 		}
 
 		// 一覧取得
 		model.addAttribute(
