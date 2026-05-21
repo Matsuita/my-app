@@ -27,21 +27,21 @@
 			<a class="nav-link" 
 				th:if="${session.loginUser.salesAuthority == 2}"
 				th:classappend="${active == 'sales'} ? ' active'" 
-				th:href="@{/S0010}">
+				th:href="@{/sales}">
 				売上登録
 			</a>
 
 			<a class="nav-link" 
 				th:if="${session.loginUser.salesAuthority >= 1}"
 				th:classappend="${active == 'sales/search'} ? ' active'" 
-				th:href="@{/S0020}">
+				th:href="@{/sales/search}">
 				売上検索
 			</a>
 
 			<a class="nav-link" 
 				th:if="${session.loginUser.accountsAuthority == 2}"
 				th:classappend="${active == 'S0030'} ? ' active'" 
-				th:href="@{/S0030}">
+				th:href="@{/accounts}">
 				アカウント登録
 			</a>
 
