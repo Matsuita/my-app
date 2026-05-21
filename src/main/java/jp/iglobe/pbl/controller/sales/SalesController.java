@@ -316,6 +316,7 @@ public class SalesController {
 		return "redirect:/sales/search";
 	}
 
+	
 	// 売上詳細削除確認画面
 	@PostMapping("/sales/delete/{saleId}")
 	public String deleteConfirm(@PathVariable Integer saleId, Model model) {
