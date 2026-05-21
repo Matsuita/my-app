@@ -20,7 +20,7 @@
 	        <div class="title">アカウント詳細編集</div>
 
 	        
-		<form th:action="@{/accounts/confirm}" th:object="${accountUpdateForm}" method="post">
+		<form th:action="@{/accounts/edit/confirm}" th:object="${accountUpdateForm}" method="post">
 			<input type="hidden" th:field="*{accountId}">
 			<!-- 氏名 -->
 			<div class="form-row">
