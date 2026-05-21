@@ -26,67 +26,48 @@ public class DashboardController {
     private final SalesRepository salesRepository;
 
     @GetMapping("/dashboard")
-    public String dashboard(
-            HttpSession session,
-            Model model) {
+    public String dashboard(HttpSession session, Model model) {
 
         // 未ログイン
-        if(session.getAttribute(
-                "loginUser") == null) {
-
+        if(session.getAttribute("loginUser") == null) {
             return "redirect:/";
         }
 
         // 売上一覧
-        List<Sale> salesList =
-                salesRepository.findAll();
+        List<Sale> salesList = salesRepository.findAll();
 
         // 今日売上
-        int todaySales =
-                salesList.stream()
-                .filter(s -> s.getSaleDate()
-                        .equals(LocalDate.now()))
-                .mapToInt(s ->
-                        s.getUnitPrice()
-                        * s.getSaleNumber())
-                .sum();
+        int todaySales = salesList.stream()
+                .filter(s -> s.getSaleDate().equals(LocalDate.now()))
+                .mapToInt(s -> s.getUnitPrice() * s.getSaleNumber()).sum();
 
         // 件数
-        long salesCount =
-                salesList.size();
+        long salesCount = salesList.size();
         
-     // 爆売れ商品
-        String topProduct =
-                salesRepository
+     // 売れてる商品
+        String topProduct = salesRepository
                 .findTopSellingProduct()
                 .get(0);
 
-        // 危険商品
-        String worstProduct =
-                salesRepository
+        // 売れてない商品
+        String worstProduct = salesRepository
                 .findWorstSellingProduct()
                 .get(0);
         
      // TOP3商品
-        List<String> topProducts =
-                salesRepository
-                .findTopProducts()
+        List<String> topProducts = salesRepository.findTopProducts()
                 .stream()
                 .limit(3)
                 .collect(Collectors.toList());
         
      // 月別売上
-        List<Integer> monthlySales =
-                new ArrayList<>();
+        List<Integer> monthlySales = new ArrayList<>();
 
-        for(int month = 1;
-                month <= 12;
-                month++) {
+        for(int month = 1; month <= 12; month++) {
 
             final int targetMonth = month;
 
-            int total = salesList.stream()
-                    .filter(s ->s.getSaleDate().getMonthValue()== targetMonth)
+            int total = salesList.stream().filter(s ->s.getSaleDate().getMonthValue()== targetMonth)
                     .mapToInt(s -> s.getUnitPrice() * s.getSaleNumber()).sum();
             monthlySales.add(total);
         }
@@ -99,26 +80,16 @@ public class DashboardController {
         	    "エラーは仕様です。",
 
         	    "売って売って売りまくれ",
-
-        	    "松井くんは顔があかんわ",
-
-        	    
-
         	};
 
-        	Random random =
-        	        new Random();
+        	Random random = new Random();
 
-        	String todayMessage =
-        	        messages[
-        	            random.nextInt(
-        	                messages.length)
-        	        ];
+        	String todayMessage = messages[random.nextInt(messages.length)
+        	                               ];
         	
         	int target = 30000;
 
-        	int achievementRate =
-        	        todaySales * 100 / target;
+        	int achievementRate = todaySales * 100 / target;
 
         	if(achievementRate > 100){
 
@@ -152,69 +123,37 @@ public class DashboardController {
 
         	if(achievementRate >= 90){
 
-        	    salesComment =
-        	            "今日は覚醒しています。";
+        	    salesComment = "かなり好調です。";
 
         	}else if(achievementRate >= 70){
 
-        	    salesComment =
-        	            "かなり好調です。";
+        	    salesComment = "好調です。";
 
         	}else if(achievementRate >= 50){
 
-        	    salesComment =
-        	            "順調に売れています。";
+        	    salesComment = "順調に売れています。";
 
         	}else if(achievementRate >= 30){
 
-        	    salesComment =
-        	            "まだ伸びしろがあります。";
+        	    salesComment = "まだ伸びしろがあります。";
 
         	}else{
 
-        	    salesComment =
-        	            "ここから巻き返しです。";
+        	    salesComment = "ここから巻き返しです。";
         	}
    	
 
 
         // モデルへ
-        model.addAttribute(
-                "todaySales",
-                todaySales);
-
-        model.addAttribute(
-                "salesCount",
-                salesCount);
-        
-        model.addAttribute(
-                "topProduct",
-                topProduct);
-
-        model.addAttribute(
-                "worstProduct",
-                worstProduct);
-        
-        model.addAttribute(
-                "topProducts",
-                topProducts);
-        
-    	model.addAttribute(
-    	        "todayMessage",
-    	        todayMessage);
-    	
-    	model.addAttribute(
-    	        "achievementRate",
-    	        achievementRate);
-    	
-    	model.addAttribute(
-    	        "salesRank",
-    	        salesRank);
-    	
-    	model.addAttribute(
-    	        "salesComment",
-    	        salesComment);
-
+        model.addAttribute("todaySales", todaySales);
+        model.addAttribute("salesCount", salesCount);
+        model.addAttribute("topProduct", topProduct);
+        model.addAttribute("worstProduct", worstProduct);       
+        model.addAttribute("topProducts", topProducts);
+    	model.addAttribute("todayMessage", todayMessage);
+    	model.addAttribute("achievementRate", achievementRate);    	
+    	model.addAttribute("salesRank", salesRank);    	
+    	model.addAttribute("salesComment", salesComment);
         model.addAttribute("jan", monthlySales.get(0));
         model.addAttribute("feb", monthlySales.get(1));
         model.addAttribute("mar", monthlySales.get(2));
