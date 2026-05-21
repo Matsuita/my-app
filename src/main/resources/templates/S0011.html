@@ -21,7 +21,7 @@
 		<!-- 販売日 -->
 		<div class="form-row">
 			<div class="form-label">販売日</div>
-			<div class="form-input">
+			<div class="form-input short">
 				<input type="text" th:value="*{saleDate}" readonly>
 			</div>
 		</div>
@@ -114,6 +114,7 @@
 
 	    </form>
 
+		
 	    <!-- キャンセル -->
 
 	    <form th:action="@{/sales/back}"
