@@ -80,7 +80,7 @@
 			<div class="form-label">小計</div>
 			<div class="form-input short">
 				<input type="text"
-						th:value="${#numbers.formatInteger(sales.unitPrice * sales.saleNumber, 0, 'COMMA')}"
+						th:value="${#numbers.formatInteger(total, 0, 'COMMA')}"
 						readonly>
 			</div>
 		</div>
