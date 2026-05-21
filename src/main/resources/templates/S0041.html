@@ -26,7 +26,7 @@
 				<table class="table align-middle">
 					<thead class="table-light">
 						<tr>
-							<th>操作</th>
+							<th th:if="${session.loginUser.accountsAuthority == 2}">操作</th>
 							<th>No</th>
 							<th>氏名</th>
 							<th>メールアドレス</th>
@@ -39,10 +39,9 @@
 
 						<!-- データ表示 -->
 						<tr th:each="a, stat : ${accounts}">
-							<td>
+							<td th:if="${session.loginUser.accountsAuthority == 2}">
 
-								<a th:if="${session.loginUser.accountsAuthority == 2}"
-									th:href="@{/accounts/edit/{id}(id=${a.accountId})}" class="btn btn-primary btn-sm">
+								<a th:href="@{/accounts/edit/{id}(id=${a.accountId})}" class="btn btn-primary btn-sm">
 									<i class="bi bi-pencil"></i> 編集
 								</a>
 

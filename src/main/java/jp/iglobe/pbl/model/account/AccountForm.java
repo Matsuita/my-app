@@ -1,6 +1,5 @@
 package jp.iglobe.pbl.model.account;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -16,10 +15,8 @@ public class AccountForm {
 	private String name;
 
 	@NotBlank(message = "メールアドレスを入力して下さい。")
-	@Size(max = 100, message = "メールアドレスが長すぎます。")
-	// 101バイト以上をはじく
-
-	@Email(message = "メールアドレスを正しく入力して下さい。")
+	@Size(max = 100, message = "メールアドレスが長すぎます。") // 101バイト以上をはじく
+	//	@Email(message = "メールアドレスを正しく入力して下さい。")
 	// トップレベルドメイン（.comや.jpなど）まで必須とする正規表現
 	@Pattern(regexp = "^[a-zA-Z0-9_+-]+(\\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$", message = "メールアドレスを正しく入力して下さい。")
 	private String mail;
