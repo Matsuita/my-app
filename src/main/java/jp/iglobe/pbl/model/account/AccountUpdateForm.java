@@ -2,9 +2,9 @@ package jp.iglobe.pbl.model.account;
 
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import lombok.Data;
@@ -19,8 +19,8 @@ public class AccountUpdateForm {
 	private String name;
 
 	@NotBlank(message = "メールアドレスを入力して下さい。")
+	@Pattern(regexp = "^$|[a-zA-Z0-9_+-]+(\\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$", message = "メールアドレスの形式が誤っています。")
 	@Size(max = 100, message = "メールアドレスが長すぎます。")
-	@Email(message = "メールアドレスの形式が誤っています。")
 	private String mail;
 
 	@NotBlank(message = "パスワードを入力して下さい。")
@@ -37,7 +37,7 @@ public class AccountUpdateForm {
     private Integer accountsAuthority;
 //	private Integer authority;
 
-	@AssertTrue(message = "パスワードが一致していません。")
+	
 	@AssertTrue(message = "パスワードが一致していません。")
 	public boolean isPasswordValid() {
 	    if (password == null || passwordConfirm == null) {

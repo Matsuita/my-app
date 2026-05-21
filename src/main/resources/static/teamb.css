@@ -31,9 +31,8 @@ body {
 
 /* ===== ナビバー ===== */
 .navbar {
-	height: 60px;
-	padding: 0 20px;
-
+	height: 60px !important;
+		padding: 0 20px !important;
 	border-bottom: 1px solid #ccc;
 	background-color: #e9ecef !important;
 
@@ -65,7 +64,7 @@ body {
 	/* ← 14 → 16にUP */
 	padding: 14px 14px;
 	/* ← 上下左右広げる */
-
+	line-height: 1 !important;
 	transition: all 0.15s ease;
 	display: inline-block;
 	/* ← クリック範囲安定 */
@@ -95,7 +94,8 @@ body {
 body {
 	margin: 0;
 	font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
-	background: #ffffff;
+	background:
+			        #e4ecf5;
 	color: #333;
 	-webkit-font-smoothing: antialiased;
 }
@@ -112,11 +112,11 @@ body {
 
 /* ===== タイトル ===== */
 .title {
-	font-size: 34px;
+	font-size: 40px;
 	/* ← 少し大きめ */
-	font-weight: 600;
+	font-weight: 500;
 	margin-bottom: 28px;
-	margin-left: -20px;
+	margin-left: -40px;
 	padding-left: 0;
 	border-left: none;
 	/* ← 青ライン削除 */
@@ -145,7 +145,7 @@ body {
 	width: 420px;
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center; /* ← 追加 */
+	align-items: flex-start; /* ← 追加 */
 }
 
 .form-input input {
@@ -240,7 +240,8 @@ input:focus {
 
 /* ===== ボタンエリア ===== */
 .btn-area-center {
-	text-align: center;
+	display: flex;
+		justify-content: center;
 	margin-top: 28px;
 }
 
@@ -278,19 +279,8 @@ input:focus {
 	background: #e0e0e0;
 }
 
-/* ===== エラー ===== */
-.error {
-	color: #d9534f;
-	font-size: 12px;
-	margin-top: 2px;
 
 
-	flex-basis: 100%;
-	/* ← これが神 */
-
-
-
-}
 
 .mask {
 	-webkit-text-security: disc;
@@ -327,9 +317,9 @@ input:focus {
 	border: none;
 }
 
-.form-input>*:not(.error) {
-	flex-shrink: 0;
-}
+/*.form-input>*:not(.error) {*/
+/*	flex-shrink: 0;*/
+/*}*/
 
 /* ===== ラジオ ===== */
 .radio-group {
@@ -344,46 +334,60 @@ input:focus {
     gap: 6px;
 	white-space: nowrap; /* ← 折り返し禁止 */
 }
+
+/* ===== エラー ===== */
+.error {
+	color: #d9534f;
+	font-size: 12px;
+	margin-top: 2px;
+	
+	    display: block;
+		
+	flex-basis: 100%;
+	/* ← これが神 */}
+
+
+
 /* ハンバーガー（PCでは非表示） */
-.menu-toggle {
-	display: none;
-	font-size: 22px;
-	cursor: pointer;
-}
+/*.menu-toggle {*/
+/*	display: none;*/
+/*	font-size: 22px;*/
+/*	cursor: pointer;*/
+/*}*/
 
 
-.menu {
-	display: flex;
-	gap: 35px;
-}
+/*.menu {*/
+/*	display: flex;*/
+/*	gap: 35px;*/
+/*}*/
 
-.menu-toggle {
-	display: none;
-}
+/*.menu-toggle {*/
+/*	display: none;*/
+/*}*/
 
 /* ===== スマホ ===== */
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {*/
 
-	.menu {
-		display: none;
-		flex-direction: column;
-		position: absolute;
-		top: 60px;
-		left: 0;
-		width: 100%;
-		background: #e9ecef;
-	}
+/*	.menu {*/
+/*		display: none;*/
+/*		flex-direction: column;*/
+/*		position: absolute;*/
+/*		top: 60px;*/
+/*		left: 0;*/
+/*		width: 100%;*/
+/*		background: #e9ecef;*/
+/*	}*/
 
-	.menu.active {
-		display: flex;
-	}
+/*	.menu.active {*/
+/*		display: flex;*/
+/*	}*/
 
-	.menu-toggle {
-		display: block;
-		font-size: 22px;
-		cursor: pointer;
-	}
-}
+/*	.menu-toggle {*/
+/*		display: block;*/
+/*		font-size: 22px;*/
+/*		cursor: pointer;*/
+/*	}*/
+/*}*/
 
 
 /*<nav class="navbar fixed-top">
