@@ -137,8 +137,9 @@ public class SalesController {
     	
     	Integer unitPrice = Integer.parseInt(salesCreateForm.getUnitPrice());
     	Integer saleNumber = Integer.parseInt(salesCreateForm.getSaleNumber());
+    	long total = (long)unitPrice * saleNumber;
     	
-    	model.addAttribute("total", unitPrice * saleNumber);
+    	model.addAttribute("total", total);
         model.addAttribute("salesCreateForm", salesCreateForm);
         model.addAttribute("accountList", accountList);
         model.addAttribute("categoryList",categoryList);
