@@ -100,8 +100,10 @@
 				<button type="submit" class="btn btn-danger">
 					<i class="bi bi-trash"></i> 削除
 				</button>
-				<a th:href="@{/sales/detail/{saleId}}" class="btn btn-secondary">
-					キャンセル
+				<a th:href="@{/sales/detail/{id}(id=${sales.saleId})}" th:object="${sales}" class="btn btn-secondary">
+
+				    キャンセル
+
 				</a>
 			</div>
 		</form>
