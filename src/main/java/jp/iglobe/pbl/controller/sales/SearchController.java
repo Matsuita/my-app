@@ -223,7 +223,7 @@ public class SearchController {
 		return "S0044";
 	}
 
-	@GetMapping("/accounts/confirm")
+	@GetMapping("/accounts/edit/confirm")
 	public String confirmGet() {
 		return "redirect:/accounts/search";
 	}

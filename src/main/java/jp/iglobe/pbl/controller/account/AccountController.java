@@ -35,14 +35,14 @@ public class AccountController {
 	}
 
 	//	確認画面から戻って来る場合。値を保持させるがエラーメッセージは消える仕様
-	@PostMapping("/S0030_back")
+	@PostMapping("/accounts_back")
 	public String backToS0030(@ModelAttribute AccountForm accountForm, Model model) {
 		model.addAttribute("accountForm", accountForm);
 		return "S0030";
 	}
 
 	//	アカウント登録確認画面へ直接は飛ばず、アカウント登録画面へ遷移
-	@GetMapping("S0031")
+	@GetMapping("/accounts/confirm")
 	public String confirm(HttpSession session, Model model) {
 		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
@@ -55,7 +55,7 @@ public class AccountController {
 	}
 
 	//	アカウント登録確認
-	@PostMapping("/S0031")
+	@PostMapping("/accounts/confirm")
 	public String confirm(@Validated @ModelAttribute AccountForm accountForm,
 			BindingResult result) {
 
@@ -82,7 +82,7 @@ public class AccountController {
 
 	}
 
-	@PostMapping("/S0031_register")
+	@PostMapping("/accounts/confirm_register")
 	public String register(@ModelAttribute AccountForm accountForm) {
 
 		// Repositoryが扱う「Account」クラスに値をセット
@@ -98,7 +98,7 @@ public class AccountController {
 		account.setActive(true);
 		accountRepository.save(account);
 
-		return "redirect:/S0030";
+		return "redirect:/accounts";
 	}
 
 }
