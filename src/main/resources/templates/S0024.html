@@ -97,7 +97,11 @@
 			<button type="submit" class="btn btn-primary">
 				<i class="bi bi-check-lg btn-icon"></i>更新
 			</button>
-			<a th:href="@{/sales/detail/{saleId}}"class="btn btn-secondary">キャンセル</a>
+			<a th:href="@{/sales/edit/{id}(id=${salesForm.saleId})}" class="btn btn-secondary">
+
+			    キャンセル
+
+			</a>
 		</div>
 		</form>
 	</div>

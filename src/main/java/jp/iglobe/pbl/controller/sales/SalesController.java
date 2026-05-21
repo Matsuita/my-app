@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.iglobe.pbl.model.account.Account;
@@ -26,397 +27,366 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class SalesController {
-    // 担当
-    private final AccountRepository accountRepository;
-    // 商品カテゴリ
-    private final CategoryRepository categoryRepository;
-    // 売上
-    private final SalesRepository salesRepository;
+	// 担当
+	private final AccountRepository accountRepository;
+	// 商品カテゴリ
+	private final CategoryRepository categoryRepository;
+	// 売上
+	private final SalesRepository salesRepository;
 
-    // 売上登録画面
-    @GetMapping("/S0010")
-    public String newSale(HttpSession session, Model model) {
-    	
-    	Account loginUser =	(Account) session.getAttribute("loginUser");
-   	    // 権限チェック
-   	    if(loginUser.getSalesAuthority() != 2){
+	// 売上登録画面
+	@GetMapping("/sales")
+	public String newSale(HttpSession session, Model model) {
 
-   	    	return "redirect:/dashboard";
-   	    }
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		// 権限チェック
+		if (loginUser.getSalesAuthority() != 2) {
 
-        // 担当一覧
-        List<Account> accountList =
-                accountRepository.findBySalesAuthorityAndIsActive(2, true);
-        // カテゴリ一覧
-        List<Category> categoryList =
-                categoryRepository.findAll();
+			return "redirect:/dashboard";
+		}
 
-        // 画面へ渡す
-        SalesCreateForm salesCreateForm =
-                (SalesCreateForm)
-                session.getAttribute(
-                        "salesCreateForm");
+		// 担当一覧
+		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
+		// カテゴリ一覧
+		List<Category> categoryList = categoryRepository.findAll();
 
-        if(salesCreateForm == null){
+		// 画面へ渡す
+		SalesCreateForm salesCreateForm = (SalesCreateForm) session.getAttribute(
+				"salesCreateForm");
 
-            salesCreateForm = new SalesCreateForm();
-        }
+		if (salesCreateForm == null) {
 
-        model.addAttribute("salesCreateForm",salesCreateForm);
-        model.addAttribute("accountList",accountList);
-        model.addAttribute("categoryList",categoryList);
+			salesCreateForm = new SalesCreateForm();
+		}
 
-        return "S0010";
-    }
-    
-//    売上確認→キャンセルボタン時
-    @PostMapping("/S0010")
-    public String cancel(SalesCreateForm salesCreateForm, Model model) {
+		model.addAttribute("salesCreateForm", salesCreateForm);
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("categoryList", categoryList);
 
-        List<Account> accountList =
-                accountRepository.findBySalesAuthorityAndIsActive(2, true);
-        List<Category> categoryList =
-                categoryRepository.findAll();
+		return "S0010";
+	}
 
-        model.addAttribute("salesCreateForm", salesCreateForm);
-        model.addAttribute("accountList",accountList);
-        model.addAttribute("categoryList",categoryList);
+	// 売上登録確認画面
+	@PostMapping("/sales/confirm")
+	public String salesConfirm(HttpSession session, @Valid SalesCreateForm salesCreateForm, BindingResult result,
+			Model model) {
+		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
 
-        return "S0010";
-    }
+		List<Category> categoryList = categoryRepository.findAll();
 
-    // 売上登録確認画面
-    @PostMapping("/S0011")
-    public String salesConfirm( HttpSession session, @Valid
-            SalesCreateForm salesCreateForm, BindingResult result, Model model) {
-    	List<Account> accountList =
-                accountRepository.findBySalesAuthorityAndIsActive(2, true);
-    	
-    	List<Category> categoryList =
-                categoryRepository.findAll();
-    	
-    	// アカウント存在チェック
-    	Account account = null;
-    	if(salesCreateForm.getAccountId() != null) {
+		// アカウント存在チェック
+		Account account = null;
+		if (salesCreateForm.getAccountId() != null) {
 
-    	    account =accountRepository.findById(
-    	                    salesCreateForm.getAccountId())
-    	                    .orElse(null);
-    	    
-    	    if(account == null) {
+			account = accountRepository.findById(
+					salesCreateForm.getAccountId())
+					.orElse(null);
 
-        	    result.rejectValue("accountId", null,
-        	            "アカウントテーブルに存在しません。");
-        	}
-    	}
+			if (account == null) {
 
-    	// カテゴリー存在チェック
-    	Category category = null;
-    	if(salesCreateForm.getCategoryId() != null) {
+				result.rejectValue("accountId", null,
+						"アカウントテーブルに存在しません。");
+			}
+		}
 
-    	    category =categoryRepository.findById(
-    	                    salesCreateForm.getCategoryId())
-    	                    .orElse(null);
-    	    
-    	    if(category == null) {
-        	    result.rejectValue("categoryId",null,
-        	            "商品カテゴリーテーブルに存在しません。");
-        	}
-    	}
-    	
-//    	入力エラー
-    	if(result.hasErrors()) {
-    		
-    		model.addAttribute("salesCreateForm", salesCreateForm);
-    		model.addAttribute("accountList", accountList);
-            model.addAttribute("categoryList",categoryList);
-            
+		// カテゴリー存在チェック
+		Category category = null;
+		if (salesCreateForm.getCategoryId() != null) {
 
-    		return "S0010";
-    	}
-    	
-    	Integer unitPrice = Integer.parseInt(salesCreateForm.getUnitPrice());
-    	Integer saleNumber = Integer.parseInt(salesCreateForm.getSaleNumber());
-    	long total = (long)unitPrice * saleNumber;
-    	
-    	model.addAttribute("total", total);
-        model.addAttribute("salesCreateForm", salesCreateForm);
-        model.addAttribute("accountList", accountList);
-        model.addAttribute("categoryList",categoryList);
-        model.addAttribute("account", account);
-        model.addAttribute("category", category);
-        session.setAttribute("salesCreateForm", salesCreateForm);
-        
-        return "S0011";
-    }
-    
-//    直接URL入力の場合、売上登録へ
-    @GetMapping("/S0011")
-    public String getS0011(Model model){
-    	List<Account> accountList =
-                accountRepository.findBySalesAuthorityAndIsActive(2, true);
-    	List<Category> categoryList =
-                categoryRepository.findAll();
-    	
-    	model.addAttribute("salesCreateForm", new SalesCreateForm());
-        model.addAttribute("accountList",accountList);
-        model.addAttribute("categoryList",categoryList);
-    	
-    	return "redirect:/S0010";
-    }
+			category = categoryRepository.findById(
+					salesCreateForm.getCategoryId())
+					.orElse(null);
 
-    // 売上登録実行
-    @PostMapping("/salesCreate")
-    public String salesCreate(
-            HttpSession session,
-            SalesCreateForm salesCreateForm) {
-    	
-//    	String→Integer変換
-    	Sale sale = new Sale();
-    	sale.setSaleDate(salesCreateForm.getSaleDate());
-    	sale.setAccountId(salesCreateForm.getAccountId());
-        sale.setCategoryId(salesCreateForm.getCategoryId());
-        sale.setTradeName(salesCreateForm.getTradeName());
-    	sale.setUnitPrice(Integer.parseInt(salesCreateForm.getUnitPrice()));
-        sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
-    	sale.setNote(salesCreateForm.getNote());
+			if (category == null) {
+				result.rejectValue("categoryId", null,
+						"商品カテゴリーテーブルに存在しません。");
+			}
+		}
 
-    	salesRepository.save(sale);
+		//    	入力エラー
+		if (result.hasErrors()) {
 
-    	session.removeAttribute("salesCreateForm");
+			model.addAttribute("salesCreateForm", salesCreateForm);
+			model.addAttribute("accountList", accountList);
+			model.addAttribute("categoryList", categoryList);
 
-        return "redirect:/S0010";
-    }
-    
-//  直接URL入力の場合、売上登録へ
-    @GetMapping("/salesCreate")
-    public String getCreate(Model model){
-    	List<Account> accountList =
-                accountRepository.findBySalesAuthorityAndIsActive(2, true);
-    	List<Category> categoryList =
-                categoryRepository.findAll();
-    	
-    	model.addAttribute("salesCreateForm", new SalesCreateForm());
-        model.addAttribute("accountList",accountList);
-        model.addAttribute("categoryList",categoryList);
-    	
-    	return "redirect:/S0010";
-    }
+			return "S0010";
+		}
 
+		Integer unitPrice = Integer.parseInt(salesCreateForm.getUnitPrice());
+		Integer saleNumber = Integer.parseInt(salesCreateForm.getSaleNumber());
+		long total = (long) unitPrice * saleNumber;
 
- // 売上詳細編集確認画面
-    @PostMapping("/S0024")
-    public String editConfirm(
-    		@Valid
-            @ModelAttribute
-            SalesForm salesForm, BindingResult result, Model model) {
-    	
-    	// アカウント存在チェック
-    	Account account = null;
-    	if(salesForm.getAccountId() != null) {
+		model.addAttribute("total", total);
+		model.addAttribute("salesCreateForm", salesCreateForm);
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("account", account);
+		model.addAttribute("category", category);
+		session.setAttribute("salesCreateForm", salesCreateForm);
 
-    	    account = accountRepository.findById(
-    	                    salesForm.getAccountId())
-    	                    .orElse(null);
-       	 // アカウント存在しない
-    	    if(account == null) {
-    	        result.rejectValue("accountId",null,
-    	                "アカウントテーブルに存在しません。");
-    	    }
-    	}
-    	// カテゴリ存在チェック
-    	Category category = null;
-    	if(salesForm.getCategoryId() != null) {
+		return "S0011";
+	}
 
-    	    category =categoryRepository.findById(
-    	                    salesForm.getCategoryId())
-    	                    .orElse(null);
+	//    直接URL入力の場合、売上登録へ
+	@GetMapping("/sales/confirm")
+	public String getS0011(Model model) {
+		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
+		List<Category> categoryList = categoryRepository.findAll();
 
-    	    // 商品カテゴリ存在しない
-    	    if(category == null) {
-    	        result.rejectValue("categoryId",null,
-    	                "商品カテゴリーテーブルに存在しません。");
-    	    }
-    	}
+		model.addAttribute("salesCreateForm", new SalesCreateForm());
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("categoryList", categoryList);
 
-        // 入力エラー
-        if(result.hasErrors()){
+		return "redirect:/sales";
+	}
 
-            model.addAttribute("accountList",
-            		accountRepository.findAll());
-            model.addAttribute("categoryList",
-            		categoryRepository.findAll());
+	//    売上確認→キャンセル(値保持）
+	@PostMapping("/sales/back")
+	public String back(HttpSession session,
+			@ModelAttribute SalesCreateForm salesCreateForm, Model model) {
+		List<Account> accountList = accountRepository
+				.findBySalesAuthorityAndIsActive(2, true);
+		List<Category> categoryList = categoryRepository.findAll();
 
-            return "S0023";
-        }
-        
-     // 単価形式チェック
-        if(!salesForm.getUnitPrice()
-                .matches("^[0-9]+$")) {
+		model.addAttribute("salesCreateForm", salesCreateForm);
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("categoryList", categoryList);
 
-            model.addAttribute("unitPriceError",
-                    "単価を正しく入力して下さい。");
+		return "S0010";
+	}
 
-            model.addAttribute("accountList",
-                    accountRepository.findAll());
+	//    直接URL入力の場合、売上登録へ
+	@GetMapping("/sales/back")
+	public String getBack(Model model) {
+		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
+		List<Category> categoryList = categoryRepository.findAll();
 
-            model.addAttribute("categoryList",
-                    categoryRepository.findAll());
+		model.addAttribute("salesCreateForm", new SalesCreateForm());
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("categoryList", categoryList);
 
-            return "S0023";
-        }
-        
-     // 個数形式チェック
-        if(!salesForm.getSaleNumber()
-                .matches("^[0-9]+$")) {
+		return "redirect:/sales";
+	}
 
-            model.addAttribute("saleNumberError",
-                    "個数を正しく入力して下さい。");
+	// 売上登録実行
+	@PostMapping("/sales/create")
+	public String salesCreate(
+			HttpSession session,
+			SalesCreateForm salesCreateForm) {
 
-            model.addAttribute("accountList",
-                    accountRepository.findAll());
+		//    	String→Integer変換
+		Sale sale = new Sale();
+		sale.setSaleDate(salesCreateForm.getSaleDate());
+		sale.setAccountId(salesCreateForm.getAccountId());
+		sale.setCategoryId(salesCreateForm.getCategoryId());
+		sale.setTradeName(salesCreateForm.getTradeName());
+		sale.setUnitPrice(Integer.parseInt(salesCreateForm.getUnitPrice()));
+		sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
+		sale.setNote(salesCreateForm.getNote());
 
-            model.addAttribute("categoryList",
-                    categoryRepository.findAll());
+		salesRepository.save(sale);
 
-            return "S0023";
-        }
+		session.removeAttribute("salesCreateForm");
 
-        account = accountRepository.findById
-        		(salesForm.getAccountId()).orElse(null);
-        String saleName;
-        
-        if(account != null && account.isActive()) {
-            saleName = account.getName();
-        }else {
-        	saleName = "退職済みユーザー";
-        }
-        
-        model.addAttribute("salesForm",salesForm);
-        model.addAttribute("saleName", saleName);
-        model.addAttribute("accountList", 
-        		accountRepository.findAll());
-        model.addAttribute("categoryList", 
-        		categoryRepository.findAll());
-     
-        return "S0024";
-    }
-    
-//    直接URL入力の場合、検索画面へ
-    @GetMapping("/S0024")
-  public String getEditConfirm(Model model) {
-    	model.addAttribute("salesSearchForm", new SalesSearchForm());
-    	
-    	//担当一覧
-    	List<Integer> accountIds = salesRepository.findUsedAccountIds();
+		return "redirect:/sales";
+	}
+
+	//  直接URL入力の場合、売上登録へ
+	@GetMapping("/sales/create")
+	public String getCreate(Model model) {
+		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
+		List<Category> categoryList = categoryRepository.findAll();
+
+		model.addAttribute("salesCreateForm", new SalesCreateForm());
+		model.addAttribute("accountList", accountList);
+		model.addAttribute("categoryList", categoryList);
+
+		return "redirect:/sales";
+	}
+
+	// 売上詳細編集確認画面
+	@PostMapping("/sales/edit/confirm/{saleId}")
+	public String editConfirm(
+			@Valid @ModelAttribute SalesForm salesForm, BindingResult result, Model model,
+			@PathVariable Integer saleId) {
+
+		// アカウント存在チェック
+		Account account = null;
+		if (salesForm.getAccountId() != null) {
+
+			account = accountRepository.findById(
+					salesForm.getAccountId())
+					.orElse(null);
+			// アカウント存在しない
+			if (account == null) {
+				result.rejectValue("accountId", null,
+						"アカウントテーブルに存在しません。");
+			}
+		}
+		// カテゴリ存在チェック
+		Category category = null;
+		if (salesForm.getCategoryId() != null) {
+
+			category = categoryRepository.findById(
+					salesForm.getCategoryId())
+					.orElse(null);
+
+			// 商品カテゴリ存在しない
+			if (category == null) {
+				result.rejectValue("categoryId", null,
+						"商品カテゴリーテーブルに存在しません。");
+			}
+		}
+
+		// 入力エラー
+		if (result.hasErrors()) {
+
+			model.addAttribute("accountList",
+					accountRepository.findAll());
+			model.addAttribute("categoryList",
+					categoryRepository.findAll());
+
+			return "S0023";
+		}
+
+		// 単価形式チェック
+		if (!salesForm.getUnitPrice()
+				.matches("^[0-9]+$")) {
+
+			model.addAttribute("unitPriceError",
+					"単価を正しく入力して下さい。");
+
+			model.addAttribute("accountList",
+					accountRepository.findAll());
+
+			model.addAttribute("categoryList",
+					categoryRepository.findAll());
+
+			return "S0023";
+		}
+
+		// 個数形式チェック
+		if (!salesForm.getSaleNumber()
+				.matches("^[0-9]+$")) {
+
+			model.addAttribute("saleNumberError",
+					"個数を正しく入力して下さい。");
+
+			model.addAttribute("accountList",
+					accountRepository.findAll());
+
+			model.addAttribute("categoryList",
+					categoryRepository.findAll());
+
+			return "S0023";
+		}
+
+		account = accountRepository.findById(salesForm.getAccountId()).orElse(null);
+		String saleName;
+
+		if (account != null && account.isActive()) {
+			saleName = account.getName();
+		} else {
+			saleName = "（退職済みユーザー）";
+		}
+
+		model.addAttribute("salesForm", salesForm);
+		model.addAttribute("saleName", saleName);
+		model.addAttribute("accountList",
+				accountRepository.findAll());
+		model.addAttribute("categoryList",
+				categoryRepository.findAll());
+
+		return "S0024";
+	}
+
+	//    直接URL入力の場合、検索画面へ
+	@GetMapping("/sales/edit/confirm/{saleId}")
+	public String getEditConfirm(Model model, @PathVariable Integer saleId) {
+		model.addAttribute("salesSearchForm", new SalesSearchForm());
+
+		//担当一覧
+		List<Integer> accountIds = salesRepository.findUsedAccountIds();
 		model.addAttribute("accountList", accountRepository
-			        .findByAccountIdInAndIsActiveTrue(accountIds));
+				.findByAccountIdInAndIsActiveTrue(accountIds));
 		// カテゴリー一覧
 		model.addAttribute("categoryList", categoryRepository.findAll());
+
+		return "redirect:/sales/search";
+	}
+
+	// 売上詳細削除確認画面
+	@PostMapping("/sales/delete/{saleId}")
+	public String deleteConfirm(@PathVariable Integer saleId, Model model) {
+
+		Sale sales = salesRepository.findById(saleId).orElseThrow();
+		Account account = accountRepository.findById(sales.getAccountId()).orElse(null);
+		String saleName;
+
+		if (account != null && account.isActive()) {
+			saleName = account.getName();
+		} else {
+			saleName = "（退職済みユーザー）";
+		}
 		
-    	return "redirect:/S0020";
-    }
-    
+		long unitPrice = sales.getUnitPrice().longValue();
+	    long saleNumber = sales.getSaleNumber().longValue();
+		long total = unitPrice * saleNumber;
 
-    // 売上詳細削除確認画面
-    @PostMapping("/sales/delete")
-    public String deleteConfirm(Integer saleId, Model model) {
+		model.addAttribute("total", total);
+		model.addAttribute("sales", sales);
+		model.addAttribute("saleName", saleName);
+		model.addAttribute("accountList",
+				accountRepository.findAll());
+		model.addAttribute("categoryList",
+				categoryRepository.findAll());
 
-    	Sale sales = salesRepository.findById(saleId).orElseThrow();
-    	Account account = accountRepository.findById
-    			(sales.getAccountId()).orElse(null);
-    	String saleName;
-    	
-    	if (account != null && account.isActive()) {
-            saleName = account.getName();
-        }else {
-        	saleName = "退職済みユーザー";
-        }
-    	
-        model.addAttribute("sales", sales);
-        model.addAttribute("saleName", saleName);
-        model.addAttribute("accountList", 
-        		accountRepository.findAll());
-        model.addAttribute("categoryList", 
-        		categoryRepository.findAll());
+		return "S0025";
+	}
 
-        return "S0025";
-    }
-    
-//    直接URL入力の場合、検索画面へ
-    @GetMapping("/sales/delete")
-    public String getDelete(Model model) {
-    	model.addAttribute("salesSearchForm", new SalesSearchForm());
-    	//担当一覧
-    	List<Integer> accountIds = salesRepository.findUsedAccountIds();
+	//    直接URL入力の場合、検索画面へ
+	@GetMapping("/sales/delete/{saleId}")
+	public String getDelete(@PathVariable Integer saleId,Model model) {
+		model.addAttribute("salesSearchForm", new SalesSearchForm());
+		//担当一覧
+		List<Integer> accountIds = salesRepository.findUsedAccountIds();
 		model.addAttribute("accountList", accountRepository
-			        .findByAccountIdInAndIsActiveTrue(accountIds));
+				.findByAccountIdInAndIsActiveTrue(accountIds));
 		// カテゴリー一覧
 		model.addAttribute("categoryList", categoryRepository.findAll());
-		
-    	return "redirect:/S0020";
-    }
-    
-//    削除実行
-    @PostMapping("/sales/delete/execute")
-    public String salesDelete(Integer saleId,HttpSession session) {
-        // 削除
-        salesRepository.deleteById(saleId);
 
-        // 一覧再取得
-        List<Sale> salesList =salesRepository.findAll();
+		return "redirect:/sales/search";
+	}
 
-        // session更新
-        session.setAttribute("salesList",salesList);
+	//    削除実行
+	@PostMapping("/sales/delete/execute")
+	public String salesDelete(Integer saleId, HttpSession session) {
+		// 削除
+		salesRepository.deleteById(saleId);
 
-        // 一覧へ
-        return "redirect:/S0021";
-    }
-    
-//    直接URL入力の場合、検索画面へ
-    @GetMapping("/sales/delete/execute")
-    public String getExecute(Model model) {
-    	model.addAttribute("salesSearchForm", new SalesSearchForm());
-    	//担当一覧
-    	List<Integer> accountIds = salesRepository.findUsedAccountIds();
+		// 一覧再取得
+		List<Sale> salesList = salesRepository.findAll();
+
+		// session更新
+		session.setAttribute("salesList", salesList);
+
+		// 一覧へ
+		return "redirect:/sales/result";
+	}
+
+	//    直接URL入力の場合、検索画面へ
+	@GetMapping("/sales/delete/execute")
+	public String getExecute(Model model) {
+		model.addAttribute("salesSearchForm", new SalesSearchForm());
+		//担当一覧
+		List<Integer> accountIds = salesRepository.findUsedAccountIds();
 		model.addAttribute("accountList", accountRepository
-			        .findByAccountIdInAndIsActiveTrue(accountIds));
+				.findByAccountIdInAndIsActiveTrue(accountIds));
 		// カテゴリー一覧
 		model.addAttribute("categoryList", categoryRepository.findAll());
-		
-    	return "redirect:/S0020";
-    }
-    
-    @PostMapping("/sales/back")
-    public String back(
-    		HttpSession session,
-            @ModelAttribute
-            SalesCreateForm salesCreateForm,
 
-            Model model) {
+		return "redirect:/sales/search";
+	}
 
-
-        List<Account> accountList =
-                accountRepository
-                    .findBySalesAuthorityAndIsActive(
-                            2,
-                            true);
-
-        List<Category> categoryList =
-                categoryRepository.findAll();
-
-        model.addAttribute(
-                "salesCreateForm",
-                salesCreateForm);
-
-        model.addAttribute(
-                "accountList",
-                accountList);
-
-        model.addAttribute(
-                "categoryList",
-                categoryList);
-
-        return "S0010";
-    }
 }

@@ -123,7 +123,7 @@
 
 				<!-- 削除 -->
 
-				<form th:action="@{/sales/delete}" th:object="${sales}" method="post" style="display:inline;">
+				<form th:action="@{/sales/delete/{id}(id=${sales.saleId})}" th:object="${sales}" method="post" style="display:inline;">
 
 					<input type="hidden" name="saleId" th:value="${sales.saleId}">
 
@@ -155,7 +155,7 @@
 
 				<!-- キャンセル -->
 
-				<form th:action="@{/sales/search}" method="get" style="display:inline;">
+				<form th:action="@{/sales/result}" method="get" style="display:inline;">
 
 					<button type="submit" class="btn btn-secondary">
 
