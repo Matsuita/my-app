@@ -37,11 +37,13 @@
             <div class="form-label">販売日</div>
 
             <div class="form-input">
+				<div class="date-inputs">
                 <input type="date" th:field="*{saleDateFrom}">
                 <span class="wave">～</span>
                 <input type="date" th:field="*{saleDateTo}">
             </div>
         </div>
+		</div>
 
         <!-- エラー -->
         <div class="error" th:text="${dateFromError}"></div>
