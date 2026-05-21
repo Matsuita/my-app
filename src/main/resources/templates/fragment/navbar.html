@@ -15,8 +15,11 @@
 		<span class="navbar-brand">
 			物品売上管理システム
 		</span>
-
-		<div class="menu">
+		<div class="menu-toggle" onclick="toggleMenu()">
+				<i class="bi bi-list"></i>
+			</div>
+		
+		<div class="menu" id="menu">
 
 			<a class="nav-link" 
 				th:classappend="${active == 'dashboard'} ? ' active'" 
@@ -50,16 +53,20 @@
 				th:classappend="${active == 'account/search'} ? ' active'"
 				th:href="@{/accounts/search}">
 				アカウント検索
+			
 			</a>
 
+			<a class="nav-link logout" th:href="@{/logout}">
+											ログアウト
+										</a>
 		</div>
 
-		<a class="nav-link logout" th:href="@{/logout}">
-			ログアウト
-		</a>
+		
 
 	</nav>
-
+	
+	
+	<script th:src="@{/script.js}" defer></script>
 </body>
 
 </html>
