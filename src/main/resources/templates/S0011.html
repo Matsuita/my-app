@@ -22,7 +22,8 @@
 		<div class="form-row">
 			<div class="form-label">販売日</div>
 			<div class="form-input short">
-				<input type="text" th:value="*{saleDate}" readonly>
+				<input type="text"
+				 th:value="*{#temporals.format(saleDate, 'yyyy/MM/dd')}" readonly>
 			</div>
 		</div>
 
@@ -87,59 +88,41 @@
 
 	</div>
 
-	<!-- 送信フォーム -->
-	
+<!-- 送信フォーム -->
 	<div class="btn-area-center">
-
 	    <!-- 登録 -->
+		<form th:action="@{/sales/create}" th:object="${salesCreateForm}"
+				 method="post">
+			<input type="hidden" th:field="*{saleDate}">
+			<input type="hidden" th:field="*{accountId}">
+			<input type="hidden" th:field="*{categoryId}">
+			<input type="hidden" th:field="*{tradeName}">
+			<input type="hidden" th:field="*{unitPrice}">
+			<input type="hidden" th:field="*{saleNumber}">
+			<input type="hidden" th:field="*{note}">
 
-	    <form th:action="@{/salesCreate}"
-	          th:object="${salesCreateForm}"
-	          method="post">
-
-	        <input type="hidden" th:field="*{saleDate}">
-	        <input type="hidden" th:field="*{accountId}">
-	        <input type="hidden" th:field="*{categoryId}">
-	        <input type="hidden" th:field="*{tradeName}">
-	        <input type="hidden" th:field="*{unitPrice}">
-	        <input type="hidden" th:field="*{saleNumber}">
-	        <input type="hidden" th:field="*{note}">
-
-	        <button type="submit"
-	                class="btn btn-primary">
-
-	            ✓ 登録
-
-	        </button>
-
+			<button type="submit" class="btn btn-primary">
+				✓ 登録
+			</button>
 	    </form>
 
-		
 	    <!-- キャンセル -->
-
-	    <form th:action="@{/sales/back}"
-	          th:object="${salesCreateForm}"
+		 <form th:action="@{/sales/back}" th:object="${salesCreateForm}"
 	          method="post">
 
-	        <input type="hidden" th:field="*{saleDate}">
-	        <input type="hidden" th:field="*{accountId}">
-	        <input type="hidden" th:field="*{categoryId}">
-	        <input type="hidden" th:field="*{tradeName}">
-	        <input type="hidden" th:field="*{unitPrice}">
-	        <input type="hidden" th:field="*{saleNumber}">
-	        <input type="hidden" th:field="*{note}">
+			<input type="hidden" th:field="*{saleDate}">
+			<input type="hidden" th:field="*{accountId}">
+			<input type="hidden" th:field="*{categoryId}">
+			<input type="hidden" th:field="*{tradeName}">
+			<input type="hidden" th:field="*{unitPrice}">
+			<input type="hidden" th:field="*{saleNumber}">
+			<input type="hidden" th:field="*{note}">
 
-	        <button type="submit"
-	                class="btn btn-secondary">
-
-	            キャンセル
-
-	        </button>
-
-	    </form>
-
+			<button type="submit" class="btn btn-secondary">
+				キャンセル
+			</button>
+		</form>
 	</div>
-
 </div>
 </body>
 </html>
