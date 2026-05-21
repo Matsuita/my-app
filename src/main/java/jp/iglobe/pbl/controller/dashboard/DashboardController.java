@@ -37,9 +37,8 @@ public class DashboardController {
         List<Sale> salesList = salesRepository.findAll();
 
         // 今日売上
-        int todaySales = salesList.stream()
-                .filter(s -> s.getSaleDate().equals(LocalDate.now()))
-                .mapToInt(s -> s.getUnitPrice() * s.getSaleNumber()).sum();
+        long todaySales = salesList.stream().filter(s -> s.getSaleDate().equals(LocalDate.now()))
+        		.mapToLong(s -> s.getUnitPrice().longValue() * s.getSaleNumber().longValue()).sum();
 
         // 件数
         long salesCount = salesList.size();
@@ -89,7 +88,7 @@ public class DashboardController {
         	
         	int target = 30000;
 
-        	int achievementRate = todaySales * 100 / target;
+        	long achievementRate = todaySales * 100 / target;
 
         	if(achievementRate > 100){
 

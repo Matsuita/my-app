@@ -94,8 +94,8 @@
 			<!-- 小計 -->
 			<div class="form-row">
 				<div class="form-label">小計</div>
-				<div class="form-input"><span th:text="${#numbers.formatDecimal(sales.unitPrice * sales.saleNumber,
-										                    0,'COMMA',0,'POINT')}"></span></div>
+				<div class="form-input"><span th:text="${#numbers.formatInteger(sales.unitPrice.longValue() * sales.saleNumber.longValue(),
+				0, 'COMMA')}"></span></div>
 			</div>
 
 
