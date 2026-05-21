@@ -35,7 +35,7 @@ body {
 		padding: 0 20px !important;
 	border-bottom: 1px solid #ccc;
 	background-color: #e9ecef !important;
-
+	flex-wrap: wrap;  /* ← 折り返し許可 */
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -46,12 +46,14 @@ body {
 	font-size: 18px;
 	font-weight: 600;
 	color: #555 !important;
+	white-space: nowrap; /* ← 追加 */
 }
 
 /* ===== メニュー配置 ===== */
 .menu {
 	display: flex;
 	gap: 35px;
+	flex-wrap: wrap; /* ← これ重要 */
 }
 
 
@@ -79,6 +81,7 @@ body {
 /* ===== ログアウト位置 ===== */
 .logout {
 	margin-left: auto;
+	white-space: nowrap; /* ← 改行防止 */
 }
 
 /* ===== 選択中 ===== */
@@ -86,6 +89,19 @@ body {
 	color: #222 !important;
 	font-weight: 600;
 	border-bottom: 2px solid #666;
+}
+
+@media (max-width: 768px) {
+	.menu {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.logout {
+		width: 100%;
+		text-align: right;
+		margin-top: 10px;
+	}
 }
 
 /*こっからhtnl*/
@@ -116,7 +132,7 @@ body {
 	/* ← 少し大きめ */
 	font-weight: 500;
 	margin-bottom: 28px;
-	margin-left: -200px;
+	margin-left: -220px;
 	padding-left: 0;
 	border-left: none;
 	/* ← 青ライン削除 */
@@ -129,12 +145,12 @@ body {
 	align-items: center;
 	justify-content: flex-end;
 	margin-bottom: 12px;
-	padding-right: 200px;  /* ← これで右位置をズラす */
+	padding-right: 100px;  /* ← これで右位置をズラす */
 }
 
 /* ===== ラベル ===== */
 .form-label {
-	width: 450px;
+	width: 800px;
 	text-align: right;
 	padding-right: 20px;
 	font-weight: 650;
@@ -146,8 +162,8 @@ body {
 /* ===== 入力エリア ===== */
 .form-input {
 	
-	width: 1000px;
-	max-width: 900px;
+	width: 2000px;
+	max-width: 1800px;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start; /* ← 追加 */
@@ -238,7 +254,7 @@ input:focus {
 /* ===== バッジ ===== */
 .badge-gray {
 	font-size: 12px;
-	background: #6c757d;
+	background: #8a939b;
 	color: #fff;
 	padding: 2px 6px;
 	border-radius: 10px;
@@ -369,7 +385,7 @@ input:focus {
 	.date-inputs input[type="date"] {
 		width: 140px;
 		padding: 6px 10px;
-		border: 1px solid #bbb;
+		
 		border-radius: 6px;
 		box-sizing: border-box;
 		flex-shrink: 0;
