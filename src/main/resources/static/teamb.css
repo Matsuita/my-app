@@ -35,10 +35,11 @@ body {
 		padding: 0 20px !important;
 	border-bottom: 1px solid #ccc;
 	background-color: #e9ecef !important;
-	flex-wrap: wrap;  /* ← 折り返し許可 */
+	flex-wrap: nowrap;  /* ← 折り返し許可 */
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	
+	overflow: visible; /* ← これ追加 */
 }
 
 /* ===== タイトル ===== */
@@ -53,15 +54,21 @@ body {
 .menu {
 	display: flex;
 	gap: 35px;
-	flex-wrap: wrap; /* ← これ重要 */
+	width: auto; /* ← これ追加 */
+	flex-wrap: nowrap; /* ← これ重要 */
+	overflow-x: auto; /* ← 横スクロール許可 */
+	flex-shrink: 0;
+	flex:1;
+	
 }
+
 
 
 /* ===== リンク基本 ===== */
 .nav-link {
 	color: #555 !important;
 	text-decoration: none;
-
+	white-space: nowrap;
 	font-size: 18px;
 	/* ← 14 → 16にUP */
 	padding: 14px 14px;
@@ -70,6 +77,7 @@ body {
 	transition: all 0.15s ease;
 	display: inline-block;
 	/* ← クリック範囲安定 */
+	flex-shrink: 0;
 }
 
 /* ===== hover ===== */
@@ -82,6 +90,7 @@ body {
 .logout {
 	margin-left: auto;
 	white-space: nowrap; /* ← 改行防止 */
+	flex-shrink: 0;
 }
 
 /* ===== 選択中 ===== */
@@ -403,49 +412,46 @@ input:focus {
 		margin: 0;
 	}
 
+	/* ===== ハンバーガー ===== */
+	.menu-toggle {
+		display: none;
+		font-size: 28px;
+		cursor: pointer;
+	}
 
+	/* ===== PC ===== */
+	.menu {
+		display: flex;
+		gap: 30px;
+		align-items: center;
+	}
 
-/* ハンバーガー（PCでは非表示） */
-/*.menu-toggle {*/
-/*	display: none;*/
-/*	font-size: 22px;*/
-/*	cursor: pointer;*/
-/*}*/
+	/* ===== スマホ ===== */
+	@media (max-width: 768px) {
 
+		.menu-toggle {
+			display: block;
+		}
 
-/*.menu {*/
-/*	display: flex;*/
-/*	gap: 35px;*/
-/*}*/
+		.menu {
+			display: none;
+			flex-direction: column;
+			position: absolute;
+			top: 60px;
+			right: 0;
+			width: 200px;
+			background: #fff;
+			padding: 10px;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+			z-index: 9999;
+		}
 
-/*.menu-toggle {*/
-/*	display: none;*/
-/*}*/
-
-/* ===== スマホ ===== */
-/*@media screen and (max-width: 768px) {*/
-
-/*	.menu {*/
-/*		display: none;*/
-/*		flex-direction: column;*/
-/*		position: absolute;*/
-/*		top: 60px;*/
-/*		left: 0;*/
-/*		width: 100%;*/
-/*		background: #e9ecef;*/
-/*	}*/
-
-/*	.menu.active {*/
-/*		display: flex;*/
-/*	}*/
-
-/*	.menu-toggle {*/
-/*		display: block;*/
-/*		font-size: 22px;*/
-/*		cursor: pointer;*/
-/*	}*/
-/*}*/
-
+		.menu.active {
+			display: flex;
+		}
+	}
+	
+	
 
 /*<nav class="navbar fixed-top">
 
