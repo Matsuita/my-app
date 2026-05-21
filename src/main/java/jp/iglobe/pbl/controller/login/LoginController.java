@@ -65,11 +65,7 @@ public class LoginController {
 
             // 論理削除チェック
             if(!account.isActive()){
-
-                model.addAttribute(
-                        "errorMessage",
-                        "利用できないアカウントです。");
-
+                model.addAttribute("errorMessage", "存在しないアカウントです。");
                 return "C0010";
             }
 
