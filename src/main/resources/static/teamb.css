@@ -120,7 +120,7 @@ body {
 	margin: 0;
 	font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
 	background:
-			        #e4ecf5;
+			        #f3f6fb;
 	color: #333;
 	-webkit-font-smoothing: antialiased;
 }
@@ -143,8 +143,7 @@ body {
 	margin-bottom: 28px;
 	margin-left: -220px;
 	padding-left: 0;
-	border-left: none;
-	/* ← 青ライン削除 */
+	
 	letter-spacing: 1px;
 }
 

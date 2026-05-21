@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>アカウント詳細編集</title>
-
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
 
@@ -115,12 +115,12 @@
 			</div>
 
 			<!-- ボタン -->
-			<div class="text-center">
+			<div class="btn-area-center">
 
 				<!-- 更新ボタン（POST送信） -->
 
 
-				<button type="submit" class="btn btn-primary">確認</button>
+				<button type="submit" class="btn btn-primary"><i class="bi bi-clipboard-check"></i>　確認</button>
 
 
 				<a th:href="@{/accounts/result}" class="btn btn-secondary">
@@ -132,6 +132,7 @@
 
 	</div>
 </div>
+<script th:src="@{/script.js}" defer></script>
 </body>
 
 </html>
