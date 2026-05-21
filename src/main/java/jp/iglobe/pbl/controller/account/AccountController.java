@@ -21,7 +21,7 @@ public class AccountController {
 	AccountRepository accountRepository;
 
 	//	アカウント登録
-	@GetMapping("/S0030")
+	@GetMapping("/accounts")
 	public String account(HttpSession session, Model model) {
 
 		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く

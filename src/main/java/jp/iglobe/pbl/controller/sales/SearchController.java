@@ -96,7 +96,7 @@ public class SearchController {
 		return "S0042";
 	}
 
-	@PostMapping("/accounts/confirm")
+	@PostMapping("/accounts/edit/confirm")
 	public String confirm(
 			@Valid @ModelAttribute AccountUpdateForm form,
 			BindingResult result,
