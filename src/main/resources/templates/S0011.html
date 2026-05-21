@@ -88,29 +88,56 @@
 	</div>
 
 	<!-- 送信フォーム -->
-	<form th:action="@{/salesCreate}" th:object="${salesCreateForm}" method="post">
+	
+	<div class="btn-area-center">
 
-		<input type="hidden" th:field="*{saleDate}">
-		<input type="hidden" th:field="*{accountId}">
-		<input type="hidden" th:field="*{categoryId}">
-		<input type="hidden" th:field="*{tradeName}">
-		<input type="hidden" th:field="*{unitPrice}">
-		<input type="hidden" th:field="*{saleNumber}">
-		<input type="hidden" th:field="*{note}">
+	    <!-- 登録 -->
 
-		<div class="btn-area-center">
+	    <form th:action="@{/salesCreate}"
+	          th:object="${salesCreateForm}"
+	          method="post">
 
-			<button type="submit" class="btn btn-primary">
-				✓ 登録
-			</button>
+	        <input type="hidden" th:field="*{saleDate}">
+	        <input type="hidden" th:field="*{accountId}">
+	        <input type="hidden" th:field="*{categoryId}">
+	        <input type="hidden" th:field="*{tradeName}">
+	        <input type="hidden" th:field="*{unitPrice}">
+	        <input type="hidden" th:field="*{saleNumber}">
+	        <input type="hidden" th:field="*{note}">
 
-			<button type="submit" th:formaction="@{/S0010}" class="btn btn-secondary">
-				キャンセル
-			</button>
+	        <button type="submit"
+	                class="btn btn-primary">
 
-		</div>
+	            ✓ 登録
 
-	</form>
+	        </button>
+
+	    </form>
+
+	    <!-- キャンセル -->
+
+	    <form th:action="@{/sales/back}"
+	          th:object="${salesCreateForm}"
+	          method="post">
+
+	        <input type="hidden" th:field="*{saleDate}">
+	        <input type="hidden" th:field="*{accountId}">
+	        <input type="hidden" th:field="*{categoryId}">
+	        <input type="hidden" th:field="*{tradeName}">
+	        <input type="hidden" th:field="*{unitPrice}">
+	        <input type="hidden" th:field="*{saleNumber}">
+	        <input type="hidden" th:field="*{note}">
+
+	        <button type="submit"
+	                class="btn btn-secondary">
+
+	            キャンセル
+
+	        </button>
+
+	    </form>
+
+	</div>
 
 </div>
 </body>

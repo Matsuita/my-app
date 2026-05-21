@@ -52,7 +52,17 @@ public class SalesController {
                 categoryRepository.findAll();
 
         // 画面へ渡す
-        model.addAttribute("salesCreateForm", new SalesCreateForm());
+        SalesCreateForm salesCreateForm =
+                (SalesCreateForm)
+                session.getAttribute(
+                        "salesCreateForm");
+
+        if(salesCreateForm == null){
+
+            salesCreateForm = new SalesCreateForm();
+        }
+
+        model.addAttribute("salesCreateForm",salesCreateForm);
         model.addAttribute("accountList",accountList);
         model.addAttribute("categoryList",categoryList);
 
@@ -77,7 +87,7 @@ public class SalesController {
 
     // 売上登録確認画面
     @PostMapping("/S0011")
-    public String salesConfirm(@Valid
+    public String salesConfirm( HttpSession session, @Valid
             SalesCreateForm salesCreateForm, BindingResult result, Model model) {
     	List<Account> accountList =
                 accountRepository.findBySalesAuthorityAndIsActive(2, true);
@@ -120,6 +130,7 @@ public class SalesController {
     		model.addAttribute("salesCreateForm", salesCreateForm);
     		model.addAttribute("accountList", accountList);
             model.addAttribute("categoryList",categoryList);
+            
 
     		return "S0010";
     	}
@@ -133,6 +144,7 @@ public class SalesController {
         model.addAttribute("categoryList",categoryList);
         model.addAttribute("account", account);
         model.addAttribute("category", category);
+        session.setAttribute("salesCreateForm", salesCreateForm);
         
         return "S0011";
     }
@@ -154,7 +166,9 @@ public class SalesController {
 
     // 売上登録実行
     @PostMapping("/salesCreate")
-    public String salesCreate(SalesCreateForm salesCreateForm) {
+    public String salesCreate(
+            HttpSession session,
+            SalesCreateForm salesCreateForm) {
     	
 //    	String→Integer変換
     	Sale sale = new Sale();
@@ -166,7 +180,9 @@ public class SalesController {
         sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
     	sale.setNote(salesCreateForm.getNote());
 
-        salesRepository.save(sale);
+    	salesRepository.save(sale);
+
+    	session.removeAttribute("salesCreateForm");
 
         return "redirect:/S0010";
     }
@@ -370,4 +386,36 @@ public class SalesController {
     	return "redirect:/S0020";
     }
     
+    @PostMapping("/sales/back")
+    public String back(
+    		HttpSession session,
+            @ModelAttribute
+            SalesCreateForm salesCreateForm,
+
+            Model model) {
+
+
+        List<Account> accountList =
+                accountRepository
+                    .findBySalesAuthorityAndIsActive(
+                            2,
+                            true);
+
+        List<Category> categoryList =
+                categoryRepository.findAll();
+
+        model.addAttribute(
+                "salesCreateForm",
+                salesCreateForm);
+
+        model.addAttribute(
+                "accountList",
+                accountList);
+
+        model.addAttribute(
+                "categoryList",
+                categoryList);
+
+        return "S0010";
+    }
 }
