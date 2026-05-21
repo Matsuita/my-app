@@ -28,7 +28,9 @@
 			<!-- 販売日 -->
 			<div class="form-row">
 				<div class="form-label">販売日</div>
-				<div class="form-input"><span th:text="${sales.saleDate}"></span></div>
+				<div class="form-input"><span th:text="${#temporals.format(
+				    sales.saleDate,
+				    'yyyy/MM/dd')}"></span></div>
 			</div>
 
 

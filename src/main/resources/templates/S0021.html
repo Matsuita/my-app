@@ -68,8 +68,10 @@
 							<th>小計</th>
 
 						</tr>
+					</thead>
 
-						<!-- 検索結果 -->
+					<!-- 検索結果 -->
+					<tbody>
 
 						<tr th:each="sales : ${salesList}">
 
@@ -99,27 +101,27 @@
 
 							<!-- 販売日 -->
 
-							<td th:text="${sales.saleDate}">
+							<td th:text="${#temporals.format(
+							    sales.saleDate,
+							    'yyyy/MM/dd')}">
 							</td>
 
 							<!-- 担当 -->
 
 							<td>
 
-								<span th:with="found=false">
+								<span th:each="account : ${accountList}">
 
-									<span th:each="account : ${accountList}">
+									<span th:if="${account.accountId == sales.accountId}">
 
-										<span th:if="${account.accountId == sales.accountId}" th:text="${account.name}">
+										<span th:if="${account.active}" th:text="${account.name}">
+										</span>
+
+										<span th:unless="${account.active}">
+											（退職済みユーザー）
 										</span>
 
 									</span>
-
-								</span>
-
-								<span th:unless="${#lists.contains(accountList.![accountId], sales.accountId)}">
-
-									（退職済みユーザー）
 
 								</span>
 
@@ -154,11 +156,16 @@
 
 							<!-- 小計 -->
 
-							<td class="subtotal" th:text="${#numbers.formatDecimal(sales.unitPrice * sales.saleNumber,
-			        0,'COMMA',0,'POINT')}">
+							<td class="subtotal" th:text="${#numbers.formatInteger(
+							    sales.unitPrice.longValue()
+							    * sales.saleNumber.longValue(),
+							    0,
+							    'COMMA')}">
 							</td>
 
 						</tr>
+
+					</tbody>
 
 				</table>
 
