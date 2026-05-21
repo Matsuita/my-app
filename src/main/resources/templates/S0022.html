@@ -113,18 +113,13 @@
 
 				<!-- 編集 -->
 
-				<form th:action="@{/sales/edit}" method="get" style="display:inline;">
+				<a th:href="@{/sales/edit/{id}(id=${sales.saleId})}"
+				   class="btn btn-primary">
 
-					<input type="hidden" name="saleId" th:value="${sales.saleId}">
+				    <i class="bi bi-pencil"></i>
+				    編 集
 
-					<button type="submit" class="btn btn-primary">
-
-						<i class="bi  bi-pencil"></i>
-						編 集
-
-					</button>
-
-				</form>
+				</a>
 
 				<!-- 削除 -->
 
@@ -160,7 +155,7 @@
 
 				<!-- キャンセル -->
 
-				<form th:action="@{/S0021}" method="get" style="display:inline;">
+				<form th:action="@{/sales/search}" method="get" style="display:inline;">
 
 					<button type="submit" class="btn btn-secondary">
 

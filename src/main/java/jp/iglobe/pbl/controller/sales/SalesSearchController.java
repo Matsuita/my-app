@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.iglobe.pbl.model.account.Account;
@@ -79,7 +80,7 @@ public class SalesSearchController {
 	
 
 	// 検索処理
-	@PostMapping("/sales/search")
+	@PostMapping("/sales/result")
 	public String searchResult(
 
 			HttpSession session,
@@ -235,8 +236,9 @@ public class SalesSearchController {
 	}
 
 	// 詳細画面
-	@GetMapping("/sales/detail")
-	public String detail(HttpSession session, Integer saleId,Model model) {
+	@GetMapping("/sales/detail/{saleId}")
+	public String detail(HttpSession session, @PathVariable
+		     Integer saleId, Model model) {
 
 	    if(session.getAttribute("loginUser")
 	            == null){
@@ -295,10 +297,8 @@ public class SalesSearchController {
 	}
 
 	// 編集画面
-	@GetMapping("/sales/edit")
-	public String edit(
-	        HttpSession session,
-	        Integer saleId,
+	@GetMapping("/sales/edit/{saleId}")
+	public String edit(HttpSession session, @PathVariable Integer saleId,
 	        Model model) {
 		
 		if(session.getAttribute("loginUser")

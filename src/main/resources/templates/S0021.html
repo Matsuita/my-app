@@ -79,18 +79,13 @@
 
 							<td>
 
-								<form th:if="${session.loginUser.salesAuthority == 2}" th:action="@{/sales/detail}"
-									method="get">
+							    <a th:if="${session.loginUser.salesAuthority == 2}"
+							       th:href="@{/sales/detail/{id}(id=${sales.saleId})}"
+							       class="btn btn-primary btn-sm">
 
-									<input type="hidden" name="saleId" th:value="${sales.saleId}">
+							        詳細
 
-									<button type="submit" class="btn btn-primary btn-sm">
-
-										詳細
-
-									</button>
-
-								</form>
+							    </a>
 
 							</td>
 
