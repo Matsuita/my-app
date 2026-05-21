@@ -99,7 +99,7 @@ public class SalesSearchController {
 		        (Account) session.getAttribute(
 		                "loginUser");
 
-		if(loginUser.getSalesAuthority() < 1){
+		if(loginUser.getSalesAuthority() == 0){
 
 		    return "redirect:/dashboard";
 		}
@@ -250,7 +250,7 @@ public class SalesSearchController {
 		        (Account) session.getAttribute(
 		                "loginUser");
 
-		if(loginUser.getSalesAuthority() < 1){
+		if(loginUser.getSalesAuthority() == 0){
 
 		    return "redirect:/dashboard";
 		}
@@ -312,9 +312,11 @@ public class SalesSearchController {
 	                    "loginUser");
 
 	    // 権限チェック
-	    if(loginUser.getSalesAuthority() != 2){
+	    if(loginUser.getSalesAuthority() == 0){
 
 	        return "redirect:/dashboard";
+	    }else if(loginUser.getSalesAuthority() == 1) {
+	    	return "redirect:/sales/search";
 	    }
 	    
 	 // 詳細画面へ直接アクセス禁止
