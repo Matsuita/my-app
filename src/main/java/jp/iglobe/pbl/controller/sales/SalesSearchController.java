@@ -33,7 +33,7 @@ public class SalesSearchController {
 	private CategoryRepository categoryRepository;
 
 	// 検索画面
-	@GetMapping("/S0020")
+	@GetMapping("/sales/search")
 	public String search(HttpSession session, Model model) {
 		
 		
@@ -76,31 +76,7 @@ public class SalesSearchController {
 		return "S0020";
 	}
 
-	@GetMapping("/sales/search")
-	public String searchRedirect(HttpSession session, Model model) {
-		
-		if(session.getAttribute("loginUser")
-		        == null){
-
-		    return "redirect:/";
-		}
-
-		Account loginUser =
-		        (Account) session.getAttribute(
-		                "loginUser");
-
-		if(loginUser.getSalesAuthority() < 1){
-
-		    return "redirect:/dashboard";
-		}
-
-		List<Sale> salesList = salesRepository.findAll();
-		session.setAttribute("salesList", salesList);
-
-		model.addAttribute("salesList", salesList);
-
-		return "S0021";
-	}
+	
 
 	// 検索処理
 	@PostMapping("/sales/search")
@@ -344,7 +320,7 @@ public class SalesSearchController {
 	    // saleIdなし
 	    if(saleId == null) {
 
-	        return "redirect:/S0021";
+	        return "redirect:/sales/result";
 	    }
 
 	    // 売上取得
@@ -356,7 +332,7 @@ public class SalesSearchController {
 	    // 売上なし
 	    if(sales == null) {
 
-	        return "redirect:/S0021";
+	        return "redirect:/sales/result";
 	    }
 
 	    // アカウント取得
@@ -518,10 +494,10 @@ public class SalesSearchController {
 		// 一覧再取得
 		List<Sale> salesList = salesRepository.findAll();
 		session.setAttribute("salesList", salesList);
-		return "redirect:/S0021";
+		return "redirect:/sales/result";
 	}
 
-	@GetMapping("/S0021")
+	@GetMapping("/sales/result")
 	public String result(HttpSession session, Model model) {
 		if(session.getAttribute("loginUser")
 		        == null) {
@@ -536,7 +512,7 @@ public class SalesSearchController {
 		if(session.getAttribute("searched")
 		        == null){
 
-		    return "redirect:/S0020";
+		    return "redirect:/sales/search";
 		}
 		
 		Account loginUser =

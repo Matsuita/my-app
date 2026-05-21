@@ -36,23 +36,24 @@
 
 			<!-- 担当 -->
 			<div class="form-row">
-				<div class="form-label">担当</div>
-				<div class="form-input">
-					<span th:each="account : ${accountList}">
-						<span th:if="${account.accountId == sales.accountId}" th:text="${account.name}">
-						</span>
-					</span>
 
+			    <div class="form-label">
+			        担当
+			    </div>
 
-					<span th:unless="${#lists.contains(
-			            accountList.![accountId],
-			            sales.accountId)}">
+			    <div class="form-input">
+			        <span th:each="account : ${accountList}">
+			            <span th:if="${account.accountId == sales.accountId}">
+			                <span th:if="${account.active}" th:text="${account.name}">
+			                </span>
+			                <span th:unless="${account.active}">
+			                    （退職済みユーザー）
+			                </span>
+			            </span>
+			        </span>
 
-						（退職済みユーザー）
+			    </div>
 
-					</span>
-
-				</div>
 			</div>
 
 			<!-- 商品カテゴリー -->
