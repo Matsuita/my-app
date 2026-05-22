@@ -185,6 +185,7 @@ public class SearchController {
 		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
 		}
+		
 
 		sessionStatus.setComplete(); // 🔥ここで編集内容リセット
 
@@ -196,7 +197,7 @@ public class SearchController {
 
 		model.addAttribute("accounts", list);
 
-		return "S0041";
+		return "redirect:/accounts/search";
 	}
 
 	@GetMapping("/accounts/delete")

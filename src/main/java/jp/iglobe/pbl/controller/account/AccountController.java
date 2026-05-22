@@ -73,7 +73,7 @@ public class AccountController {
 
 		// データベースに同じメールアドレスがあるか直接チェックする
 		if (accountRepository.existsByMail(accountForm.getMail())) {
-			result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のパスワードで登録してください。");
+			result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のメールアドレスで登録してください。");
 			return "S0030"; // 重複していたら入力画面（S0030）へ戻る
 		}
 
