@@ -25,7 +25,7 @@ public class AccountUpdateForm {
 
 	@NotBlank(message = "パスワードを入力して下さい。")
 	@Size(max = 30, message = "パスワードが長すぎます。")
-	@Pattern(regexp = "^$|(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,20}$", message = "パスワードは8〜20文字で、大文字・小文字・数字をそれぞれ1つ以上含めてください")
+	@Pattern(regexp = "^$|(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "パスワードは8〜20文字で、大文字・小文字・数字をそれぞれ1つ以上含めてください")
 	private String password;
 	@NotBlank(message = "パスワード（確認）を入力して下さい。")
 	@Transient
