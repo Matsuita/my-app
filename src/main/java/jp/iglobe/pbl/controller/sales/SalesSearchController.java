@@ -3,6 +3,7 @@ package jp.iglobe.pbl.controller.sales;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -55,6 +56,12 @@ public class SalesSearchController {
 
 		    return "redirect:/dashboard";
 		}
+		
+		session.removeAttribute(
+		        "searched");
+
+		session.removeAttribute(
+		        "salesList");
 
 		model.addAttribute(
 				"salesSearchForm",
@@ -405,10 +412,13 @@ public class SalesSearchController {
 	            "salesForm",
 	            form);
 
-	    // 担当一覧
+	 // 売上登録済み担当一覧
+	    List<Integer> accountIds = salesRepository.findUsedAccountIds();
+
 	    model.addAttribute(
 	            "accountList",
-	            accountRepository.findAll());
+	            accountRepository.findAllById(
+	                    accountIds));
 
 	    // カテゴリ一覧
 	    model.addAttribute(
@@ -506,18 +516,30 @@ public class SalesSearchController {
 	}
 
 	@GetMapping("/sales/result")
-	public String result(HttpSession session, Model model) {
+	public String result(HttpSession session, HttpServletRequest request,Model model) {
+			
 		if(session.getAttribute("loginUser")
-		        == null) {
+		        == null){
 
 		    return "redirect:/";
+		}
+
+		String referer =
+		        request.getHeader(
+		                "Referer");
+
+		if(referer == null
+		        || !referer.contains(
+		                "/sales/search")){
+
+		    return "redirect:/sales/search";
 		}
 		
 		model.addAttribute(
 		        "accountList",
 		        accountRepository.findAll());
 		
-		if(session.getAttribute("searched")
+		if(session.getAttribute("salesList")
 		        == null){
 
 		    return "redirect:/sales/search";
@@ -532,11 +554,7 @@ public class SalesSearchController {
 		    return "redirect:/dashboard";
 		}
 		
-		// 詳細画面へ直接アクセス禁止
- 		if (session.getAttribute("salesList") == null) {
-
- 			return "redirect:/sales/search";
- 		}
+		
 
 		// 一覧取得
 		model.addAttribute(
