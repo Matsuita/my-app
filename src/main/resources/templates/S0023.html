@@ -74,8 +74,8 @@
 							選択してください
 						</option>
 
-						<option th:each="account : ${accountList}" th:value="${account.accountId}"
-							th:text="${account.name}">
+						<option th:each="account : ${accountList}" th:value="${account.accountId}" th:text="${account.active}
+						        ? ${account.name} : ${account.name + '（退職済み）'}">
 						</option>
 
 					</select>
