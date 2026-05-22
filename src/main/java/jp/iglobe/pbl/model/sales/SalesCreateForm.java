@@ -37,7 +37,7 @@ public class SalesCreateForm {
 
 	@NotBlank(message = "個数を入力してください。")
 	@Size(max = 10, message = "個数が長すぎます。")
-	@Pattern(regexp = "(^$)|^[0-9]+$", message = "個数を正しく入力してください。")
+	@Pattern(regexp = "(^$)|^([1-9][0-9]*)$", message = "個数を正しく入力してください。")
 	private String saleNumber;
 
 	@Size(max = 100, message = "備考が長すぎます。")

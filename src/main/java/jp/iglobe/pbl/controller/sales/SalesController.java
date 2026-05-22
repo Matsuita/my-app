@@ -70,8 +70,8 @@ public class SalesController {
 	@PostMapping("/sales/confirm")
 	public String salesConfirm(HttpSession session, @Valid SalesCreateForm salesCreateForm, BindingResult result,
 			Model model) {
+		
 		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
-
 		List<Category> categoryList = categoryRepository.findAll();
 
 		// アカウント存在チェック
@@ -79,8 +79,7 @@ public class SalesController {
 		if (salesCreateForm.getAccountId() != null) {
 
 			account = accountRepository.findById(
-					salesCreateForm.getAccountId())
-					.orElse(null);
+					salesCreateForm.getAccountId()).orElse(null);
 
 			if (account == null) {
 
@@ -94,8 +93,7 @@ public class SalesController {
 		if (salesCreateForm.getCategoryId() != null) {
 
 			category = categoryRepository.findById(
-					salesCreateForm.getCategoryId())
-					.orElse(null);
+					salesCreateForm.getCategoryId()).orElse(null);
 
 			if (category == null) {
 				result.rejectValue("categoryId", null,
@@ -128,18 +126,6 @@ public class SalesController {
 		return "S0011";
 	}
 
-	//    直接URL入力の場合、売上登録へ
-	@GetMapping("/sales/confirm")
-	public String getS0011(Model model) {
-		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
-		List<Category> categoryList = categoryRepository.findAll();
-
-		model.addAttribute("salesCreateForm", new SalesCreateForm());
-		model.addAttribute("accountList", accountList);
-		model.addAttribute("categoryList", categoryList);
-
-		return "redirect:/sales";
-	}
 
 	//    売上確認→キャンセル(値保持）
 	@PostMapping("/sales/back")
@@ -156,18 +142,6 @@ public class SalesController {
 		return "S0010";
 	}
 
-	//    直接URL入力の場合、売上登録へ
-	@GetMapping("/sales/back")
-	public String getBack(Model model) {
-		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
-		List<Category> categoryList = categoryRepository.findAll();
-
-		model.addAttribute("salesCreateForm", new SalesCreateForm());
-		model.addAttribute("accountList", accountList);
-		model.addAttribute("categoryList", categoryList);
-
-		return "redirect:/sales";
-	}
 
 	// 売上登録実行
 	@PostMapping("/sales/create")
@@ -192,8 +166,9 @@ public class SalesController {
 		return "redirect:/sales";
 	}
 
+	
 	//  直接URL入力の場合、売上登録へ
-	@GetMapping("/sales/create")
+	@GetMapping({"/sales/confirm","/sales/back","/sales/create"})
 	public String getCreate(Model model) {
 		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
 		List<Category> categoryList = categoryRepository.findAll();
@@ -216,9 +191,8 @@ public class SalesController {
 		if (salesForm.getAccountId() != null) {
 
 			account = accountRepository.findById(
-					salesForm.getAccountId())
-					.orElse(null);
-			// アカウント存在しない
+					salesForm.getAccountId()).orElse(null);
+		// アカウント存在しない
 			if (account == null) {
 				result.rejectValue("accountId", null,
 						"アカウントテーブルに存在しません。");
@@ -229,8 +203,7 @@ public class SalesController {
 		if (salesForm.getCategoryId() != null) {
 
 			category = categoryRepository.findById(
-					salesForm.getCategoryId())
-					.orElse(null);
+					salesForm.getCategoryId()).orElse(null);
 
 			// 商品カテゴリ存在しない
 			if (category == null) {
@@ -266,7 +239,7 @@ public class SalesController {
 
 		// 個数形式チェック
 		if (!salesForm.getSaleNumber()
-				.matches("^[0-9]+$")) {
+				.matches("(^$)|^([1-9][0-9]*)$")) {
 
 			model.addAttribute("saleNumberError",
 					"個数を正しく入力して下さい。");
@@ -313,37 +286,6 @@ public class SalesController {
 
 		return "S0023";
 	}
-	
-//	直接URL入力の場合、検索画面へ
-	@GetMapping("/sales/edit/back/{saleId}")
-	public String getEditBack(Model model, @PathVariable Integer saleId){
-		
-		model.addAttribute("salesSearchForm", new SalesSearchForm());
-		//担当一覧
-		List<Integer> accountIds = salesRepository.findUsedAccountIds();
-		model.addAttribute("accountList", accountRepository
-				.findByAccountIdInAndIsActiveTrue(accountIds));
-		// カテゴリー一覧
-		model.addAttribute("categoryList", categoryRepository.findAll());
-
-		return "redirect:/sales/search";
-	}
-
-	
-	//    直接URL入力の場合、検索画面へ
-	@GetMapping("/sales/edit/confirm/{saleId}")
-	public String getEditConfirm(Model model, @PathVariable Integer saleId) {
-		
-		model.addAttribute("salesSearchForm", new SalesSearchForm());
-		//担当一覧
-		List<Integer> accountIds = salesRepository.findUsedAccountIds();
-		model.addAttribute("accountList", accountRepository
-				.findByAccountIdInAndIsActiveTrue(accountIds));
-		// カテゴリー一覧
-		model.addAttribute("categoryList", categoryRepository.findAll());
-
-		return "redirect:/sales/search";
-	}
 
 	
 	// 売上詳細削除確認画面
@@ -376,22 +318,6 @@ public class SalesController {
 	}
 
 	
-	//    直接URL入力の場合、検索画面へ
-	@GetMapping("/sales/delete/{saleId}")
-	public String getDelete(@PathVariable Integer saleId,Model model) {
-		
-		model.addAttribute("salesSearchForm", new SalesSearchForm());
-		//担当一覧
-		List<Integer> accountIds = salesRepository.findUsedAccountIds();
-		model.addAttribute("accountList", accountRepository
-				.findByAccountIdInAndIsActiveTrue(accountIds));
-		// カテゴリー一覧
-		model.addAttribute("categoryList", categoryRepository.findAll());
-
-		return "redirect:/sales/search";
-	}
-
-	
 	//    削除実行
 	@PostMapping("/sales/delete/execute")
 	public String salesDelete(Integer saleId, HttpSession session) {
@@ -404,10 +330,13 @@ public class SalesController {
 		
 		return "redirect:/sales/result";
 	}
-
+	
+	
 	//    直接URL入力の場合、検索画面へ
-	@GetMapping("/sales/delete/execute")
-	public String getExecute(Model model) {
+	@GetMapping({"/sales/edit/back/{saleId}","/sales/edit/confirm/{saleId}",
+					"/sales/delete/{saleId}","/sales/delete/execute"})
+	public String getEditConfirm(Model model, @PathVariable Integer saleId) {
+		
 		model.addAttribute("salesSearchForm", new SalesSearchForm());
 		//担当一覧
 		List<Integer> accountIds = salesRepository.findUsedAccountIds();
@@ -418,5 +347,6 @@ public class SalesController {
 
 		return "redirect:/sales/search";
 	}
+
 
 }
