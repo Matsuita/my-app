@@ -256,10 +256,8 @@ public class SalesController {
 
 			model.addAttribute("unitPriceError",
 					"単価を正しく入力して下さい。");
-
 			model.addAttribute("accountList",
 					accountRepository.findAll());
-
 			model.addAttribute("categoryList",
 					categoryRepository.findAll());
 
@@ -272,10 +270,8 @@ public class SalesController {
 
 			model.addAttribute("saleNumberError",
 					"個数を正しく入力して下さい。");
-
 			model.addAttribute("accountList",
 					accountRepository.findAll());
-
 			model.addAttribute("categoryList",
 					categoryRepository.findAll());
 
@@ -300,12 +296,45 @@ public class SalesController {
 
 		return "S0024";
 	}
+	
+	
+//  編集確認→キャンセル(値保持）
+	@PostMapping("/sales/edit/back/{saleId}")
+	public String editBack(HttpSession session,
+			@ModelAttribute SalesForm salesForm,@PathVariable Integer saleId, Model model) {
+		
+		Sale sales = salesRepository.findById(saleId).orElse(null);
+		Account account = accountRepository.findById(sales.getAccountId())
+              .orElse(null);
 
+		model.addAttribute("salesForm", salesForm);
+		model.addAttribute("accountList", accountRepository.findAll());
+	    model.addAttribute("categoryList", categoryRepository.findAll());
+
+		return "S0023";
+	}
+	
+//	直接URL入力の場合、検索画面へ
+	@GetMapping("/sales/edit/back/{saleId}")
+	public String getEditBack(Model model, @PathVariable Integer saleId){
+		
+		model.addAttribute("salesSearchForm", new SalesSearchForm());
+		//担当一覧
+		List<Integer> accountIds = salesRepository.findUsedAccountIds();
+		model.addAttribute("accountList", accountRepository
+				.findByAccountIdInAndIsActiveTrue(accountIds));
+		// カテゴリー一覧
+		model.addAttribute("categoryList", categoryRepository.findAll());
+
+		return "redirect:/sales/search";
+	}
+
+	
 	//    直接URL入力の場合、検索画面へ
 	@GetMapping("/sales/edit/confirm/{saleId}")
 	public String getEditConfirm(Model model, @PathVariable Integer saleId) {
+		
 		model.addAttribute("salesSearchForm", new SalesSearchForm());
-
 		//担当一覧
 		List<Integer> accountIds = salesRepository.findUsedAccountIds();
 		model.addAttribute("accountList", accountRepository
@@ -346,9 +375,11 @@ public class SalesController {
 		return "S0025";
 	}
 
+	
 	//    直接URL入力の場合、検索画面へ
 	@GetMapping("/sales/delete/{saleId}")
 	public String getDelete(@PathVariable Integer saleId,Model model) {
+		
 		model.addAttribute("salesSearchForm", new SalesSearchForm());
 		//担当一覧
 		List<Integer> accountIds = salesRepository.findUsedAccountIds();
@@ -360,19 +391,17 @@ public class SalesController {
 		return "redirect:/sales/search";
 	}
 
+	
 	//    削除実行
 	@PostMapping("/sales/delete/execute")
 	public String salesDelete(Integer saleId, HttpSession session) {
 		// 削除
 		salesRepository.deleteById(saleId);
-
 		// 一覧再取得
 		List<Sale> salesList = salesRepository.findAll();
-
 		// session更新
 		session.setAttribute("salesList", salesList);
-
-		// 一覧へ
+		
 		return "redirect:/sales/result";
 	}
 
