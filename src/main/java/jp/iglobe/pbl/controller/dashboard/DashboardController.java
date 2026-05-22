@@ -79,6 +79,10 @@ public class DashboardController {
         	    "エラーは仕様です。",
 
         	    "売って売って売りまくれ",
+        	    
+        	    "やる気で何とかしろ",
+        	    
+        	    "ゾス！！！！！！！！！",
         	};
 
         	Random random = new Random();

@@ -50,12 +50,14 @@
 
 			<!-- パスワード -->
 			<div class="form-row">
-				<div class="form-label">
+				<div class="form-label ">
 					パスワード
 					<span class="partial-badge">必須</span>
 				</div>
 				<div class="form-input">
-					<input type="text" th:field="*{password}" class="mask">
+					<div class="password-wrap">
+					<input type="text" id="password" th:field="*{password}" class="mask">
+					<i class="bi bi-eye-fill" id="togglePassword"></i></div>
 					<div class="error" th:errors="*{password}"></div>
 				</div>
 			</div>
@@ -67,11 +69,10 @@
 					<span class="partial-badge">必須</span>
 				</div>
 				<div class="form-input">
-					<input type="text" th:field="*{passwordConfirm}" class="mask">
+					<div class="password-wrap">
+					<input type="text" id="passwordConfirm" th:field="*{passwordConfirm}" class="mask">
+					<i class="bi bi-eye-fill" id="togglePasswordConfirm"></i></div>
 					<div class="error" th:errors="*{passwordConfirm}"></div>
-					<div class="error" th:if="${#fields.hasGlobalErrors()}" th:each="err : ${#fields.globalErrors()}"
-						th:text="${err}">
-					</div>
 				</div>
 			</div>
 

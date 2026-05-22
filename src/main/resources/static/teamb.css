@@ -461,6 +461,19 @@ input:focus {
 		margin: 0;
 	}
 
+	.password-wrap {
+	    position: relative;
+		width: 100%;
+	}
+
+	.password-wrap i {
+	    position: absolute;
+	    right: 10px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    cursor: pointer;
+	    color: #666;
+	}
 	/* ===== ハンバーガー ===== */
 	.menu-toggle {
 		display: none;
