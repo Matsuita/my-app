@@ -194,6 +194,7 @@ select {
 	padding: 5px 10px;
 	font-size: 14px;
 	background: #fafafa;
+
 }
 
 input[type="date"] {
@@ -207,7 +208,9 @@ input[type="date"] {
 
 }
 
-
+.form-input select {
+    padding-left: 6px;   /* ← 少し減らす */
+}
 .wave {
 	font-size: 20px;
 	margin-left: 55px;
@@ -250,6 +253,12 @@ input.short {
 	cursor: default;
 }
 
+.readonly-white input[readonly],
+.readonly-white textarea[readonly] {
+    background-color: #ffffff;
+	cursor: default;
+}
+
 /* フォーカス */
 input:focus {
 	outline: none;
@@ -275,6 +284,9 @@ input:focus {
 		justify-content: center;
 	margin-top: 28px;
 	width: 100%;
+	align-items: center; 
+	gap: 6px;          
+	flex-wrap: nowrap;   /* ← 念のため */   
 }
 
 /* ===== 共通ボタン ===== */
@@ -284,7 +296,21 @@ input:focus {
 	border-radius: 5px;
 	border: 1px solid #ccc;
 	cursor: pointer;
-	font-size: 14px;
+	font-size: 15px;
+	align-items: center;
+	display: inline-flex;
+	line-height: 1;
+	justify-content: center;   
+		padding: 0 16px;  /* ← 上下padding消す */
+		font-weight: 550;
+	}
+
+.btn i {
+	font-size: 14px;   /* ← サイズ揃える */
+	line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	margin-right: 10px;
 }
 
 /* ===== 検索ボタン ===== */
@@ -307,11 +333,23 @@ input:focus {
 	border: 1px solid #ccc;
 }
 
+/* ② formのズレ修正（これが一番重要） */
+.btn-area-center form {
+	margin: 0;
+	
+	align-items: center;
+	display: inline-flex;  /* ← ここがミソ */
+}
 .btn-secondary:hover {
 	background: #e0e0e0;
 }
 
-
+/* ③ ボタンの高さ揃え */
+.btn-area-center .btn {
+	align-items: center;
+	justify-content: center;
+	margin: 0 !important;
+}
 
 
 .mask {
@@ -362,12 +400,24 @@ input:focus {
 	gap: 24px;
 	font-size: 14px;
 	flex-wrap: nowrap; /* ← これ重要 */
+	
 }
 .radio-group label {
     display: flex;
     align-items: center;
     gap: 6px;
 	white-space: nowrap; /* ← 折り返し禁止 */
+}
+
+/* ===== 見た目だけdisabled風 ===== */
+.radio-disabled-look {
+    pointer-events: none;   /* ← 操作禁止 */
+    opacity: 0.7;           /* ← 少し薄く */
+}
+
+/* ラジオ本体の色（自由に変更OK） */
+.radio-disabled-look input[type="radio"] {
+    accent-color: #555;     /* ← 好きな色に */
 }
 
 /* ===== エラー ===== */
@@ -501,4 +551,3 @@ input:focus {
     </a>
 
 </nav>
-

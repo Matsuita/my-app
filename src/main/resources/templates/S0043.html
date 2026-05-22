@@ -60,20 +60,20 @@
 	      <!-- 売上権限 -->
 	      <div class="form-row">
 	        <div class="form-label">売上権限</div>
-	        <div class="form-input radio-group">
-	          <label><input type="radio" th:checked="*{salesAuthority == 0}" disabled> 権限なし</label>
-	          <label><input type="radio" th:checked="*{salesAuthority == 1}" disabled> 閲覧のみ</label>
-	          <label><input type="radio" th:checked="*{salesAuthority == 2}" disabled> 登録・編集</label>
+	        <div class="form-input radio-group radio-disabled-look">
+	          <label><input type="radio" th:checked="*{salesAuthority == 0}" onclick="return false"> 権限なし</label>
+	          <label><input type="radio" th:checked="*{salesAuthority == 1}" onclick="return false"> 閲覧のみ</label>
+	          <label><input type="radio" th:checked="*{salesAuthority == 2}" onclick="return false"> 登録・編集</label>
 	        </div>
 	      </div>
 
 	      <!-- アカウント権限 -->
 	      <div class="form-row">
 	        <div class="form-label">アカウント権限</div>
-	        <div class="form-input radio-group">
-	          <label><input type="radio" th:checked="*{accountsAuthority == 0}" disabled> 権限なし</label>
-	          <label><input type="radio" th:checked="*{accountsAuthority == 1}" disabled> 閲覧のみ</label>
-	          <label><input type="radio" th:checked="*{accountsAuthority == 2}" disabled> 登録・編集</label>
+	        <div class="form-input radio-group radio-disabled-look">
+	          <label><input type="radio" th:checked="*{accountsAuthority == 0}" onclick="return false"> 権限なし</label>
+	          <label><input type="radio" th:checked="*{accountsAuthority == 1}" onclick="return false"> 閲覧のみ</label>
+	          <label><input type="radio" th:checked="*{accountsAuthority == 2}" onclick="return false"> 登録・編集</label>
 	        </div>
 	      </div>
 
