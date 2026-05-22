@@ -18,7 +18,7 @@ public class AccountForm {
 	@Size(max = 100, message = "メールアドレスが長すぎます。") // 101バイト以上をはじく
 	//	@Email(message = "メールアドレスを正しく入力して下さい。")
 	// トップレベルドメイン（.comや.jpなど）まで必須とする正規表現
-	@Pattern(regexp = "^[a-zA-Z0-9_+-]+(\\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$", message = "メールアドレスを正しく入力して下さい。")
+	@Pattern(regexp = "^$|[a-zA-Z0-9_+-]+(\\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$", message = "メールアドレスを正しく入力して下さい。")
 	private String mail;
 
 	@NotBlank(message = "パスワードが未入力です。")
