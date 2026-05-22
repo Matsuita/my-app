@@ -51,15 +51,15 @@
 				</div>
 
 				<!-- パスワード確認 -->
-<!--				<div class="form-row">-->
-<!--					<div class="form-label">パスワード（確認） <span class="badge-gray">必須</span></div>-->
-<!--					<div class="form-input">-->
-<!--						<input type="hidden" th:field="*{passwordConfirm}">-->
-<!--						<input type="text"-->
-<!--							th:value="${accountForm.passwordConfirm != null ? #strings.repeat('•', accountForm.passwordConfirm.length()) : ''}"-->
-<!--							readonly>-->
-<!--					</div>-->
-<!--				</div>-->
+				<!--				<div class="form-row">-->
+				<!--					<div class="form-label">パスワード（確認） <span class="badge-gray">必須</span></div>-->
+				<!--					<div class="form-input">-->
+				<input type="hidden" th:field="*{passwordConfirm}">
+				<!--						<input type="text"-->
+				<!--							th:value="${accountForm.passwordConfirm != null ? #strings.repeat('•', accountForm.passwordConfirm.length()) : ''}"-->
+				<!--							readonly>-->
+				<!--					</div>-->
+				<!--				</div>-->
 
 				<!-- 売上権限 -->
 				<div class="form-row">
@@ -67,9 +67,12 @@
 					<div class="form-input">
 						<input type="hidden" th:field="*{salesAuthority}" />
 						<div class="radio-group">
-							<label><input type="radio" th:checked="${accountForm.salesAuthority == 0}" disabled> 権限なし</label>
-							<label><input type="radio" th:checked="${accountForm.salesAuthority == 1}" disabled> 閲覧のみ</label>
-							<label><input type="radio" th:checked="${accountForm.salesAuthority == 2}" disabled> 登録・編集</label>
+							<label><input type="radio" th:checked="${accountForm.salesAuthority == 0}" disabled>
+								権限なし</label>
+							<label><input type="radio" th:checked="${accountForm.salesAuthority == 1}" disabled>
+								閲覧のみ</label>
+							<label><input type="radio" th:checked="${accountForm.salesAuthority == 2}" disabled>
+								登録・編集</label>
 						</div>
 					</div>
 				</div>
@@ -80,22 +83,23 @@
 					<div class="form-input">
 						<input type="hidden" th:field="*{accountsAuthority}" />
 						<div class="radio-group">
-							<label><input type="radio" th:checked="${accountForm.accountsAuthority == 0}" disabled> 権限なし</label>
-							<label><input type="radio" th:checked="${accountForm.accountsAuthority == 1}" disabled> 閲覧のみ</label>
-							<label><input type="radio" th:checked="${accountForm.accountsAuthority == 2}" disabled> 登録・編集</label>
+							<label><input type="radio" th:checked="${accountForm.accountsAuthority == 0}" disabled>
+								権限なし</label>
+							<label><input type="radio" th:checked="${accountForm.accountsAuthority == 1}" disabled>
+								閲覧のみ</label>
+							<label><input type="radio" th:checked="${accountForm.accountsAuthority == 2}" disabled>
+								登録・編集</label>
 						</div>
 					</div>
 				</div>
 
 				<!-- ボタン -->
 				<div class="btn-area-center">
-					<button type="submit" class="btn btn-primary"
-						th:formaction="@{/accounts/confirm_register}">
+					<button type="submit" class="btn btn-primary" th:formaction="@{/accounts/confirm_register}">
 						<i class="bi bi-person-fill-add"></i>　登録
 					</button>
 
-					<button type="submit" class="btn btn-secondary"
-						th:formaction="@{/accounts_back}">
+					<button type="submit" class="btn btn-secondary" th:formaction="@{/accounts_back}">
 						キャンセル
 					</button>
 				</div>
@@ -106,4 +110,5 @@
 	</div>
 	<script th:src="@{/script.js}" defer></script>
 </body>
+
 </html>
