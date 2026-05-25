@@ -15,7 +15,7 @@
 		<span class="navbar-brand">
 			物品売上管理システム
 		</span>
-		<div class="menu-toggle" onclick="toggleMenu()">
+		<div class="menu-toggle" id="menu-toggle" onclick="toggleMenu()">
 				<i class="bi bi-list"></i>
 			</div>
 		
@@ -43,7 +43,7 @@
 
 			<a class="nav-link" 
 				th:if="${session.loginUser.accountsAuthority == 2}"
-				th:classappend="${active == 'S0030'} ? ' active'" 
+				th:classappend="${active == 'accounts'} ? ' active'" 
 				th:href="@{/accounts}">
 				アカウント登録
 			</a>

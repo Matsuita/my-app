@@ -18,7 +18,7 @@
 
 		<div class="title">アカウント検索条件入力</div>
 
-		<form th:action="@{/accounts/result}" th:object="${accountSearchForm}" method="post">
+		<form th:action="@{/accounts/result}" th:object="${accountSearchForm}" method="post" id="accounts" class="form-area">
 
 			<!-- 氏名 -->
 			<div class="form-row">
@@ -68,18 +68,18 @@
 			</div>
 
 			<!-- ボタン -->
-			<div class="btn-area-center">
-				<button type="submit" class="btn btn-primary">
-					<i class="bi bi-search"></i>検索
-				</button>
-
-				<button type="reset" class="btn btn-secondary">
-					クリア
-				</button>
-			</div>
-
-		
+			
 		</form>
+		<!-- ボタン -->
+					<div class="btn-area-center">
+						<button type="submit" form="accounts" class="btn btn-primary">
+							<i class="bi bi-search"></i>検索
+						</button>
+
+						<button type="reset" class="btn btn-secondary">
+							クリア
+						</button>
+					</div>
 	</div>
 	<script th:src="@{/script.js}" defer></script>
 </body>

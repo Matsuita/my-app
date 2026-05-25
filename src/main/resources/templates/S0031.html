@@ -19,7 +19,7 @@
 
 			<div class="title">アカウント登録確認</div>
 
-			<form th:object="${accountForm}" method="post">
+			<form th:object="${accountForm}" method="post" class="form-area" id="accounts">
 
 				<!-- 氏名 -->
 				<div class="form-row">
@@ -93,20 +93,20 @@
 					</div>
 				</div>
 
-				<!-- ボタン -->
-				<div class="btn-area-center">
-					<button type="submit" class="btn btn-primary" th:formaction="@{/accounts/confirm_register}">
-						<i class="bi bi-plus-circle"></i>登録
-					</button>
-
-					<button type="submit" class="btn btn-secondary" th:formaction="@{/accounts_back}">
-						キャンセル
-					</button>
-				</div>
+				
 
 			</form>
 
-		</div>
+		</div><!-- ボタン -->
+				<div class="btn-area-center">
+					<button type="submit" class="btn btn-primary" form="accounts" th:formaction="@{/accounts/confirm_register}">
+						<i class="bi bi-plus-circle"></i>登録
+					</button>
+
+					<button type="submit" class="btn btn-secondary" form="accounts" th:formaction="@{/accounts_back}">
+						キャンセル
+					</button>
+				</div>
 	</div>
 	<script th:src="@{/script.js}" defer></script>
 </body>

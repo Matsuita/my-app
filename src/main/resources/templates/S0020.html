@@ -30,7 +30,7 @@
     <form th:action="@{/sales/result}"
           th:object="${salesSearchForm}"
           method="post"
-          class="form-area">
+          class="form-area" id="sales">
 
         <!-- 販売日 -->
         <div class="form-row">
@@ -110,19 +110,20 @@
         <!-- エラー -->
         <div class="error" th:text="${searchError}"></div>
 
-        <!-- ボタン -->
-        <div class="btn-area-center">
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i>検索
-            </button>
-
-			<button type="button" class="btn btn-secondary"
-				onclick="location.href='/sales/search'">
-				クリア
-			</button>
-        </div>
+        
 
     </form>
+	<!-- ボタン -->
+	        <div class="btn-area-center">
+	            <button type="submit" form="sales"class="btn btn-primary">
+	                <i class="bi bi-search"></i>検索
+	            </button>
+
+				<button type="button" class="btn btn-secondary"
+					onclick="location.href='/sales/search'">
+					クリア
+				</button>
+	        </div>
 </div>
 <script th:src="@{/script.js}" defer></script>
 </body>

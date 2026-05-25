@@ -12,17 +12,18 @@
 </head>
 
 <body>
-	<div th:replace="fragment/navbar :: navbar('/accounts')"></div>
+	<div th:replace="fragment/navbar :: navbar('accounts')"></div>
 	<div class="main-box">
 
 		<div class="title">アカウント登録</div>
 
-		<form th:action="@{/accounts/confirm}" th:object="${accountForm}" method="post" class="form-area">
+		<form th:action="@{/accounts/confirm}" th:object="${accountForm}" method="post" id="accounts" class="form-area">
 
 			<!-- 氏名 -->
 			<div class="form-row">
 				<div class="form-label">
-					氏名 <span class="badge-gray">必須</span>
+					<span class="label-text">氏名</span>
+					<span class="badge-gray">必須</span>
 				</div>
 				<div class="form-input">
 					<input type="text" th:field="*{name}" placeholder="氏名">
@@ -33,7 +34,7 @@
 			<!-- メール -->
 			<div class="form-row">
 				<div class="form-label">
-					メールアドレス <span class="badge-gray">必須</span>
+					<span class="label-text">メールアドレス</span><span class="badge-gray">必須</span>
 				</div>
 				<div class="form-input">
 					<input type="text" th:field="*{mail}" placeholder="メールアドレス">
@@ -44,7 +45,7 @@
 			<!-- パスワード -->
 			<div class="form-row">
 				<div class="form-label">
-					パスワード <span class="badge-gray">必須</span>
+					<span class="label-text">パスワード</span><span class="badge-gray">必須</span>
 				</div>
 				<div class="form-input">
 					<div class="password-wrap">
@@ -57,7 +58,7 @@
 			<!-- 確認 -->
 			<div class="form-row">
 				<div class="form-label">
-					パスワード（確認） <span class="badge-gray">必須</span>
+					<span class="label-text">パスワード（確認）</span><span class="badge-gray">必須</span>
 				</div>
 				<div class="form-input">
 					<div class="password-wrap">
@@ -70,7 +71,7 @@
 			<!-- 売上権限 -->
 			<div class="form-row">
 				<div class="form-label">
-					売上権限 <span class="badge-gray">必須</span>
+					<span class="label-text">売上権限</span><span class="badge-gray">必須</span>
 				</div>
 				<div class="form-input">
 					<div class="radio-group">
@@ -85,7 +86,7 @@
 			<!-- アカウント権限 -->
 			<div class="form-row">
 				<div class="form-label">
-					アカウント権限 <span class="badge-gray">必須</span>
+					<span class="label-text">アカウント権限</span><span class="badge-gray">必須</span>
 				</div>
 				<div class="form-input">
 					<div class="radio-group">
@@ -97,15 +98,16 @@
 				</div>
 			</div>
 
-			<!-- ボタン -->
-			<div class="btn-area-center">
-				<button type="submit" class="btn btn-primary">
-					<i class="bi bi-check2-circle"></i>
-					確認
-				</button>
-			</div>
-
+			
 		</form>
+		<!-- ボタン -->
+					<div class="btn-area-center">
+						<button type="submit" form="accounts" class="btn btn-primary">
+							<i class="bi bi-check2-circle"></i>
+							確認
+						</button>
+					</div>
+
 	</div>
 	<script th:src="@{/script.js}" defer></script>
 </body>
