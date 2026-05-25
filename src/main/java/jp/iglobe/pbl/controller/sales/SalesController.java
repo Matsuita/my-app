@@ -194,9 +194,6 @@ public class SalesController {
 			if (account == null) {
 				result.rejectValue("accountId", null,
 						"アカウントテーブルに存在しません。");
-			}else if(!account.isActive()){
-				result.rejectValue("accountId", null,
-						"退職済みユーザーです。");
 			}
 		}
 		// カテゴリ存在チェック
