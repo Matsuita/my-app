@@ -346,7 +346,7 @@
 
 		        <div class="side-comment">
 
-		            [[${salesComment}]]
+		            本日のランクです。
 
 		        </div>
 
@@ -388,16 +388,35 @@
 					本日の状態
 
 		        </div>
+				
+				<div class="side-value">
 
-		        <div class="side-value">
+				    <span th:if="${salesRank == 'SS'}">
+				        とても好調
+				    </span>
 
-		            好調
+				    <span th:if="${salesRank == 'S'}">
+				        好調
+				    </span>
 
-		        </div>
+				    <span th:if="${salesRank == 'A'}">
+				        順調
+				    </span>
+
+				    <span th:if="${salesRank == 'B'}">
+				        普通
+				    </span>
+
+				    <span th:if="${salesRank == 'C'}">
+				        不調
+				    </span>
+
+				</div>
+
 
 		        <div class="side-comment">
 
-		            売上が安定しています。
+		            [[${salesComment}]]
 
 		        </div>
 

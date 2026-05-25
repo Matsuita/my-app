@@ -103,23 +103,23 @@ public class DashboardController {
 
         	if(achievementRate >= 90){
 
-        	    salesRank = "SS";
+        	    salesRank = "S";
 
         	}else if(achievementRate >= 70){
 
-        	    salesRank = "S";
+        	    salesRank = "A";
 
         	}else if(achievementRate >= 50){
 
-        	    salesRank = "A";
+        	    salesRank = "B";
 
         	}else if(achievementRate >= 30){
 
-        	    salesRank = "B";
+        	    salesRank = "C";
 
         	}else{
 
-        	    salesRank = "C";
+        	    salesRank = "D";
         	}
         	
         	String salesComment;
