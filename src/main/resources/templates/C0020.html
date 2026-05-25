@@ -294,6 +294,184 @@
 		    color:#777;
 		    line-height:1.7;
 		}
+		
+		.slot-hit{
+		    animation:slotHit 0.4s;
+		}
+
+		@keyframes slotHit{
+
+		    50%{
+		        transform:scale(1.15);
+		        color:#ffcc00;
+		    }
+		}
+
+		.puchun{
+		    position:fixed;
+		    inset:0;
+		    background:black;
+		    z-index:99999;
+		    animation:puchunAnim 1.2s ease;
+		}
+
+		@keyframes puchunAnim{
+		    0%{
+		        opacity:0;
+		    }
+
+		    10%{
+		        opacity:1;
+		    }
+
+		    70%{
+		        opacity:1;
+		    }
+
+		    100%{
+		        opacity:0;
+		    }
+		}
+		
+
+		.vvv-dark-effect{
+		    position:fixed;
+		    inset:0;
+		    background:black;
+		    z-index:999999;
+		    overflow:hidden;
+		    opacity:0;
+		    transition:0.05s;
+		}
+
+		.vvv-dark-effect.show{
+		    opacity:1;
+		}
+
+
+		.vvv-dark-effect::before{
+		    content:"";
+		    position:absolute;
+		    top:50%;
+		    left:50%;
+		    width:12px;
+		    height:12px;
+		    transform:translate(-50%,-50%);
+		    background:white;
+		    border-radius:50%;
+		    box-shadow:
+		        0 0 20px #4fdfff,
+		        0 0 60px #4fdfff,
+		        0 0 120px #4fdfff,
+		        0 0 220px #4fdfff;
+
+		    animation:
+		        coreGlow 1.6s ease-out forwards;
+		}
+
+		.vvv-dark-effect::after{
+		    content:"";
+		    position:absolute;
+		    top:50%;
+		    left:50%;
+		    width:0;
+		    height:2px;
+		    background:white;
+		    transform:
+		        translate(-50%,-50%);
+		    box-shadow:
+		        0 0 12px #4fdfff,
+		        0 0 30px #4fdfff;
+		    animation:
+		        lineGlow 1.2s ease-out forwards;
+		}
+
+
+		@keyframes coreGlow{
+
+		    0%{
+
+		        opacity:0;
+
+		        transform:
+		            translate(-50%,-50%)
+		            scale(0.2);
+		    }
+
+		    15%{
+
+		        opacity:1;
+
+		        transform:
+		            translate(-50%,-50%)
+		            scale(8);
+		    }
+
+		    45%{
+
+		        opacity:1;
+
+		        transform:
+		            translate(-50%,-50%)
+		            scale(5);
+		    }
+
+		    100%{
+
+		        opacity:0;
+
+		        transform:
+		            translate(-50%,-50%)
+		            scale(0.5);
+		    }
+		}
+
+
+		@keyframes lineGlow{
+		    0%{
+		        width:0;
+		        opacity:0;
+		    }
+
+		    20%{
+		        width:100vw;
+		        opacity:1;
+		    }
+
+		    100%{
+		        width:100vw;
+		        opacity:0;
+		    }
+		}
+
+		.vvv-dark-effect.show{
+		    opacity:1;
+		    animation:
+		    darkFlash 1.8s ease-out;
+		}
+
+
+		@keyframes darkFlash{
+		    0%{
+		        filter:brightness(1);
+		        transform:scale(1);
+		    }
+
+		    15%{
+		        filter:brightness(4);
+		        transform:scale(1.03);
+		    }
+
+		    40%{
+		        filter:brightness(0.7);
+		        transform:scale(1);
+		    }
+
+		    100%{
+		        filter:brightness(0);
+		        transform:scale(1.08);
+		    }
+		}
 
     </style>
 
@@ -517,11 +695,12 @@
 
 	        </div>
 
-	        <div class="quote-text">
+			<div class="quote-text"
+			     id="slotMessage">
 
-	            「[[${todayMessage}]]」
+			    「[[${todayMessage}]]」
 
-	        </div>
+			</div>
 
 	    </div>
 
@@ -607,10 +786,112 @@ new Chart(ctx, {
 
 		    borderWidth: 1
 		}]
+		
+		
     },
+	
+	
     options: {
         responsive: true
     }
+});
+window.addEventListener(
+    "load",
+    function(){
+
+        const slot =
+            document.getElementById(
+                "slotMessage");
+
+        if(!slot) return;
+
+
+        const messages = [
+
+            "「今日も一日頑張りましょう！」",
+            "「まだ舞える」",
+            "「エラーは仕様です。」",
+            "「売って売って売りまくれ」",
+            "「やる気で何とかしろ」",
+            "「ゾス！！！！！！！」"
+        ];
+
+        let started = false;
+
+        let interval;
+
+        // スペースで開始 / 停止
+        document.addEventListener(
+            "keydown",
+            function(e){
+
+                if(e.code !== "Space") return;
+
+                e.preventDefault();
+
+                // 開始
+                if(!started){
+
+                    started = true;
+
+                    interval =
+                        setInterval(function(){
+
+                            slot.innerText =
+                                messages[
+                                    Math.floor(
+                                        Math.random()
+                                        * messages.length)
+                                ];
+
+                        },70);
+
+                }else{
+
+                    // 停止
+                    clearInterval(
+                        interval);
+
+                    started = false;
+
+                    slot.classList.add(
+                        "slot-hit");
+
+                    // ゾスならぷちゅん
+					if(slot.innerText.includes(
+					        "ゾス")){
+
+					    console.log("ぷちゅん");
+
+					    puchun();
+					}
+                }
+        });
+		function puchun(){
+
+		    const effect =
+		        document.createElement(
+		            "div");
+
+		    effect.className =
+		        "vvv-dark-effect";
+
+		    document.body.appendChild(
+		        effect);
+
+		    setTimeout(function(){
+
+		        effect.classList.add(
+		            "show");
+
+		    },10);
+
+		    setTimeout(function(){
+
+		        effect.remove();
+
+		    },1600);
+		}
 });
 
 </script>
