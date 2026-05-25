@@ -2,6 +2,7 @@ package jp.iglobe.pbl.controller.sales;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -123,7 +124,9 @@ public class SearchController {
 	}
 
 	@PostMapping("/accounts/update")
-	public String update(@ModelAttribute AccountUpdateForm account, SessionStatus sessionStatus) {
+	public String update(@ModelAttribute AccountUpdateForm account,
+			SessionStatus sessionStatus,
+			HttpServletRequest request) {
 
 		Account existing = searchRepository
 				.findById(account.getAccountId())
@@ -137,6 +140,25 @@ public class SearchController {
 
 		searchRepository.save(existing);
 		sessionStatus.setComplete(); // 🔥 これ必須
+
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			// 実際のセッション名 "loginUser" から Account オブジェクトとして取得
+			Account loginUser = (Account) session.getAttribute("loginUser");
+
+			// ログイン中のユーザーが存在する場合
+			if (loginUser != null) {
+
+				if (loginUser.getAccountId() == account.getAccountId()) {
+
+					// セッションを完全に破棄で強制ログアウト
+					session.invalidate();
+
+					// ログイン画面ページへリダイレクト
+					return "redirect:/";
+				}
+			}
+		}
 
 		return "redirect:/accounts/result";
 	}
@@ -185,7 +207,6 @@ public class SearchController {
 		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
 		}
-		
 
 		sessionStatus.setComplete(); // 🔥ここで編集内容リセット
 
