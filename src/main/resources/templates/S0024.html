@@ -26,7 +26,7 @@
 <div class="main-box">
 	<div class="form-box">
 		<div class="title">売上詳細編集確認</div>
-		<form th:object="${salesForm}" method="post">
+		<form th:object="${salesForm}" method="post" class="form-area" id="sales">
 
 	<!-- hidden -->
 		<input type="hidden" th:field="*{saleId}">
@@ -91,18 +91,19 @@
 			</div>
 		</div>
 
-	<!-- ボタン -->
-		<div class="btn-area-center">
-			<button type="submit" th:formaction="@{/sales/update}" class="btn btn-primary">
-				<i class="bi bi-arrow-repeat"></i>更新
-			</button>
-			<button type="submit" th:formaction="@{/sales/edit/back/{id}(id=${salesForm.saleId})}"
-			 class="btn btn-secondary">
-			    キャンセル
-			</button>
-		</div>
+	
 		</form>
 	</div>
+	<!-- ボタン -->
+			<div class="btn-area-center">
+				<button type="submit" th:formaction="@{/sales/update}" form="sales" class="btn btn-primary">
+					<i class="bi bi-arrow-repeat"></i>更新
+				</button>
+				<button type="submit" th:formaction="@{/sales/edit/back/{id}(id=${salesForm.saleId})}" form="sales"
+				 class="btn btn-secondary">
+				    キャンセル
+				</button>
+			</div>
 </div>
 <script th:src="@{/script.js}" defer></script>
 </body>

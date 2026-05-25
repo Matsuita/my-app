@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function setupToggle(inputId, toggleId) {
         const input = document.getElementById(inputId);
         const toggle = document.getElementById(toggleId);
+		if (!input || !toggle) return;
 
         toggle.addEventListener("click", () => {
             input.classList.toggle("mask");

@@ -11,6 +11,7 @@
 
 
 </head>
+<body>
 <div th:replace="fragment/navbar :: navbar('account/search')"></div>
 
 <div class="main-box">
@@ -18,7 +19,7 @@
 
 		<div class="title">アカウント詳細削除確認</div>
 
-		<form th:action="@{/accounts/delete/execute}" th:object="${account}" method="post">
+		<form th:action="@{/accounts/delete/execute}" th:object="${account}" method="post" class="form-area" id="accounts">
 
 			<input type="hidden" th:field="*{accountId}">
 			<input type="hidden" th:field="*{name}">
@@ -80,23 +81,24 @@
 			</div>
 
 			<!-- ボタン -->
-			<div class="btn-area-center">
-				<button type="submit" class="btn btn-danger">
-					<i class="bi bi-trash3"></i>削除
-				</button>
+			
 		</form>
 
-		<form th:action="@{/accounts/result}"th:object="${account}" method="post">
+		<form th:action="@{/accounts/result}"th:object="${account}" method="post" id="accountsback">
 			
 			
 
-			<button type="submit" class="btn btn-secondary">キャンセル</button>
+			
 		</form>
 	</div>
 
 
 
-</div>
+</div><div class="btn-area-center">
+				<button type="submit" form="accounts" class="btn btn-danger">
+					<i class="bi bi-trash3"></i>削除
+				</button>
+				<button type="submit" form="accountsback" class="btn btn-secondary">キャンセル</button>
 </div>
 <script th:src="@{/script.js}" defer></script>
 

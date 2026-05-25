@@ -12,127 +12,131 @@
 
 </head>
 
-<div th:replace="fragment/navbar :: navbar('account/search')"></div>
-<div class="main-box">
+<body>
+	<div th:replace="fragment/navbar :: navbar('account/search')"></div>
+	<div class="main-box">
 
-	<div class="form-box">
+		<div class="form-box">
 
-		<div class="title">アカウント詳細編集</div>
-
-
-		<form th:action="@{/accounts/edit/confirm}" th:object="${accountUpdateForm}" method="post">
-			<input type="hidden" th:field="*{accountId}">
-			<!-- 氏名 -->
-			<div class="form-row">
-				<div class="form-label">
-					氏名
-					<span class="partial-badge">必須</span>
-				</div>
-				<div class="form-input">
-					<input type="text" th:field="*{name}">
-					<div class="error" th:errors="*{name}"></div>
-				</div>
-			</div>
-
-			<!-- メールアドレス -->
-			<div class="form-row">
-				<div class="form-label">
-					メールアドレス
-					<span class="partial-badge">必須</span>
-				</div>
-				<div class="form-input">
-					<input type="text" th:field="*{mail}">
-					<div class="error" th:errors="*{mail}"></div>
-				</div>
-			</div>
+			<div class="title">アカウント詳細編集</div>
 
 
-
-			<!-- パスワード -->
-			<div class="form-row">
-				<div class="form-label ">
-					パスワード
-					<span class="partial-badge">必須</span>
-				</div>
-				<div class="form-input">
-					<div class="password-wrap">
-						<input type="text" id="password" th:field="*{password}" class="mask">
-						<i class="bi bi-eye-fill" id="togglePassword"></i>
+			<form th:action="@{/accounts/edit/confirm}" th:object="${accountUpdateForm}" method="post" class="form-area"
+				id="accounts">
+				<input type="hidden" th:field="*{accountId}">
+				<!-- 氏名 -->
+				<div class="form-row">
+					<div class="form-label">
+						氏名
+						<span class="badge-gray">必須</span>
 					</div>
-					<div class="error" th:errors="*{password}"></div>
-				</div>
-			</div>
-
-			<!-- パスワード確認 -->
-			<div class="form-row">
-				<div class="form-label">
-					<label>パスワード（確認）</label>
-					<span class="partial-badge">必須</span>
-				</div>
-				<div class="form-input">
-					<div class="password-wrap">
-						<input type="text" id="passwordConfirm" th:field="*{passwordConfirm}" class="mask">
-						<i class="bi bi-eye-fill" id="togglePasswordConfirm"></i>
+					<div class="form-input">
+						<input type="text" th:field="*{name}">
+						<div class="error" th:errors="*{name}"></div>
 					</div>
-					<div class="error" th:errors="*{passwordConfirm}"></div>
 				</div>
-			</div>
 
-
-			<!-- 売上権限 -->
-			<div class="form-row">
-				<div class="form-label">
-					<label>売上権限</label>
-					<span class="partial-badge">必須</span>
+				<!-- メールアドレス -->
+				<div class="form-row">
+					<div class="form-label">
+						メールアドレス
+						<span class="badge-gray">必須</span>
+					</div>
+					<div class="form-input">
+						<input type="text" th:field="*{mail}">
+						<div class="error" th:errors="*{mail}"></div>
+					</div>
 				</div>
-				<div class="form-input radio-group">
-					<label>
-						<input type="radio" th:field="*{salesAuthority}" value="0">権限なし
-					</label>
-					<label>
-						<input type="radio" th:field="*{salesAuthority}" value="1"> 閲覧のみ
-					</label>
-					<label>
-						<input type="radio" th:field="*{salesAuthority}" value="2"> 登録・編集
-					</label>
+
+
+
+				<!-- パスワード -->
+				<div class="form-row">
+					<div class="form-label ">
+						パスワード
+						<span class="badge-gray">必須</span>
+					</div>
+					<div class="form-input">
+						<div class="password-wrap">
+							<input type="text" id="password" th:field="*{password}" class="mask">
+							<i class="bi bi-eye-fill" id="togglePassword"></i>
+						</div>
+						<div class="error" th:errors="*{password}"></div>
+					</div>
 				</div>
-			</div>
 
-			<!-- アカウント権限 -->
-			<div class="form-row">
-				<div class="form-label">
-					<label>アカウント権限</label>
-					<span class="partial-badge">必須</span>
+				<!-- パスワード確認 -->
+				<div class="form-row">
+					<div class="form-label">
+						<label>パスワード（確認）</label>
+						<span class="badge-gray">必須</span>
+					</div>
+					<div class="form-input">
+						<div class="password-wrap">
+							<input type="text" id="passwordConfirm" th:field="*{passwordConfirm}" class="mask">
+							<i class="bi bi-eye-fill" id="togglePasswordConfirm"></i>
+						</div>
+						<div class="error" th:errors="*{passwordConfirm}"></div>
+					</div>
 				</div>
-				<div class="form-input radio-group">
-					<label>
-						<input type="radio" th:field="*{accountsAuthority}" value="0">権限なし
-					</label>
-					<label>
-						<input type="radio" th:field="*{accountsAuthority}" value="1"> 閲覧のみ
-					</label>
-					<label>
-						<input type="radio" th:field="*{accountsAuthority}" value="2"> 登録・編集
-					</label>
+
+
+				<!-- 売上権限 -->
+				<div class="form-row">
+					<div class="form-label">
+						<label>売上権限</label>
+						<span class="badge-gray">必須</span>
+					</div>
+					<div class="form-input radio-group">
+						<label>
+							<input type="radio" th:field="*{salesAuthority}" value="0">権限なし
+						</label>
+						<label>
+							<input type="radio" th:field="*{salesAuthority}" value="1"> 閲覧のみ
+						</label>
+						<label>
+							<input type="radio" th:field="*{salesAuthority}" value="2"> 登録・編集
+						</label>
+					</div>
 				</div>
-			</div>
 
-			<!-- ボタン -->
-			<div class="btn-area-center">
-				<!-- 更新ボタン（POST送信） -->
-				<button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i>確認</button>
+				<!-- アカウント権限 -->
+				<div class="form-row">
+					<div class="form-label">
+						<label>アカウント権限</label>
+						<span class="badge-gray">必須</span>
+					</div>
+					<div class="form-input radio-group">
+						<label>
+							<input type="radio" th:field="*{accountsAuthority}" value="0">権限なし
+						</label>
+						<label>
+							<input type="radio" th:field="*{accountsAuthority}" value="1"> 閲覧のみ
+						</label>
+						<label>
+							<input type="radio" th:field="*{accountsAuthority}" value="2"> 登録・編集
+						</label>
+					</div>
+				</div>
 
-		</form>
-		<form th:action="@{/accounts/edit/cancel}" th:object="${accountUpdateForm}" method="post">
-			<input type="hidden" th:field="*{accountId}">
+				<!-- ボタン -->
 
 
-			<button type="submit" class="btn btn-secondary">キャンセル</button>
-		</form>
+			</form>
+			<form th:action="@{/accounts/edit/cancel}" th:object="${accountUpdateForm}" method="post" id="accountsback">
+				<input type="hidden" th:field="*{accountId}">
+
+
+
+			</form>
+		</div>
+		<div class="btn-area-center">
+		
+			<button type="submit" form="accounts" class="btn btn-primary"><i class="bi bi-check2-circle"></i>確認</button>
+			<button type="submit" form="accountsback" class="btn btn-secondary">キャンセル</button>
+		</div>
 	</div>
-</div>
-</div>
-<script th:src="@{/script.js}" defer></script>
+	<script th:src="@{/script.js}" defer></script>
 </body>
 
 </html>

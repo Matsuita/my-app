@@ -17,99 +17,92 @@
 
 <body>
 
-<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
+	<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-<div class="main-box">
-	<div class="form-box">
-		<div class="title">売上詳細削除確認</div>
+	<div class="main-box">
+		<div class="form-box">
+			<div class="title">売上詳細削除確認</div>
+			<div class="form-area">
+				<!-- 表示エリア（table → form-row化） -->
 
-	<!-- 表示エリア（table → form-row化） -->
+				<div class="form-row">
+					<div class="form-label">販売日</div>
+					<div class="form-input short">
+						<input type="text" th:value="${#temporals.format(sales.saleDate, 'yyyy/MM/dd')}" readonly>
+					</div>
+				</div>
 
-		<div class="form-row">
-			<div class="form-label">販売日</div>
-			<div class="form-input short">
-				<input type="text"
-						th:value="${#temporals.format(sales.saleDate, 'yyyy/MM/dd')}" readonly>
+				<div class="form-row">
+					<div class="form-label">担当</div>
+					<div class="form-input">
+						<input type="text" readonly th:value="${saleName}">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-label">商品カテゴリー</div>
+					<div class="form-input">
+						<input type="text" readonly th:each="category : ${categoryList}"
+							th:if="${category != null and category.categoryId == sales.categoryId}"
+							th:value="${category.categoryName}">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-label">商品名</div>
+					<div class="form-input">
+						<input type="text" th:value="${sales.tradeName}" readonly>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-label">単価</div>
+					<div class="form-input short">
+						<input type="text" th:value="${#numbers.formatInteger(sales.unitPrice, 0, 'COMMA')}" readonly>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-label">個数</div>
+					<div class="form-input short">
+						<input type="text" th:value="${#numbers.formatInteger(sales.saleNumber, 0, 'COMMA')}" readonly>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-label">小計</div>
+					<div class="form-input short">
+						<input type="text" th:value="${#numbers.formatInteger(total, 0, 'COMMA')}" readonly>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-label">備考</div>
+					<div class="form-input">
+						<textarea readonly th:text="${sales.note}"></textarea>
+					</div>
+				</div>
+
+				<!-- 送信フォーム（機能そのまま） -->
+				<form th:action="@{/sales/delete/execute}" method="post" id="sales">
+					<input type="hidden" name="saleId" th:value="${sales.saleId}">
+
+
+				</form>
 			</div>
-		</div>
-
-		<div class="form-row">
-			<div class="form-label">担当</div>
-			<div class="form-input">
-				<input type="text" readonly
-						th:value="${saleName}">
-			</div>
-		</div>
-
-		<div class="form-row">
-			<div class="form-label">商品カテゴリー</div>
-			<div class="form-input">
-				<input type="text" readonly
-						th:each="category : ${categoryList}"
-						th:if="${category != null and category.categoryId == sales.categoryId}"
-						th:value="${category.categoryName}">
-			</div>
-		</div>
-
-		<div class="form-row">
-			<div class="form-label">商品名</div>
-			<div class="form-input">
-				<input type="text" th:value="${sales.tradeName}" readonly>
-			</div>
-		</div>
-
-		<div class="form-row">
-			<div class="form-label">単価</div>
-			<div class="form-input short">
-				<input type="text"
-						th:value="${#numbers.formatInteger(sales.unitPrice, 0, 'COMMA')}"
-						readonly>
-			</div>
-		</div>
-
-		<div class="form-row">
-			<div class="form-label">個数</div>
-			<div class="form-input short">
-				<input type="text"
-						th:value="${#numbers.formatInteger(sales.saleNumber, 0, 'COMMA')}"
-						readonly>
-			</div>
-		</div>
-
-		<div class="form-row">
-			<div class="form-label">小計</div>
-			<div class="form-input short">
-				<input type="text"
-						th:value="${#numbers.formatInteger(total, 0, 'COMMA')}"
-						readonly>
-			</div>
-		</div>
-
-		<div class="form-row">
-			<div class="form-label">備考</div>
-			<div class="form-input">
-				<textarea readonly th:text="${sales.note}"></textarea>
-			</div>
-		</div>
-
-	<!-- 送信フォーム（機能そのまま） -->
-		<form th:action="@{/sales/delete/execute}" method="post">
-			<input type="hidden" name="saleId" th:value="${sales.saleId}">
-
 			<div class="btn-area-center">
-				<button type="submit" class="btn btn-danger">
+				<button type="submit" form="sales" class="btn btn-danger">
 					<i class="bi bi-trash3"></i>削除
 				</button>
 				<a th:href="@{/sales/detail/{id}(id=${sales.saleId})}" th:object="${sales}" class="btn btn-secondary">
 
-				    キャンセル
+					キャンセル
 
 				</a>
 			</div>
-		</form>
-
+		</div>
 	</div>
-</div>
-<script th:src="@{/script.js}" defer></script>
+	<script th:src="@{/script.js}" defer></script>
 </body>
+
 </html>

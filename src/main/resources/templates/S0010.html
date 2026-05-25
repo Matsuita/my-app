@@ -4,126 +4,109 @@
 <head>
 
 	<meta charset="UTF-8">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-		  rel="stylesheet">
-	<link rel="stylesheet"
-		  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet"
-		  th:href="@{/teamb.css}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" th:href="@{/teamb.css}">
 
 	<title>売上登録</title>
 
 </head>
 
 <body>
-    <div th:replace="fragment/navbar :: navbar('sales')"></div>
+	<div th:replace="fragment/navbar :: navbar('sales')"></div>
 
-    <div class="main-box">
+	<div class="main-box">
 
-        <!-- タイトル -->
-        <div class="title">売上登録</div>
+		<!-- タイトル -->
+		<div class="title">売上登録</div>
 
-        <!-- フォーム -->
-        <form th:action="@{/sales/confirm}"
-              th:object="${salesCreateForm}"
-              method="post"
-              class="form-area">
+		<!-- フォーム -->
+		<form th:action="@{/sales/confirm}" th:object="${salesCreateForm}" method="post" class="form-area" id="sale">
 
-            <!-- 販売日 -->
-            <div class="form-row">
-                <div class="form-label">販売日 <span class="badge-gray">必須</span></div>
-                <div class="form-input short">
-                    <input type="date" th:field="*{saleDate}">
-                    <div class="error" th:errors="*{saleDate}"></div>
-                </div>
-            </div>
+			<!-- 販売日 -->
+			<div class="form-row">
+				<div class="form-label">販売日 <span class="badge-gray">必須</span></div>
+				<div class="form-input short">
+					<input type="date" th:field="*{saleDate}">
+					<div class="error" th:errors="*{saleDate}"></div>
+				</div>
+			</div>
 
-            <!-- 担当 -->
-            <div class="form-row">
-                <div class="form-label">担当 <span class="badge-gray">必須</span></div>
-                <div class="form-input">
-                    <select th:field="*{accountId}">
-                        <option value="">選択してください</option>
-                        <option th:each="account : ${accountList}"
-                                th:value="${account.accountId}"
-                                th:text="${account.name}">
-                        </option>
-                    </select>
-                    <div class="error" th:errors="*{accountId}"></div>
-                </div>
-            </div>
+			<!-- 担当 -->
+			<div class="form-row">
+				<div class="form-label">担当 <span class="badge-gray">必須</span></div>
+				<div class="form-input">
+					<select th:field="*{accountId}">
+						<option value="">選択してください</option>
+						<option th:each="account : ${accountList}" th:value="${account.accountId}"
+							th:text="${account.name}">
+						</option>
+					</select>
+					<div class="error" th:errors="*{accountId}"></div>
+				</div>
+			</div>
 
-            <!-- 商品カテゴリー -->
-            <div class="form-row">
-                <div class="form-label">商品カテゴリー <span class="badge-gray">必須</span></div>
-                <div class="form-input">
-                    <select th:field="*{categoryId}">
-                        <option value="">選択してください</option>
-                        <option th:each="category : ${categoryList}"
-                                th:value="${category.categoryId}"
-                                th:text="${category.categoryName}">
-                        </option>
-                    </select>
-                    <div class="error" th:errors="*{categoryId}"></div>
-                </div>
-            </div>
+			<!-- 商品カテゴリー -->
+			<div class="form-row">
+				<div class="form-label">商品カテゴリー <span class="badge-gray">必須</span></div>
+				<div class="form-input">
+					<select th:field="*{categoryId}">
+						<option value="">選択してください</option>
+						<option th:each="category : ${categoryList}" th:value="${category.categoryId}"
+							th:text="${category.categoryName}">
+						</option>
+					</select>
+					<div class="error" th:errors="*{categoryId}"></div>
+				</div>
+			</div>
 
-            <!-- 商品名 -->
-            <div class="form-row">
-                <div class="form-label">商品名 <span class="badge-gray">必須</span></div>
-                <div class="form-input">
-                    <input type="text"
-                           th:field="*{tradeName}"
-                           placeholder="商品名">
-                    <div class="error" th:errors="*{tradeName}"></div>
-                </div>
-            </div>
+			<!-- 商品名 -->
+			<div class="form-row">
+				<div class="form-label">商品名 <span class="badge-gray">必須</span></div>
+				<div class="form-input">
+					<input type="text" th:field="*{tradeName}" placeholder="商品名">
+					<div class="error" th:errors="*{tradeName}"></div>
+				</div>
+			</div>
 
-            <!-- 単価 -->
-            <div class="form-row">
-                <div class="form-label">単価 <span class="badge-gray">必須</span></div>
-                <div class="form-input short">
-                    <input type="text"
-                           th:field="*{unitPrice}"
-                           placeholder="単価">
-                    <div class="error" th:errors="*{unitPrice}"></div>
-                </div>
-            </div>
+			<!-- 単価 -->
+			<div class="form-row">
+				<div class="form-label">単価 <span class="badge-gray">必須</span></div>
+				<div class="form-input short">
+					<input type="text" th:field="*{unitPrice}" placeholder="単価">
+					<div class="error" th:errors="*{unitPrice}"></div>
+				</div>
+			</div>
 
-            <!-- 個数 -->
-            <div class="form-row">
-                <div class="form-label">個数 <span class="badge-gray">必須</span></div>
-                <div class="form-input short">
-                    <input type="text"
-                           th:field="*{saleNumber}"
-                           placeholder="個数">
-                    <div class="error" th:errors="*{saleNumber}"></div>
-                </div>
-            </div>
+			<!-- 個数 -->
+			<div class="form-row">
+				<div class="form-label">個数 <span class="badge-gray">必須</span></div>
+				<div class="form-input short">
+					<input type="text" th:field="*{saleNumber}" placeholder="個数">
+					<div class="error" th:errors="*{saleNumber}"></div>
+				</div>
+			</div>
 
-            <!-- 備考 -->
-            <div class="form-row">
-                <div class="form-label">備考</div>
-                <div class="form-input">
-                    <input type="text"
-                           th:field="*{note}"
-                           placeholder="備考">
-                    <div class="error" th:errors="*{note}"></div>
-                </div>
-            </div>
+			<!-- 備考 -->
+			<div class="form-row">
+				<div class="form-label">備考</div>
+				<div class="form-input">
+					<input type="text" th:field="*{note}" placeholder="備考">
+					<div class="error" th:errors="*{note}"></div>
+				</div>
+			</div>
 
-            <!-- ボタン -->
-            <div class="btn-area-center">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-check2-circle"></i>確認
-                </button>
-            </div>
+			<!-- ボタン -->
 
-        </form>
-    </div>
+
+		</form>
+		<div class="btn-area-center">
+			<button type="submit" form="sale" class="btn btn-primary">
+				<i class="bi bi-check2-circle"></i>確認
+			</button>
+		</div>
+	</div>
 	<script th:src="@{/script.js}" defer></script>
 </body>
 
 </html>
-
-			
