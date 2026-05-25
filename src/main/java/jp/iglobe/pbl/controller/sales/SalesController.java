@@ -212,6 +212,21 @@ public class SalesController {
 						"商品カテゴリーテーブルに存在しません。");
 			}
 		}
+		
+		// 単価形式チェック
+		if (!salesForm.getUnitPrice()
+						.matches("(^$)|^[0-9]+$")) {
+					
+			result.rejectValue("unitPrice", null,
+					"単価を正しく入力してください。");
+		}
+		// 個数形式チェック
+		if (!salesForm.getSaleNumber()
+						.matches("(^$)|^([1-9][0-9]*)$")) {
+					
+			result.rejectValue("saleNumber", null,
+					"個数を正しく入力して下さい。");
+		}
 
 		// 入力エラー
 		if (result.hasErrors()) {
@@ -227,62 +242,8 @@ public class SalesController {
 		    }else{
 		    	accountName = account.getName();
 		    }
-
+			
 		    model.addAttribute("accountName", accountName);
-			model.addAttribute("accountList",
-					accountRepository.findBySalesAuthority(2));
-			model.addAttribute("categoryList",
-					categoryRepository.findAll());
-
-			return "S0023";
-		}
-
-		// 単価形式チェック
-		if (!salesForm.getUnitPrice()
-				.matches("^[0-9]+$")) {
-			
-			Sale sales = salesRepository.findById(saleId).orElse(null);
-			account = accountRepository.findById(sales.getAccountId())
-	              .orElse(null);
-			
-		    String accountName;
-		    if(account == null || !account.isActive()){
-
-		        accountName = "（退職済みユーザー）";
-		    }else{
-		    	accountName = account.getName();
-		    }
-
-		    model.addAttribute("accountName", accountName);
-			model.addAttribute("unitPriceError",
-					"単価を正しく入力して下さい。");
-			model.addAttribute("accountList",
-					accountRepository.findBySalesAuthority(2));
-			model.addAttribute("categoryList",
-					categoryRepository.findAll());
-
-			return "S0023";
-		}
-
-		// 個数形式チェック
-		if (!salesForm.getSaleNumber()
-				.matches("(^$)|^([1-9][0-9]*)$")) {
-			
-			Sale sales = salesRepository.findById(saleId).orElse(null);
-			account = accountRepository.findById(sales.getAccountId())
-	              .orElse(null);
-			
-		    String accountName;
-		    if(account == null || !account.isActive()){
-
-		        accountName = "（退職済みユーザー）";
-		    }else{
-		    	accountName = account.getName();
-		    }
-
-		    model.addAttribute("accountName", accountName);
-			model.addAttribute("saleNumberError",
-					"個数を正しく入力して下さい。");
 			model.addAttribute("accountList",
 					accountRepository.findBySalesAuthority(2));
 			model.addAttribute("categoryList",
