@@ -14,18 +14,18 @@ import jp.iglobe.pbl.model.account.Account;
 public interface SearchRepository extends JpaRepository<Account, Integer> {
 
 	@Query("""
-			SELECT a FROM Account a
-			WHERE (:name IS NULL OR a.name LIKE %:name%)
-			AND (:mail IS NULL OR a.mail LIKE %:mail%)
-			AND (:salesAuthority IS NULL OR a.salesAuthority = :salesAuthority)
-			AND (:accountsAuthority IS NULL OR a.accountsAuthority = :accountsAuthority)
-			AND a.isActive = true
-			""")
-	List<Account> search(
-			@Param("name") String name,
-			@Param("mail") String mail,
-			@Param("salesAuthority") Integer salesAuthority,
-			@Param("accountsAuthority") Integer accountsAuthority);
+		    SELECT a FROM Account a
+		    WHERE (:name IS NULL OR a.name LIKE %:name%)
+		    AND (:mail IS NULL OR a.mail LIKE %:mail%)
+		    AND (:salesAuthority IS NULL OR a.salesAuthority IN :salesAuthority)
+		    AND (:accountsAuthority IS NULL OR a.accountsAuthority IN :accountsAuthority)
+		    AND a.isActive = true
+		    """)
+		List<Account> search(
+		    @Param("name") String name,
+		    @Param("mail") String mail,
+		    @Param("salesAuthority") List<Integer> salesAuthority,
+		    @Param("accountsAuthority") List<Integer> accountsAuthority);
 
 	@Transactional
 	@Modifying
