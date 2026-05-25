@@ -9,84 +9,94 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
 
-	
+
 </head>
 <div th:replace="fragment/navbar :: navbar('account/search')"></div>
 
 <div class="main-box">
-  <div class="form-box">
+	<div class="form-box">
 
-    <div class="title">アカウント詳細削除確認</div>
+		<div class="title">アカウント詳細削除確認</div>
 
-    <form th:action="@{/accounts/delete/execute}" th:object="${account}" method="post">
+		<form th:action="@{/accounts/delete/execute}" th:object="${account}" method="post">
 
-      <input type="hidden" th:field="*{accountId}">
-      <input type="hidden" th:field="*{name}">
-      <input type="hidden" th:field="*{mail}">
-      <input type="hidden" th:field="*{password}">
-      <input type="hidden" th:field="*{salesAuthority}">
-      <input type="hidden" th:field="*{accountsAuthority}">
+			<input type="hidden" th:field="*{accountId}">
+			<input type="hidden" th:field="*{name}">
+			<input type="hidden" th:field="*{mail}">
+			<input type="hidden" th:field="*{password}">
+			<input type="hidden" th:field="*{salesAuthority}">
+			<input type="hidden" th:field="*{accountsAuthority}">
 
-      <!-- 氏名 -->
-      <div class="form-row">
-        <div class="form-label">氏名</div>
-        <div class="form-input">
-          <input type="text" th:value="*{name}" readonly>
-        </div>
-      </div>
+			<!-- 氏名 -->
+			<div class="form-row">
+				<div class="form-label">氏名</div>
+				<div class="form-input">
+					<input type="text" th:value="*{name}" readonly>
+				</div>
+			</div>
 
-      <!-- メール -->
-      <div class="form-row">
-        <div class="form-label">メールアドレス</div>
-        <div class="form-input">
-          <input type="text" th:value="*{mail}" readonly>
-        </div>
-      </div>
+			<!-- メール -->
+			<div class="form-row">
+				<div class="form-label">メールアドレス</div>
+				<div class="form-input">
+					<input type="text" th:value="*{mail}" readonly>
+				</div>
+			</div>
 
-      <!-- パスワード -->
-      <div class="form-row">
-        <div class="form-label">パスワード</div>
-        <div class="form-input">
-          <input type="text"
-                 th:value="${account.password != null ? #strings.repeat('•', account.password.length()) : ''}"
-                 readonly>
-        </div>
-      </div>
+			<!-- パスワード -->
+			<div class="form-row">
+				<div class="form-label">パスワード</div>
+				<div class="form-input">
+					<input type="text"
+						th:value="${account.password != null ? #strings.repeat('•', account.password.length()) : ''}"
+						readonly>
+				</div>
+			</div>
 
-      <!-- 売上権限 -->
-      <div class="form-row">
-        <div class="form-label">売上権限</div>
-        <div class="form-input radio-group">
-          <label><input type="radio" th:checked="${account.salesAuthority == 0}" disabled> 権限なし</label>
-          <label><input type="radio" th:checked="${account.salesAuthority == 1}" disabled> 閲覧のみ</label>
-          <label><input type="radio" th:checked="${account.salesAuthority == 2}" disabled> 登録・編集</label>
-        </div>
-      </div>
+			<!-- 売上権限 -->
+			<div class="form-row">
+				<div class="form-label">売上権限</div>
+				<div class="form-input radio-group radio-disabled-look">
+					<label><input type="radio" th:checked="${account.salesAuthority == 0}" onclick="return false">
+						権限なし</label>
+					<label><input type="radio" th:checked="${account.salesAuthority == 1}" onclick="return false">
+						閲覧のみ</label>
+					<label><input type="radio" th:checked="${account.salesAuthority == 2}" onclick="return false">
+						登録・編集</label>
+				</div>
+			</div>
 
-      <!-- アカウント権限 -->
-      <div class="form-row">
-        <div class="form-label">アカウント権限</div>
-        <div class="form-input radio-group">
-          <label><input type="radio" th:checked="${account.accountsAuthority == 0}" disabled> 権限なし</label>
-          <label><input type="radio" th:checked="${account.accountsAuthority == 1}" disabled> 閲覧のみ</label>
-          <label><input type="radio" th:checked="${account.accountsAuthority == 2}" disabled> 登録・編集</label>
-        </div>
-      </div>
+			<!-- アカウント権限 -->
+			<div class="form-row">
+				<div class="form-label">アカウント権限</div>
+				<div class="form-input radio-group radio-disabled-look">
+					<label><input type="radio" th:checked="${account.accountsAuthority == 0}" onclick="return false">
+						権限なし</label>
+					<label><input type="radio" th:checked="${account.accountsAuthority == 1}" onclick="return false">
+						閲覧のみ</label>
+					<label><input type="radio" th:checked="${account.accountsAuthority == 2}" onclick="return false">
+						登録・編集</label>
+				</div>
+			</div>
 
-      <!-- ボタン -->
-      <div class="btn-area-center">
-        <button type="submit" class="btn btn-danger">
-          <i class="bi bi-person-fill-dash"></i>削除
-        </button>
+			<!-- ボタン -->
+			<div class="btn-area-center">
+				<button type="submit" class="btn btn-danger">
+					<i class="bi bi-person-fill-dash"></i>削除
+				</button>
+		</form>
 
-        <a th:href="@{/accounts/result}" class="btn btn-secondary">
-          キャンセル
-        </a>
-      </div>
+		<form th:action="@{/accounts/result}"th:object="${account}" method="post">
+			
+			
 
-    </form>
+			<button type="submit" class="btn btn-secondary">キャンセル</button>
+		</form>
+	</div>
 
-  </div>
+
+
+</div>
 </div>
 <script th:src="@{/script.js}" defer></script>
 

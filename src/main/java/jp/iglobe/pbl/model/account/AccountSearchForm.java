@@ -1,5 +1,7 @@
 package jp.iglobe.pbl.model.account;
 
+import java.util.List;
+
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -15,9 +17,9 @@ public class AccountSearchForm {
 	message = "メールアドレスを正しく入力して下さい。")
 	private String mail;
 	
-    private Integer salesAuthority;
+    private List<Integer> salesAuthority;
     
-    private Integer accountsAuthority;
+    private List<Integer> accountsAuthority;
 //	private Integer authority;
 
 }

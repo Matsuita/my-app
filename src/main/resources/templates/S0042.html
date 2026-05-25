@@ -117,20 +117,16 @@
 
 			<!-- ボタン -->
 			<div class="btn-area-center">
-
 				<!-- 更新ボタン（POST送信） -->
+			<button type="submit" class="btn btn-primary"><i class="bi bi-clipboard2-plus-fill"></i>確認</button>
 
-
-				<button type="submit" class="btn btn-primary"><i class="bi bi-clipboard2-plus-fill"></i>確認</button>
-
-
-				<a th:href="@{/accounts/result}" class="btn btn-secondary">
-					キャンセル
-				</a>
-
-			</div>
 		</form>
-
+		<form th:action="@{/accounts/result}" th:object="${accountUpdateForm}" method="post">
+			<input type="hidden" th:field="*{accountId}">
+			    
+			    
+						    <button type="submit" class="btn btn-secondary">キャンセル</button>
+						</form></div>
 	</div>
 </div>
 <script th:src="@{/script.js}" defer></script>
