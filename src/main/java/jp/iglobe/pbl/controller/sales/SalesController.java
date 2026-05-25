@@ -51,13 +51,7 @@ public class SalesController {
 		List<Category> categoryList = categoryRepository.findAll();
 
 		// 画面へ渡す
-		SalesCreateForm salesCreateForm = (SalesCreateForm) session
-								.getAttribute("salesCreateForm");
-
-		if (salesCreateForm == null) {
-
-			salesCreateForm = new SalesCreateForm();
-		}
+		SalesCreateForm salesCreateForm = new SalesCreateForm();
 
 		model.addAttribute("salesCreateForm", salesCreateForm);
 		model.addAttribute("accountList", accountList);
@@ -86,9 +80,11 @@ public class SalesController {
 
 				result.rejectValue("accountId", null,
 						"アカウントテーブルに存在しません。");
+			}else if(!account.isActive()){
+				result.rejectValue("accountId", null,
+						"退職済みユーザーです。");
 			}
 		}
-
 		// カテゴリー存在チェック
 		Category category = null;
 		if (salesCreateForm.getCategoryId() != null) {
@@ -122,7 +118,7 @@ public class SalesController {
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("account", account);
 		model.addAttribute("category", category);
-		session.setAttribute("salesCreateForm", salesCreateForm);
+		
 
 		return "S0011";
 	}
@@ -198,6 +194,9 @@ public class SalesController {
 			if (account == null) {
 				result.rejectValue("accountId", null,
 						"アカウントテーブルに存在しません。");
+			}else if(!account.isActive()){
+				result.rejectValue("accountId", null,
+						"退職済みユーザーです。");
 			}
 		}
 		// カテゴリ存在チェック
