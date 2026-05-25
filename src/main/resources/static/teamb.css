@@ -205,7 +205,7 @@ input[type="text"],
 input[type="password"],
 input[type="date"],
 select {
-	width: 100%;
+	width: 80%;
 	height: 36px;
 	border: 1px solid #dcdcdc;
 	border-radius: 5px;
@@ -236,7 +236,7 @@ input[type="date"] {
 }
 
 textarea {
-	width: 100%;
+	width: 80%;
 	height: 80px;
 	border: 1px solid #dcdcdc;
 	border-radius: 5px;
@@ -457,7 +457,7 @@ input:focus {
 		display: flex;
 		align-items: center;
 		gap: 10px;
-		width: 100%;
+		width: 80%;
 	}
 
 	/* 日付input */
@@ -484,7 +484,14 @@ input:focus {
 
 	.password-wrap {
 	    position: relative;
-		width: 100%;
+		width: 80%;
+	}
+	/* ← これ追加が本体 */
+	.password-wrap input {
+	    width: 100%;
+	    padding-right: 40px; /* アイコン分 */
+	    height: 36px;        /* 他inputと揃える */
+	    box-sizing: border-box;
 	}
 
 	.password-wrap i {
