@@ -163,10 +163,7 @@ public class SalesSearchController {
 			List<Integer> accountIds =
 			        salesRepository.findUsedAccountIds();
 
-			model.addAttribute(
-			        "accountList",
-			        accountRepository.findAllById(
-			                accountIds));
+			model.addAttribute("accountList", accountRepository.findByAccountIdInAndIsActiveTrue(accountIds));
 
 			model.addAttribute(
 					"categoryList",
@@ -203,9 +200,10 @@ public class SalesSearchController {
 			        salesRepository.findUsedAccountIds();
 
 			model.addAttribute(
-			        "accountList",
-			        accountRepository.findAllById(
-			                accountIds));
+				    "accountList",
+				    accountRepository
+				        .findByAccountIdInAndIsActiveTrue(
+				            accountIds));
 
 			model.addAttribute(
 					"categoryList",
@@ -412,13 +410,11 @@ public class SalesSearchController {
 	            "salesForm",
 	            form);
 
-	 // 売上登録済み担当一覧
-	    List<Integer> accountIds = salesRepository.findUsedAccountIds();
-
+	 // 登録権限あり担当一覧
 	    model.addAttribute(
 	            "accountList",
-	            accountRepository.findAllById(
-	                    accountIds));
+	            accountRepository
+	                .findBySalesAuthority(2));
 
 	    // カテゴリ一覧
 	    model.addAttribute(
@@ -451,32 +447,65 @@ public class SalesSearchController {
 		}
 
 	    
-	 // 単価形式チェック
-	    if(!salesForm.getUnitPrice().matches("^[0-9]+$")) {
+		boolean errorFlg = false;
 
-	        model.addAttribute("unitPriceError", "単価を正しく入力して下さい。");
-	        
-	        model.addAttribute(
-	                "accountList",
-	                accountRepository.findAll());
-	        
-	        model.addAttribute("categoryList", categoryRepository.findAll());
+		// 単価形式チェック
+		if(salesForm.getUnitPrice() != null
+		        && !salesForm.getUnitPrice().isBlank()
+		        && !salesForm.getUnitPrice()
+		                .matches("^[0-9]+$")) {
 
-	        return "S0023";
-	    }
-	    
-	    // 個数形式チェック
-	    if(!salesForm.getSaleNumber().matches("^[0-9]+$")) {
-	        model.addAttribute("saleNumberError", "個数を正しく入力して下さい。");
-	        
-	        model.addAttribute(
-	                "accountList",
-	                accountRepository.findAll());
-	        
-	        model.addAttribute("categoryList", categoryRepository.findAll());
+		    model.addAttribute(
+		            "unitPriceError",
+		            "単価を正しく入力して下さい。");
 
-	        return "S0023";
-	    }
+		    errorFlg = true;
+		}
+
+		// 個数形式チェック
+		if(salesForm.getSaleNumber() != null
+		        && !salesForm.getSaleNumber().isBlank()
+		        && !salesForm.getSaleNumber()
+		                .matches("^[0-9]+$")) {
+
+		    model.addAttribute(
+		            "saleNumberError",
+		            "個数を正しく入力して下さい。");
+
+		    errorFlg = true;
+		}
+
+		// 個数0チェック
+		if(salesForm.getSaleNumber() != null
+		        && salesForm.getSaleNumber()
+		                .matches("^[0-9]+$")
+		        && Integer.parseInt(
+		                salesForm.getSaleNumber()) <= 0){
+
+		    model.addAttribute(
+		            "saleNumberError",
+		            "個数は1以上で入力して下さい。");
+
+		    errorFlg = true;
+		}
+
+
+		if(result.hasErrors() || errorFlg){
+
+		    List<Integer> accountIds =
+		            salesRepository.findUsedAccountIds();
+
+		    model.addAttribute(
+		            "accountList",
+		            accountRepository.findAllById(
+		                    accountIds));
+
+		    model.addAttribute(
+		            "categoryList",
+		            categoryRepository.findAll());
+
+		    return "S0023";
+		}
 	    
 
 		// 権限チェック
@@ -529,8 +558,8 @@ public class SalesSearchController {
 		                "Referer");
 
 		if(referer == null
-		        || !referer.contains(
-		                "/sales/search")){
+		        || !(referer.contains("/sales/search")
+		        || referer.contains("/sales/detail"))){
 
 		    return "redirect:/sales/search";
 		}
