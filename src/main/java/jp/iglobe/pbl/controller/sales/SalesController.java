@@ -63,8 +63,8 @@ public class SalesController {
 	
 	// 売上登録確認画面
 	@PostMapping("/sales/confirm")
-	public String salesConfirm(HttpSession session, @Valid SalesCreateForm salesCreateForm, BindingResult result,
-			Model model) {
+	public String salesConfirm(@Valid SalesCreateForm salesCreateForm, BindingResult result,
+								Model model) {
 		
 		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
 		List<Category> categoryList = categoryRepository.findAll();
@@ -126,8 +126,9 @@ public class SalesController {
 
 	//    売上確認→キャンセル(値保持）
 	@PostMapping("/sales/back")
-	public String back(HttpSession session,
-			@ModelAttribute SalesCreateForm salesCreateForm, Model model) {
+	public String back(@ModelAttribute SalesCreateForm salesCreateForm,
+						Model model) {
+		
 		List<Account> accountList = accountRepository
 				.findBySalesAuthorityAndIsActive(2, true);
 		List<Category> categoryList = categoryRepository.findAll();
@@ -142,9 +143,7 @@ public class SalesController {
 
 	// 売上登録実行
 	@PostMapping("/sales/create")
-	public String salesCreate(
-			HttpSession session,
-			SalesCreateForm salesCreateForm) {
+	public String salesCreate(SalesCreateForm salesCreateForm) {
 
 		//    	String→Integer変換
 		Sale sale = new Sale();
@@ -157,8 +156,6 @@ public class SalesController {
 		sale.setNote(salesCreateForm.getNote());
 
 		salesRepository.save(sale);
-
-		session.removeAttribute("salesCreateForm");
 
 		return "redirect:/sales";
 	}
@@ -270,8 +267,8 @@ public class SalesController {
 	
 //  編集確認→キャンセル(値保持）
 	@PostMapping("/sales/edit/back/{saleId}")
-	public String editBack(HttpSession session,
-			@ModelAttribute SalesForm salesForm,@PathVariable Integer saleId, Model model) {
+	public String editBack(@ModelAttribute SalesForm salesForm,
+			@PathVariable Integer saleId, Model model) {
 		
 		Sale sales = salesRepository.findById(saleId).orElse(null);
 		Account account = accountRepository.findById(sales.getAccountId())
