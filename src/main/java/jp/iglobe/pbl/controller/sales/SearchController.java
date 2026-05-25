@@ -43,16 +43,16 @@ public class SearchController {
 		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
 		}
-		 // ① 退避
-	    AccountSearchForm searchForm = (AccountSearchForm) session.getAttribute("accountSearchForm");
+		// ① 退避
+		AccountSearchForm searchForm = (AccountSearchForm) session.getAttribute("accountSearchForm");
 
-	    // ② 全消し
-	    sessionStatus.setComplete();
+		// ② 全消し
+		sessionStatus.setComplete();
 
-	    // ③ 戻す
-	    if (searchForm == null) {
-	        searchForm = new AccountSearchForm();
-	    }
+		// ③ 戻す
+		if (searchForm == null) {
+			searchForm = new AccountSearchForm();
+		}
 		model.addAttribute("accountSearchForm", new AccountSearchForm());
 		return "S0040";
 	}
@@ -124,6 +124,12 @@ public class SearchController {
 		}
 		if (result.hasErrors()) {
 			return "S0042"; // 入力画面に戻す
+		}
+
+		// データベースに同じメールアドレスがあるか直接チェックする
+		if (searchRepository.existsByMail(form.getMail())) {
+			result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のメールアドレスで登録してください。");
+			return "S0042"; // 重複していたら入力画面（S0042）へ戻る
 		}
 		// 🚨 ガード（直打ち対策）
 		if (form.getAccountId() == null) {
@@ -275,13 +281,11 @@ public class SearchController {
 	//	}
 	@PostMapping("/accounts/edit/cancel")
 	public String editCancel(
-	        @ModelAttribute("accountUpdateForm") AccountUpdateForm form
-	) {
-	    form.setPassword(null);
-	    form.setPasswordConfirm(null);
+			@ModelAttribute("accountUpdateForm") AccountUpdateForm form) {
+		form.setPassword(null);
+		form.setPasswordConfirm(null);
 
-	    return "forward:/accounts/result"; // ← ここ重要
+		return "forward:/accounts/result"; // ← ここ重要
 	}
-
 
 }
