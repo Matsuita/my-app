@@ -57,14 +57,17 @@
 		    color:#1f2937;
 		}
 
-        .welcome-message{
-            background:white;
-            border-radius:18px;
-            padding:22px 28px;
-            margin-bottom:30px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.05);
-            font-size:20px;
-        }
+		.welcome-message{
+		    background:white;
+		    border-radius:18px;
+		    padding:22px 28px;
+		    margin-bottom:30px;
+		    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+		    font-size:20px;
+		    width:28%;
+		    margin-right:auto;
+		}
+		
 
         .fun-message{
             color:#666;
@@ -473,6 +476,160 @@
 		    }
 		}
 
+		.floating-clock{
+
+		    position:absolute;
+
+		    top:120px;
+
+		    right:120px;
+
+		    text-align:right;
+		}
+
+		.clock-label{
+
+		    font-size:12px;
+
+		    letter-spacing:3px;
+
+		    color:#888;
+
+		    margin-bottom:8px;
+		}
+
+		.clock-time{
+
+		    font-size:52px;
+
+		    font-weight:bold;
+
+		    color:#2f80c9;
+
+		    font-family:monospace;
+
+		    letter-spacing:4px;
+
+		    text-shadow:
+		        0 0 14px rgba(47,128,201,0.25);
+		}
+		
+		/* TEAM B */
+
+		.team-logo{
+
+		    position:absolute;
+
+		    top:135px;
+
+		    right:580px;
+
+		    font-size:28px;
+
+		    font-weight:800;
+
+		    letter-spacing:4px;
+
+		    color:#1f2937;
+
+		    font-family:
+		        'Segoe UI',
+		        sans-serif;
+
+		    opacity:0.9;
+
+		    user-select:none;
+
+		    overflow:hidden;
+		}
+
+		/* サブ */
+
+		.team-logo::after{
+
+		    content:"SALES CONTROL SYSTEM";
+
+		    display:block;
+
+		    margin-top:2px;
+
+		    font-size:10px;
+
+		    letter-spacing:3px;
+
+		    color:#888;
+		}
+
+		/* 稲妻 */
+
+		.lightning{
+
+		    position:absolute;
+
+		    top:55%;
+
+		    left:-140%;
+
+		    width:140%;
+
+		    height:2px;
+
+		    background:
+		        linear-gradient(
+		            90deg,
+		            transparent,
+		            rgba(79,223,255,0.2),
+		            #4fdfff,
+		            white,
+		            #4fdfff,
+		            transparent
+		        );
+
+		    transform:
+		        rotate(-10deg);
+
+		    box-shadow:
+		        0 0 6px #4fdfff,
+		        0 0 16px #4fdfff;
+
+		    animation:
+		        lightningMove 3s infinite;
+		}
+
+		/* 稲妻 */
+
+		@keyframes lightningMove{
+
+		    0%{
+
+		        left:-140%;
+
+		        opacity:0;
+		    }
+
+		    8%{
+
+		        opacity:1;
+		    }
+
+		    18%{
+
+		        left:140%;
+
+		        opacity:1;
+		    }
+
+		    30%{
+
+		        opacity:0;
+		    }
+
+		    100%{
+		        left:140%;
+		        opacity:0;
+		    }
+		}
+
     </style>
 
 </head>
@@ -500,6 +657,31 @@
         </div>
 
     </div>
+	
+	<div class="team-logo">
+
+	    TEAM B
+
+	    <span class="lightning"></span>
+
+	</div>
+	
+	<div class="floating-clock">
+
+	    <div class="clock-label">
+
+	        CURRENT TIME
+
+	    </div>
+
+	    <div id="liveClock"
+	         class="clock-time">
+
+	        00:00:00
+
+	    </div>
+
+	</div>
 
     <!-- カード -->
 
@@ -569,23 +751,23 @@
 				
 				<div class="side-value">
 
-				    <span th:if="${salesRank == 'SS'}">
+				    <span th:if="${salesRank == 'S'}">
 				        とても好調
 				    </span>
 
-				    <span th:if="${salesRank == 'S'}">
+				    <span th:if="${salesRank == 'A'}">
 				        好調
 				    </span>
 
-				    <span th:if="${salesRank == 'A'}">
+				    <span th:if="${salesRank == 'B'}">
 				        順調
 				    </span>
 
-				    <span th:if="${salesRank == 'B'}">
+				    <span th:if="${salesRank == 'C'}">
 				        普通
 				    </span>
 
-				    <span th:if="${salesRank == 'C'}">
+				    <span th:if="${salesRank == 'D'}">
 				        不調
 				    </span>
 
@@ -893,6 +1075,36 @@ window.addEventListener(
 		    },1600);
 		}
 });
+
+function updateClock(){
+
+    const clock =
+        document.getElementById(
+            "liveClock");
+
+    if(!clock) return;
+
+    const now = new Date();
+
+    const h =
+        String(now.getHours())
+        .padStart(2,"0");
+
+    const m =
+        String(now.getMinutes())
+        .padStart(2,"0");
+
+    const s =
+        String(now.getSeconds())
+        .padStart(2,"0");
+
+    clock.innerText =
+        `${h}:${m}:${s}`;
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
 
 </script>
 
