@@ -263,5 +263,15 @@ public class SearchController {
 	//
 	//		return "redirect:S0042";
 	//	}
+	@PostMapping("/accounts/edit/cancel")
+	public String editCancel(
+	        @ModelAttribute("accountUpdateForm") AccountUpdateForm form
+	) {
+	    form.setPassword(null);
+	    form.setPasswordConfirm(null);
+
+	    return "forward:/accounts/result"; // ← ここ重要
+	}
+
 
 }
