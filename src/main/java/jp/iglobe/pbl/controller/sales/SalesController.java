@@ -304,7 +304,7 @@ public class SalesController {
 
 	    model.addAttribute("accountName", accountName);
 		model.addAttribute("salesForm", salesForm);
-		model.addAttribute("accountList", accountRepository.findAll());
+		model.addAttribute("accountList", accountRepository.findBySalesAuthority(2));
 	    model.addAttribute("categoryList", categoryRepository.findAll());
 
 		return "S0023";
