@@ -240,11 +240,24 @@ public class SalesController {
 		// 単価形式チェック
 		if (!salesForm.getUnitPrice()
 				.matches("^[0-9]+$")) {
+			
+			Sale sales = salesRepository.findById(saleId).orElse(null);
+			account = accountRepository.findById(sales.getAccountId())
+	              .orElse(null);
+			
+		    String accountName;
+		    if(account == null || !account.isActive()){
 
+		        accountName = "（退職済みユーザー）";
+		    }else{
+		    	accountName = account.getName();
+		    }
+
+		    model.addAttribute("accountName", accountName);
 			model.addAttribute("unitPriceError",
 					"単価を正しく入力して下さい。");
 			model.addAttribute("accountList",
-					accountRepository.findAll());
+					accountRepository.findBySalesAuthority(2));
 			model.addAttribute("categoryList",
 					categoryRepository.findAll());
 
@@ -254,11 +267,24 @@ public class SalesController {
 		// 個数形式チェック
 		if (!salesForm.getSaleNumber()
 				.matches("(^$)|^([1-9][0-9]*)$")) {
+			
+			Sale sales = salesRepository.findById(saleId).orElse(null);
+			account = accountRepository.findById(sales.getAccountId())
+	              .orElse(null);
+			
+		    String accountName;
+		    if(account == null || !account.isActive()){
 
+		        accountName = "（退職済みユーザー）";
+		    }else{
+		    	accountName = account.getName();
+		    }
+
+		    model.addAttribute("accountName", accountName);
 			model.addAttribute("saleNumberError",
 					"個数を正しく入力して下さい。");
 			model.addAttribute("accountList",
-					accountRepository.findAll());
+					accountRepository.findBySalesAuthority(2));
 			model.addAttribute("categoryList",
 					categoryRepository.findAll());
 
@@ -266,18 +292,18 @@ public class SalesController {
 		}
 
 		account = accountRepository.findById(salesForm.getAccountId()).orElse(null);
-		String saleName;
+		String accountName;
 
 		if (account != null && account.isActive()) {
-			saleName = account.getName();
+			accountName = account.getName();
 		} else {
-			saleName = "（退職済みユーザー）";
+			accountName = "（退職済みユーザー）";
 		}
 
 		model.addAttribute("salesForm", salesForm);
-		model.addAttribute("saleName", saleName);
+		model.addAttribute("saleName", accountName);
 		model.addAttribute("accountList",
-				accountRepository.findAll());
+				accountRepository.findBySalesAuthority(2));
 		model.addAttribute("categoryList",
 				categoryRepository.findAll());
 
@@ -317,12 +343,12 @@ public class SalesController {
 
 		Sale sales = salesRepository.findById(saleId).orElseThrow();
 		Account account = accountRepository.findById(sales.getAccountId()).orElse(null);
-		String saleName;
+		String accountName;
 
 		if (account != null && account.isActive()) {
-			saleName = account.getName();
+			accountName = account.getName();
 		} else {
-			saleName = "（退職済みユーザー）";
+			accountName = "（退職済みユーザー）";
 		}
 		
 		long unitPrice = sales.getUnitPrice().longValue();
@@ -331,7 +357,7 @@ public class SalesController {
 
 		model.addAttribute("total", total);
 		model.addAttribute("sales", sales);
-		model.addAttribute("saleName", saleName);
+		model.addAttribute("saleName", accountName);
 		model.addAttribute("accountList",
 				accountRepository.findAll());
 		model.addAttribute("categoryList",
