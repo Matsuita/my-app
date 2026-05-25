@@ -355,7 +355,6 @@ public class SalesSearchController {
 		}
 		
 		
-
 		// 一覧取得
 		model.addAttribute("salesList", session.getAttribute("salesList"));
 		model.addAttribute("accountList", accountRepository.findAll());
