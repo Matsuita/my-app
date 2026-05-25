@@ -26,6 +26,8 @@ public interface AccountRepository
 
 	//	登録用（×売上権限・退職済み）
 	List<Account> findBySalesAuthorityAndIsActive(Integer salesAuthority, boolean isActive);
+	
+	List<Account> findBySalesAuthority(Integer salesAuthority);
 
 	//	既に登録されているメールアドレスを弾くための記述
 	// mailカラムに存在するかどうかを真偽値で返す

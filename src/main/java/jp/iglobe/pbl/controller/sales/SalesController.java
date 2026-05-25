@@ -45,14 +45,14 @@ public class SalesController {
 			return "redirect:/dashboard";
 		}
 
-		// 担当一覧
+		// 担当一覧(売上権限なし・退職を省く）
 		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
 		// カテゴリ一覧
 		List<Category> categoryList = categoryRepository.findAll();
 
 		// 画面へ渡す
-		SalesCreateForm salesCreateForm = (SalesCreateForm) session.getAttribute(
-				"salesCreateForm");
+		SalesCreateForm salesCreateForm = (SalesCreateForm) session
+								.getAttribute("salesCreateForm");
 
 		if (salesCreateForm == null) {
 
@@ -66,6 +66,7 @@ public class SalesController {
 		return "S0010";
 	}
 
+	
 	// 売上登録確認画面
 	@PostMapping("/sales/confirm")
 	public String salesConfirm(HttpSession session, @Valid SalesCreateForm salesCreateForm, BindingResult result,
@@ -180,6 +181,7 @@ public class SalesController {
 		return "redirect:/sales";
 	}
 
+	
 	// 売上詳細編集確認画面
 	@PostMapping("/sales/edit/confirm/{saleId}")
 	public String editConfirm(
@@ -192,7 +194,7 @@ public class SalesController {
 
 			account = accountRepository.findById(
 					salesForm.getAccountId()).orElse(null);
-		// アカウント存在しない
+
 			if (account == null) {
 				result.rejectValue("accountId", null,
 						"アカウントテーブルに存在しません。");
@@ -205,7 +207,6 @@ public class SalesController {
 			category = categoryRepository.findById(
 					salesForm.getCategoryId()).orElse(null);
 
-			// 商品カテゴリ存在しない
 			if (category == null) {
 				result.rejectValue("categoryId", null,
 						"商品カテゴリーテーブルに存在しません。");
@@ -214,9 +215,22 @@ public class SalesController {
 
 		// 入力エラー
 		if (result.hasErrors()) {
+			
+			Sale sales = salesRepository.findById(saleId).orElse(null);
+			account = accountRepository.findById(sales.getAccountId())
+	              .orElse(null);
+			
+		    String accountName;
+		    if(account == null || !account.isActive()){
 
+		        accountName = "（退職済みユーザー）";
+		    }else{
+		    	accountName = account.getName();
+		    }
+
+		    model.addAttribute("accountName", accountName);
 			model.addAttribute("accountList",
-					accountRepository.findAll());
+					accountRepository.findBySalesAuthority(2));
 			model.addAttribute("categoryList",
 					categoryRepository.findAll());
 
@@ -279,7 +293,16 @@ public class SalesController {
 		Sale sales = salesRepository.findById(saleId).orElse(null);
 		Account account = accountRepository.findById(sales.getAccountId())
               .orElse(null);
+		
+	    String accountName;
+	    if(account == null || !account.isActive()){
 
+	        accountName = "（退職済みユーザー）";
+	    }else{
+	    	accountName = account.getName();
+	    }
+
+	    model.addAttribute("accountName", accountName);
 		model.addAttribute("salesForm", salesForm);
 		model.addAttribute("accountList", accountRepository.findAll());
 	    model.addAttribute("categoryList", categoryRepository.findAll());
@@ -333,7 +356,7 @@ public class SalesController {
 	
 	
 	//    直接URL入力の場合、検索画面へ
-	@GetMapping({"/sales/edit/back/{saleId}","/sales/edit/confirm/{saleId}",
+	@GetMapping({"/sales/edit/confirm/{saleId}","/sales/edit/back/{saleId}",
 					"/sales/delete/{saleId}","/sales/delete/execute"})
 	public String getEditConfirm(Model model, @PathVariable Integer saleId) {
 		
