@@ -40,6 +40,6 @@ public class SalesCreateForm {
 	@Pattern(regexp = "(^$)|^([1-9][0-9]*)$", message = "個数を正しく入力してください。")
 	private String saleNumber;
 
-	@Size(max = 100, message = "備考が長すぎます。")
+	@Size(max = 400, message = "備考が長すぎます。")
 	private String note;
 }
