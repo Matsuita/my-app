@@ -54,7 +54,6 @@
 					<label><input type="checkbox" name="salesAuthority" value="2"> 登録・編集</label>
 				</div>
 			</div>
-
 			<!-- アカウント権限 -->
 			<div class="form-row">
 				<div class="form-label">
@@ -67,24 +66,17 @@
 				</div>
 			</div>
 
-			<!-- ボタン -->
-			<div class="btn-area-center">
-				<button type="submit" class="btn btn-primary">
-					<i class="bi bi-search"></i>検索
-				</button>
-
-				<!--				<button type="reset" class="btn btn-secondary">-->
-				<!--					クリア-->
-				<!--				</button>-->
-
-
-				<button type="button" class="btn btn-secondary" onclick="location.href='/accounts/search'">
-					クリア
-				</button>
-			</div>
-
-
 		</form>
+		<!-- ボタン -->
+		<div class="btn-area-center">
+			<button type="submit" form="accounts" class="btn btn-primary">
+				<i class="bi bi-search"></i>検索
+			</button>
+
+			<button type="reset" class="btn btn-secondary">
+				クリア
+			</button>
+		</div>
 	</div>
 	<script th:src="@{/script.js}" defer></script>
 </body>
