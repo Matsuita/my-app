@@ -512,6 +512,57 @@ input:focus {
 			display: flex;
 		}
 	}
+	.btn:active{
+
+	    animation:shake 0.2s;
+	}
+
+	@keyframes shake{
+
+	    0%{transform:translateX(0);}
+	    25%{transform:translateX(-2px);}
+	    50%{transform:translateX(2px);}
+	    75%{transform:translateX(-2px);}
+	    100%{transform:translateX(0);}
+	}
+	
+	.particle{
+
+	    position:fixed;
+
+	    width:8px;
+	    height:8px;
+
+	    border-radius:50%;
+
+	    pointer-events:none;
+
+	    z-index:9999;
+
+	    animation:particleAnim 0.7s ease-out forwards;
+	}
+
+	@keyframes particleAnim{
+
+	    0%{
+
+	        transform:
+	            translate(0,0)
+	            scale(1);
+
+	        opacity:1;
+	    }
+
+	    100%{
+
+	        transform:
+	            translate(var(--x),
+	                      var(--y))
+	            scale(0);
+
+	        opacity:0;
+	    }
+	}
 	
 	
 
