@@ -56,8 +56,9 @@
 				</div>
 				<div class="form-input">
 					<div class="password-wrap">
-					<input type="text" id="password" th:field="*{password}" class="mask">
-					<i class="bi bi-eye-fill" id="togglePassword"></i></div>
+						<input type="text" id="password" th:field="*{password}" class="mask">
+						<i class="bi bi-eye-fill" id="togglePassword"></i>
+					</div>
 					<div class="error" th:errors="*{password}"></div>
 				</div>
 			</div>
@@ -70,8 +71,9 @@
 				</div>
 				<div class="form-input">
 					<div class="password-wrap">
-					<input type="text" id="passwordConfirm" th:field="*{passwordConfirm}" class="mask">
-					<i class="bi bi-eye-fill" id="togglePasswordConfirm"></i></div>
+						<input type="text" id="passwordConfirm" th:field="*{passwordConfirm}" class="mask">
+						<i class="bi bi-eye-fill" id="togglePasswordConfirm"></i>
+					</div>
 					<div class="error" th:errors="*{passwordConfirm}"></div>
 				</div>
 			</div>
@@ -118,16 +120,17 @@
 			<!-- ボタン -->
 			<div class="btn-area-center">
 				<!-- 更新ボタン（POST送信） -->
-			<button type="submit" class="btn btn-primary"><i class="bi bi-clipboard2-plus-fill"></i>確認</button>
+				<button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i>確認</button>
 
 		</form>
-		<form th:action="@{/accounts/result}" th:object="${accountUpdateForm}" method="post">
+		<form th:action="@{/accounts/edit/cancel}" th:object="${accountUpdateForm}" method="post">
 			<input type="hidden" th:field="*{accountId}">
-			    
-			    
-						    <button type="submit" class="btn btn-secondary">キャンセル</button>
-						</form></div>
+
+
+			<button type="submit" class="btn btn-secondary">キャンセル</button>
+		</form>
 	</div>
+</div>
 </div>
 <script th:src="@{/script.js}" defer></script>
 </body>

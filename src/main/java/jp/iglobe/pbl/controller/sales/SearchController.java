@@ -36,13 +36,23 @@ public class SearchController {
 	private SearchRepository searchRepository;
 
 	@GetMapping("/accounts/search")
-	public String init(HttpSession session, Model model) {
+	public String init(HttpSession session, Model model, SessionStatus sessionStatus) {
 
 		// アカウント権限「閲覧のみ」「登録・編集」（accountsAuthorityが1か2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
 		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
 		}
+		 // ① 退避
+	    AccountSearchForm searchForm = (AccountSearchForm) session.getAttribute("accountSearchForm");
+
+	    // ② 全消し
+	    sessionStatus.setComplete();
+
+	    // ③ 戻す
+	    if (searchForm == null) {
+	        searchForm = new AccountSearchForm();
+	    }
 		model.addAttribute("accountSearchForm", new AccountSearchForm());
 		return "S0040";
 	}
@@ -263,5 +273,15 @@ public class SearchController {
 	//
 	//		return "redirect:S0042";
 	//	}
+	@PostMapping("/accounts/edit/cancel")
+	public String editCancel(
+	        @ModelAttribute("accountUpdateForm") AccountUpdateForm form
+	) {
+	    form.setPassword(null);
+	    form.setPasswordConfirm(null);
+
+	    return "forward:/accounts/result"; // ← ここ重要
+	}
+
 
 }
