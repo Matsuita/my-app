@@ -23,56 +23,43 @@ import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountDeleteForm;
 import jp.iglobe.pbl.model.account.AccountSearchForm;
 import jp.iglobe.pbl.model.account.AccountUpdateForm;
-import jp.iglobe.pbl.repository.SearchRepository;
+import jp.iglobe.pbl.service.SearchAccountService;
 
 @Controller
-@SessionAttributes( "accountSearchForm" )
+@SessionAttributes("accountSearchForm")
 public class SearchController {
 
 	@ModelAttribute("accountSearchForm")
 	public AccountSearchForm setUpForm() {
 		return new AccountSearchForm();
 	}
-	
+
 	@Autowired
-	private SearchRepository searchRepository;
+	private SearchAccountService service;
 
 	@GetMapping("/accounts/search")
-	public String search(HttpSession session, Model model, SessionStatus sessionStatus) {
+	public String search(HttpSession session, Model model) {
 
-		// アカウント権限「閲覧のみ」「登録・編集」（accountsAuthorityが1か2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
 		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
 		}
-		
-
-		
 
 		model.addAttribute("accountSearchForm", new AccountSearchForm());
 		return "S0040";
 	}
 
-	@PostMapping("/accounts/result") // 検索結果
+	@PostMapping("/accounts/result")
 	public String search(@Valid @ModelAttribute AccountSearchForm form,
 			BindingResult result,
 			Model model) {
+
 		if (result.hasErrors()) {
 			model.addAttribute("accountSearchForm", form);
-			return "S0040"; // 入力画面に戻る
+			return "S0040";
 		}
-		
-		if (form.getSalesAuthority() != null && form.getSalesAuthority().isEmpty()) {
-	        form.setSalesAuthority(null);
-	    }
-	    if (form.getAccountsAuthority() != null && form.getAccountsAuthority().isEmpty()) {
-	        form.setAccountsAuthority(null);
-	    }
-		List<Account> list = searchRepository.search(
-				form.getName(),
-				form.getMail(),
-				form.getSalesAuthority(),
-				form.getAccountsAuthority());
+
+		List<Account> list = service.search(form);
 
 		model.addAttribute("accounts", list);
 		model.addAttribute("accountSearchForm", form);
@@ -81,168 +68,9 @@ public class SearchController {
 
 	@GetMapping("/accounts/edit/{id}")
 	public String edit(@PathVariable Integer id,
-	                   HttpSession session,
-	                   Model model) {
-
-	    Account loginUser = (Account) session.getAttribute("loginUser");
-	    if (loginUser.getAccountsAuthority() < 1) {
-	        return "redirect:/dashboard";
-	    }
-	    if (loginUser.getAccountsAuthority() == 1) {
-	        return "redirect:/accounts/search";
-	    }
-
-	    // 🔥 flashがあるときだけ使う
-	    if (!model.containsAttribute("accountUpdateForm")) {
-	        Account account = searchRepository.findById(id).orElseThrow();
-
-	        AccountUpdateForm form = new AccountUpdateForm();
-	        form.setAccountId(account.getAccountId());
-	        form.setName(account.getName());
-	        form.setMail(account.getMail());
-	        form.setSalesAuthority(account.getSalesAuthority());
-	        form.setAccountsAuthority(account.getAccountsAuthority());
-
-	        model.addAttribute("accountUpdateForm", form);
-	    }
-
-	    return "S0042";
-	}
-	@PostMapping("/accounts/edit/confirm")
-	public String confirm(
-			@Valid @ModelAttribute AccountUpdateForm form,
-			BindingResult result,
-			Model model) {
-		if (!result.hasFieldErrors("password")
-				&& !result.hasFieldErrors("passwordConfirm")) {
-
-			if (!form.getPassword().equals(form.getPasswordConfirm())) {
-				result.rejectValue("passwordConfirm", null, "パスワードが一致していません。");
-			}
-		}
-		if (result.hasErrors()) {
-			return "S0042"; // 入力画面に戻す
-		}
-
-		// データベースに同じメールアドレスがあるか直接チェックする
-		if (searchRepository.existsByMailAndAccountIdNot(
-		        form.getMail(),
-		        form.getAccountId())) {
-
-		    result.rejectValue("mail", "error.mail",
-		        "このメールアドレスは既に使用されています");
-
-		    return "S0042";
-		} // 重複していたら入力画面（S0042）へ戻る
-		
-		// 🚨 ガード（直打ち対策）
-		if (form.getAccountId() == null) {
-			return "redirect:/accounts/search";
-		}
-		model.addAttribute("accountUpdateForm", form);
-		return "S0043"; // 確認画面
-	}
-
-	@PostMapping("/accounts/update")
-	public String update(@ModelAttribute AccountUpdateForm account,
-			SessionStatus sessionStatus,
-			HttpServletRequest request) {
-
-		Account existing = searchRepository
-				.findById(account.getAccountId())
-				.orElseThrow();
-
-		existing.setName(account.getName());
-		existing.setMail(account.getMail());
-		existing.setSalesAuthority(account.getSalesAuthority());
-		existing.setAccountsAuthority(account.getAccountsAuthority());
-		existing.setPassword(account.getPassword());
-
-		searchRepository.save(existing);
-		sessionStatus.setComplete(); // 🔥 これ必須
-
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			// 実際のセッション名 "loginUser" から Account オブジェクトとして取得
-			Account loginUser = (Account) session.getAttribute("loginUser");
-
-			// ログイン中のユーザーが存在する場合
-			if (loginUser != null) {
-
-				if (Objects.equals(loginUser.getAccountId(), account.getAccountId()))  {
-
-					// セッションを完全に破棄で強制ログアウト
-					session.invalidate();
-
-					// ログイン画面ページへリダイレクト
-					return "redirect:/";
-				}
-			}
-		}
-
-		return "redirect:/accounts/result";
-	}
-
-	// 確認画面
-	@PostMapping("/accounts/delete")
-	public String deleteConfirm(AccountDeleteForm form, Model model) {
-
-		Account account = searchRepository
-				.findById(form.getAccountId())
-				.orElseThrow();
-
-		model.addAttribute("account", account);
-
-		return "S0044";
-	}
-
-	
-	//	アカウント論理削除
-	@PostMapping("/accounts/delete/execute")
-	public String deleteExecute(@ModelAttribute AccountDeleteForm account, SessionStatus sessionStatus) {
-		// 修正前：searchRepository.deleteById(account.getAccountId());
-		// 修正後：新しく作った論理削除のメソッドを呼び出す
-		searchRepository.logicalDeleteById(account.getAccountId());
-
-		sessionStatus.setComplete();
-		return "redirect:/accounts/result";
-	}
-
-	@GetMapping("/accounts/result")
-	public String resultFromSession(
 			HttpSession session,
-			@ModelAttribute AccountSearchForm form,
-			Model model,
-			SessionStatus sessionStatus // ←追加
-	) {
-		// アカウント権限「閲覧のみ」「登録・編集」（accountsAuthorityが2）にならない人を弾く
-		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser.getAccountsAuthority() < 1) {
-			return "redirect:/dashboard";
-		}
+			Model model) {
 
-		
-		if (form.getSalesAuthority() != null && form.getSalesAuthority().isEmpty()) {
-		    form.setSalesAuthority(null);
-		}
-		if (form.getAccountsAuthority() != null && form.getAccountsAuthority().isEmpty()) {
-		    form.setAccountsAuthority(null);
-		}
-		List<Account> list = searchRepository.search(
-				form.getName(),
-				form.getMail(),
-				form.getSalesAuthority(),
-				form.getAccountsAuthority());
-
-		model.addAttribute("accounts", list);
-
-		return "S0041";
-	}
-
-	@GetMapping("/accounts/delete")
-	public String deleteConfirmGet(HttpSession session, AccountDeleteForm form, Model model) {
-
-		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
 		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
@@ -251,19 +79,108 @@ public class SearchController {
 			return "redirect:/accounts/search";
 		}
 
-		// ガード
+		if (!model.containsAttribute("accountUpdateForm")) {
+	        model.addAttribute("accountUpdateForm",
+	                service.getAccountUpdateFormById(id));
+	    }
+
+		return "S0042";
+	}
+
+	@PostMapping("/accounts/edit/confirm")
+	public String confirm(@Valid @ModelAttribute AccountUpdateForm form,
+	        BindingResult result,
+	        Model model) {
+
+	    service.validateForConfirm(form, result);
+
+	    if (result.hasErrors()) {
+	        return "S0042";
+	    }
+
+	    if (form.getAccountId() == null) {
+	        return "redirect:/accounts/search";
+	    }
+
+	    model.addAttribute("accountUpdateForm", form);
+	    return "S0043";
+	}
+	@PostMapping("/accounts/update")
+	public String update(@ModelAttribute AccountUpdateForm account,
+			SessionStatus sessionStatus,
+			HttpServletRequest request) {
+
+		service.update(account);
+		sessionStatus.setComplete();
+
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			Account loginUser = (Account) session.getAttribute("loginUser");
+
+			if (loginUser != null) {
+				if (Objects.equals(loginUser.getAccountId(), account.getAccountId())) {
+					session.invalidate();
+					return "redirect:/";
+				}
+			}
+		}
+
+		return "redirect:/accounts/result";
+	}
+
+	@PostMapping("/accounts/delete")
+	public String deleteConfirm(AccountDeleteForm form, Model model) {
+
+		Account account = service.getAccountById(form.getAccountId());
+		model.addAttribute("account", account);
+
+		return "S0044";
+	}
+
+	@PostMapping("/accounts/delete/execute")
+	public String deleteExecute(@ModelAttribute AccountDeleteForm account,
+			SessionStatus sessionStatus) {
+
+		service.logicalDelete(account.getAccountId());
+		sessionStatus.setComplete();
+
+		return "redirect:/accounts/result";
+	}
+
+	@GetMapping("/accounts/result")
+	public String resultFromSession(HttpSession session,
+			@ModelAttribute AccountSearchForm form,
+			Model model) {
+
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 1) {
+			return "redirect:/dashboard";
+		}
+
+		List<Account> list = service.search(form);
+		model.addAttribute("accounts", list);
+
+		return "S0041";
+	}
+
+	@GetMapping("/accounts/delete")
+	public String deleteConfirmGet(HttpSession session,
+			AccountDeleteForm form,
+			Model model) {
+
+		Account loginUser = (Account) session.getAttribute("loginUser");
+		if (loginUser.getAccountsAuthority() < 1) {
+			return "redirect:/dashboard";
+		}
+		if (loginUser.getAccountsAuthority() == 1) {
+			return "redirect:/accounts/search";
+		}
+
 		if (form.getAccountId() == null) {
 			return "redirect:/accounts/search";
 		}
 
-		Account account = searchRepository
-				.findById(form.getAccountId())
-				.orElse(null);
-
-		if (account == null) {
-			return "redirect:/accounts/search";
-		}
-
+		Account account = service.getAccountById(form.getAccountId());
 		model.addAttribute("account", account);
 
 		return "S0044";
@@ -274,20 +191,17 @@ public class SearchController {
 		return "redirect:/accounts/search";
 	}
 
-	
 	@PostMapping("/accounts/edit/cancel")
-	public String editCancel(
-			) {
-		
-
-		return "redirect:/accounts/result"; 
+	public String editCancel() {
+		return "redirect:/accounts/result";
 	}
+
 	@PostMapping("/accounts/edit/confirm/cancel")
 	public String confirmCancel(
-	        @ModelAttribute("accountUpdateForm") AccountUpdateForm form, RedirectAttributes redirectAttributes) {
+			@ModelAttribute("accountUpdateForm") AccountUpdateForm form,
+			RedirectAttributes redirectAttributes) {
 
-		  redirectAttributes.addFlashAttribute("accountUpdateForm", form);
-
-	    return "redirect:/accounts/edit/" + form.getAccountId();
+		redirectAttributes.addFlashAttribute("accountUpdateForm", form);
+		return "redirect:/accounts/edit/" + form.getAccountId();
 	}
 }
