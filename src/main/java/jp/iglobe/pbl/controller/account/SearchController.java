@@ -1,4 +1,4 @@
-package jp.iglobe.pbl.controller.sales;
+package jp.iglobe.pbl.controller.account;
 
 import java.util.List;
 
@@ -65,6 +65,13 @@ public class SearchController {
 			model.addAttribute("accountSearchForm", form);
 			return "S0040"; // 入力画面に戻る
 		}
+		
+		if (form.getSalesAuthority() != null && form.getSalesAuthority().isEmpty()) {
+	        form.setSalesAuthority(null);
+	    }
+	    if (form.getAccountsAuthority() != null && form.getAccountsAuthority().isEmpty()) {
+	        form.setAccountsAuthority(null);
+	    }
 		List<Account> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),
@@ -94,7 +101,7 @@ public class SearchController {
 		if (sessionForm != null && id.equals(sessionForm.getAccountId())) {
 			return "S0042";
 		}
-
+		
 		// それ以外はDBから再取得
 		Account account = searchRepository.findById(id).orElseThrow();
 
@@ -192,14 +199,7 @@ public class SearchController {
 		return "S0044";
 	}
 
-	// 実際の削除 (←物理削除なので変更します。5月20日)
-	//	@PostMapping("/accounts/delete/execute")
-	//	public String deleteExecute(@ModelAttribute AccountDeleteForm account, SessionStatus sessionStatus) {
-	//		searchRepository.deleteById(account.getAccountId());
-	//		sessionStatus.setComplete();
-	//		return "redirect:/accounts/result";
-	//	}
-
+	
 	//	アカウント論理削除
 	@PostMapping("/accounts/delete/execute")
 	public String deleteExecute(@ModelAttribute AccountDeleteForm account, SessionStatus sessionStatus) {
@@ -225,7 +225,12 @@ public class SearchController {
 		}
 
 		sessionStatus.setComplete(); // 🔥ここで編集内容リセット
-
+		if (form.getSalesAuthority() != null && form.getSalesAuthority().isEmpty()) {
+		    form.setSalesAuthority(null);
+		}
+		if (form.getAccountsAuthority() != null && form.getAccountsAuthority().isEmpty()) {
+		    form.setAccountsAuthority(null);
+		}
 		List<Account> list = searchRepository.search(
 				form.getName(),
 				form.getMail(),
@@ -272,20 +277,15 @@ public class SearchController {
 		return "redirect:/accounts/search";
 	}
 
-	//	@PostMapping("/accounts/edit/back")
-	//	public String back(SessionStatus sessionStatus) {
-	//
-	//		sessionStatus.setComplete(); // ←これ追加🔥
-	//
-	//		return "redirect:S0042";
-	//	}
+	
 	@PostMapping("/accounts/edit/cancel")
 	public String editCancel(
-			@ModelAttribute("accountUpdateForm") AccountUpdateForm form) {
+			@ModelAttribute("accountUpdateForm") AccountUpdateForm form, SessionStatus sessionStatus) {
+		sessionStatus.setComplete(); // 🔥これ追加
 		form.setPassword(null);
 		form.setPasswordConfirm(null);
 
-		return "forward:/accounts/result"; // ← ここ重要
+		return "forward:/accounts/result"; 
 	}
 
 }
