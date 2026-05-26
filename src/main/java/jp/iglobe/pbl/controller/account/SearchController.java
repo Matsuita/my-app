@@ -134,10 +134,16 @@ public class SearchController {
 		}
 
 		// データベースに同じメールアドレスがあるか直接チェックする
-		if (searchRepository.existsByMail(form.getMail())) {
-			result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のメールアドレスで登録してください。");
-			return "S0042"; // 重複していたら入力画面（S0042）へ戻る
-		}
+		if (searchRepository.existsByMailAndAccountIdNot(
+		        form.getMail(),
+		        form.getAccountId())) {
+
+		    result.rejectValue("mail", "error.mail",
+		        "このメールアドレスは既に使用されています");
+
+		    return "S0042";
+		} // 重複していたら入力画面（S0042）へ戻る
+		
 		// 🚨 ガード（直打ち対策）
 		if (form.getAccountId() == null) {
 			return "redirect:/accounts/search";
