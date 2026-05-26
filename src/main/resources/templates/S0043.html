@@ -87,16 +87,24 @@
 
 
 			</form>
-
+			<form th:action="@{/accounts/edit/confirm/cancel}" method="post" th:object="${accountUpdateForm}" id="accountsback">
+				<input type="hidden" th:field="*{accountId}">
+				    <input type="hidden" th:field="*{name}">
+				    <input type="hidden" th:field="*{mail}">
+				    <input type="hidden" th:field="*{password}">
+				    <input type="hidden" th:field="*{passwordConfirm}">
+				    <input type="hidden" th:field="*{salesAuthority}">
+				    <input type="hidden" th:field="*{accountsAuthority}">
+					</form>
 		</div>
 		<div class="btn-area-center">
 			<button type="submit" form="accounts" class="btn btn-primary">
 				<i class="bi bi-arrow-repeat"></i>更新
 			</button>
 
-			<a th:href="@{/accounts/edit/{id}(id=${accountUpdateForm.accountId})}" class="btn btn-secondary">
+			<button type="submit" form="accountsback" class="btn btn-secondary">
 				キャンセル
-			</a>
+			</button>
 		</div>
 	</div>
 	<script th:src="@{/script.js}" defer></script>
