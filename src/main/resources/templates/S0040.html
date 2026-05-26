@@ -49,9 +49,9 @@
 					売上権限
 				</div>
 				<div class="form-input radio-group">
-					<label><input type="checkbox" name="salesAuthority" value="0"> 権限なし</label>
-					<label><input type="checkbox" name="salesAuthority" value="1"> 閲覧のみ</label>
-					<label><input type="checkbox" name="salesAuthority" value="2"> 登録・編集</label>
+					<label><input type="checkbox" th:field="*{salesAuthority}" value="0"> 権限なし</label>
+					<label><input type="checkbox" th:field="*{salesAuthority}" value="1"> 閲覧のみ</label>
+					<label><input type="checkbox" th:field="*{salesAuthority}" value="2"> 登録・編集</label>
 				</div>
 			</div>
 			<!-- アカウント権限 -->
@@ -60,9 +60,9 @@
 					アカウント権限
 				</div>
 				<div class="form-input radio-group">
-					<label><input type="checkbox" name="accountsAuthority" value="0"> 権限なし</label>
-					<label><input type="checkbox" name="accountsAuthority" value="1"> 閲覧のみ</label>
-					<label><input type="checkbox" name="accountsAuthority" value="2"> 登録・編集</label>
+					<label><input type="checkbox" th:field="*{accountsAuthority}" value="0"> 権限なし</label>
+					<label><input type="checkbox" th:field="*{accountsAuthority}" value="1"> 閲覧のみ</label>
+					<label><input type="checkbox" th:field="*{accountsAuthority}" value="2"> 登録・編集</label>
 				</div>
 			</div>
 

@@ -20,6 +20,6 @@ public class AccountSearchForm {
     private List<Integer> salesAuthority;
     
     private List<Integer> accountsAuthority;
-//	private Integer authority;
+
 
 }
