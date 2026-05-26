@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountForm;
-import jp.iglobe.pbl.repository.AccountRepository;
+import jp.iglobe.pbl.service.AccountService;
 
 @Controller
 public class AccountController {
 	@Autowired
-	AccountRepository accountRepository;
+	AccountService accountService;
 
 	//	アカウント登録
 	@GetMapping("/accounts")
@@ -26,11 +26,12 @@ public class AccountController {
 
 		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser == null ||loginUser.getAccountsAuthority() < 2) {
+		if (loginUser == null || loginUser.getAccountsAuthority() < 2) {
 			return "redirect:/dashboard";
 		}
-
-		model.addAttribute("accountForm", new AccountForm());
+		// 登録用のフォームを作りServiceに投げる
+		AccountForm form = accountService.getNewAccountForm();
+		model.addAttribute("accountForm", form);
 		return "S0030";
 	}
 
@@ -44,9 +45,10 @@ public class AccountController {
 	//	アカウント登録確認画面へ直接は飛ばず、アカウント登録画面へ遷移
 	@GetMapping("/accounts/confirm")
 	public String showConfirm(HttpSession session, Model model) {
+		
 		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser == null ||loginUser.getAccountsAuthority() < 2) {
+		if (loginUser == null || loginUser.getAccountsAuthority() < 2) {
 			return "redirect:/dashboard";
 		}
 
@@ -56,25 +58,18 @@ public class AccountController {
 
 	//	アカウント登録確認
 	@PostMapping("/accounts/confirm")
-	public String confirmRegister(@Validated @ModelAttribute AccountForm accountForm,
-			BindingResult result) {
+	public String confirmRegister(@Validated @ModelAttribute AccountForm accountForm, BindingResult result) {
 
 		// 1. 入力チェック（@NotBlankや@NotNull）に引っかかった場合
 		if (result.hasErrors()) {
 			return "S0030";
 		}
 
-		// 2. パスワード一致チェック（カスタムチェック）
-		if (!accountForm.getPassword().equals(accountForm.getPasswordConfirm())) {
-			// passwordConfirmフィールドに対して個別にエラーを紐付ける
-			result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードとパスワード（確認）の入力値が異なります。");
-			return "S0030"; // 入力画面へ戻る
-		}
-
-		// データベースに同じメールアドレスがあるか直接チェックする
-		if (accountRepository.existsByMail(accountForm.getMail())) {
-			result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のメールアドレスで登録してください。");
-			return "S0030"; // 重複していたら入力画面（S0030）へ戻る
+		// Serviceにパスワード一致やメール重複などのチェックを実行
+		// エラーが見つかっていたら、入力画面（S0030）に戻す
+		accountService.validateAccountForm(accountForm, result);
+		if (result.hasErrors()) {
+			return "S0030";
 		}
 
 		// 全てOKなら確認画面（S0031）へ
@@ -85,21 +80,11 @@ public class AccountController {
 	@PostMapping("/accounts/confirm_register")
 	public String register(@ModelAttribute AccountForm accountForm) {
 
-		// Repositoryが扱う「Account」クラスに値をセット
-		//（authorityはこのメソッドで生成）
-		Account account = new Account();
-		account.setName(accountForm.getName());
-		account.setMail(accountForm.getMail());
-		account.setPassword(accountForm.getPassword());
-		account.setSalesAuthority(accountForm.getSalesAuthority());
-		account.setAccountsAuthority(accountForm.getAccountsAuthority());
+		// ServiceにDB保存処理
+		accountService.registerAccount(accountForm);
 
-		// DB保存を実行
-		account.setActive(true);
-		accountRepository.save(account);
-
+		// 保存が終わったら、一覧画面（/accounts）へ
 		return "redirect:/accounts";
 	}
 
-	
 }
