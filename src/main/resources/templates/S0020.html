@@ -3,129 +3,114 @@
 
 <head>
 
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
 
-    <title>売上検索</title>
+	<title>売上検索</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" th:href="@{/navbar.css}">
+	<link rel="stylesheet" th:href="@{/teamb.css}">
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <link rel="stylesheet"
-          th:href="@{/teamb.css}">
-
-    
 </head>
 
 <body>
 
-<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
+	<div th:replace="fragment/navbar :: navbar('sales/search')"></div>
 
-<div class="main-box">
+	<div class="main-box">
 
-    <div class="title">売上検索条件入力</div>
+		<div class="title">売上検索条件入力</div>
 
-    <form th:action="@{/sales/result}"
-          th:object="${salesSearchForm}"
-          method="post"
-          class="form-area" id="sales">
+		<form th:action="@{/sales/result}" th:object="${salesSearchForm}" method="post" class="form-area" id="sales">
 
-        <!-- 販売日 -->
-        <div class="form-row">
-            <div class="form-label">販売日</div>
+			<!-- 販売日 -->
+			<div class="form-row">
+				<div class="form-label">販売日</div>
 
-            <div class="form-input">
-				<div class="date-inputs">
-                <input type="date" th:field="*{saleDateFrom}">
-                <span class="wave">～</span>
-                <input type="date" th:field="*{saleDateTo}">
-           
-				 </div>
-				 
-				 <!-- エラー -->
-				         <div class="error" th:text="${dateFromError}"></div>
-				         <div class="error" th:text="${dateToError}"></div>
-				         <div class="error" th:text="${dateRangeError}"></div>
-        </div>
+				<div class="form-input">
+					<div class="date-inputs">
+						<input type="date" th:field="*{saleDateFrom}">
+						<span class="wave">～</span>
+						<input type="date" th:field="*{saleDateTo}">
+
+					</div>
+
+					<!-- エラー -->
+					<div class="error" th:text="${dateFromError}"></div>
+					<div class="error" th:text="${dateToError}"></div>
+					<div class="error" th:text="${dateRangeError}"></div>
+				</div>
+			</div>
+
+
+
+			<!-- 担当 -->
+			<div class="form-row">
+				<div class="form-label">担当</div>
+				<div class="form-input">
+					<select th:field="*{accountId}">
+						<option value="">選択してください</option>
+						<option th:each="account : ${accountList}" th:value="${account.accountId}"
+							th:text="${account.name}">
+						</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- 商品カテゴリー -->
+			<div class="form-row">
+				<div class="form-label">商品カテゴリー</div>
+				<div class="form-input">
+					<select th:field="*{categoryId}">
+						<option value="">選択してください</option>
+						<option th:each="category : ${categoryList}" th:value="${category.categoryId}"
+							th:text="${category.categoryName}">
+						</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- 商品名 -->
+			<div class="form-row">
+				<div class="form-label">
+					商品名
+					<span class="badge-gray">部分一致</span>
+				</div>
+				<div class="form-input">
+					<input type="text" th:field="*{tradeName}" placeholder="商品名">
+				</div>
+			</div>
+
+			<!-- 備考 -->
+			<div class="form-row">
+				<div class="form-label">
+					備考
+					<span class="badge-gray">部分一致</span>
+				</div>
+				<div class="form-input">
+					<input type="text" th:field="*{note}" placeholder="備考">
+				</div>
+			</div>
+
+			<!-- エラー -->
+			<div class="error" th:text="${searchError}"></div>
+
+
+
+		</form>
+		<!-- ボタン -->
+		<div class="btn-area-center">
+			<button type="submit" form="sales" class="btn btn-primary">
+				<i class="bi bi-search"></i>検索
+			</button>
+
+			<button type="button" class="btn btn-secondary" onclick="location.href='/sales/search'">
+				クリア
+			</button>
 		</div>
 
-        
-
-        <!-- 担当 -->
-        <div class="form-row">
-            <div class="form-label">担当</div>
-            <div class="form-input">
-                <select th:field="*{accountId}">
-                    <option value="">選択してください</option>
-                    <option th:each="account : ${accountList}"
-                            th:value="${account.accountId}"
-                            th:text="${account.name}">
-                    </option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 商品カテゴリー -->
-        <div class="form-row">
-            <div class="form-label">商品カテゴリー</div>
-            <div class="form-input">
-                <select th:field="*{categoryId}">
-                    <option value="">選択してください</option>
-                    <option th:each="category : ${categoryList}"
-                            th:value="${category.categoryId}"
-                            th:text="${category.categoryName}">
-                    </option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 商品名 -->
-        <div class="form-row">
-            <div class="form-label">
-                商品名
-                <span class="badge-gray">部分一致</span>
-            </div>
-            <div class="form-input">
-                <input type="text"
-                       th:field="*{tradeName}"
-                       placeholder="商品名">
-            </div>
-        </div>
-
-        <!-- 備考 -->
-        <div class="form-row">
-            <div class="form-label">
-                備考
-                <span class="badge-gray">部分一致</span>
-            </div>
-            <div class="form-input">
-                <input type="text"
-                       th:field="*{note}"
-                       placeholder="備考">
-            </div>
-        </div>
-
-        <!-- エラー -->
-        <div class="error" th:text="${searchError}"></div>
-
-        
-
-    </form>
-	<!-- ボタン -->
-	        <div class="btn-area-center">
-	            <button type="submit" form="sales"class="btn btn-primary">
-	                <i class="bi bi-search"></i>検索
-	            </button>
-
-				<button type="button" class="btn btn-secondary"
-				        th:onclick="|location.href='@{/sales/search}'|">
-				    クリア
-				</button>
-	        </div>
-</div>
-<script th:src="@{/script.js}" defer></script>
 </body>
 
 </html>

@@ -7,6 +7,7 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" th:href="@{/navbar.css}">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
 
 </head>
@@ -49,8 +50,9 @@
 				</div>
 				<div class="form-input">
 					<div class="password-wrap">
-					<input type="text" id="password" th:field="*{password}" class="mask" placeholder="パスワード">
-					<i class="bi bi-eye-fill" id="togglePassword"></i></div>
+						<input type="text" id="password" th:field="*{password}" class="mask" placeholder="パスワード">
+						<i class="bi bi-eye-fill" id="togglePassword"></i>
+					</div>
 					<div class="error" th:errors="*{password}"></div>
 				</div>
 			</div>
@@ -62,8 +64,10 @@
 				</div>
 				<div class="form-input">
 					<div class="password-wrap">
-					<input type="text" id="passwordConfirm" th:field="*{passwordConfirm}" class="mask" placeholder="パスワード（確認）">
-					<i class="bi bi-eye-fill" id="togglePasswordConfirm"></i></div>
+						<input type="text" id="passwordConfirm" th:field="*{passwordConfirm}" class="mask"
+							placeholder="パスワード（確認）">
+						<i class="bi bi-eye-fill" id="togglePasswordConfirm"></i>
+					</div>
 					<div class="error" th:errors="*{passwordConfirm}"></div>
 				</div>
 			</div>
@@ -98,15 +102,15 @@
 				</div>
 			</div>
 
-			
+
 		</form>
 		<!-- ボタン -->
-					<div class="btn-area-center">
-						<button type="submit" form="accounts" class="btn btn-primary">
-							<i class="bi bi-check2-circle"></i>
-							確認
-						</button>
-					</div>
+		<div class="btn-area-center">
+			<button type="submit" form="accounts" class="btn btn-primary">
+				<i class="bi bi-check2-circle"></i>
+				確認
+			</button>
+		</div>
 
 	</div>
 	<script th:src="@{/script.js}" defer></script>
