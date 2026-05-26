@@ -26,7 +26,7 @@ public class AccountController {
 
 		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser.getAccountsAuthority() < 2) {
+		if (loginUser == null ||loginUser.getAccountsAuthority() < 2) {
 			return "redirect:/dashboard";
 		}
 
@@ -43,10 +43,10 @@ public class AccountController {
 
 	//	アカウント登録確認画面へ直接は飛ばず、アカウント登録画面へ遷移
 	@GetMapping("/accounts/confirm")
-	public String confirm(HttpSession session, Model model) {
+	public String showConfirm(HttpSession session, Model model) {
 		// アカウント権限「登録・編集」（accountsAuthorityが2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser.getAccountsAuthority() < 2) {
+		if (loginUser == null ||loginUser.getAccountsAuthority() < 2) {
 			return "redirect:/dashboard";
 		}
 
@@ -56,7 +56,7 @@ public class AccountController {
 
 	//	アカウント登録確認
 	@PostMapping("/accounts/confirm")
-	public String confirm(@Validated @ModelAttribute AccountForm accountForm,
+	public String confirmRegister(@Validated @ModelAttribute AccountForm accountForm,
 			BindingResult result) {
 
 		// 1. 入力チェック（@NotBlankや@NotNull）に引っかかった場合
@@ -101,4 +101,5 @@ public class AccountController {
 		return "redirect:/accounts";
 	}
 
+	
 }
