@@ -1,6 +1,7 @@
 package jp.iglobe.pbl.controller.account;
 
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.account.AccountDeleteForm;
@@ -24,35 +26,29 @@ import jp.iglobe.pbl.model.account.AccountUpdateForm;
 import jp.iglobe.pbl.repository.SearchRepository;
 
 @Controller
-@SessionAttributes({ "accountSearchForm", "accountUpdateForm" })
+@SessionAttributes( "accountSearchForm" )
 public class SearchController {
 
 	@ModelAttribute("accountSearchForm")
 	public AccountSearchForm setUpForm() {
 		return new AccountSearchForm();
 	}
-
+	
 	@Autowired
 	private SearchRepository searchRepository;
 
 	@GetMapping("/accounts/search")
-	public String init(HttpSession session, Model model, SessionStatus sessionStatus) {
+	public String search(HttpSession session, Model model, SessionStatus sessionStatus) {
 
 		// アカウント権限「閲覧のみ」「登録・編集」（accountsAuthorityが1か2）にならない人を弾く
 		Account loginUser = (Account) session.getAttribute("loginUser");
 		if (loginUser.getAccountsAuthority() < 1) {
 			return "redirect:/dashboard";
 		}
-		// ① 退避
-		AccountSearchForm searchForm = (AccountSearchForm) session.getAttribute("accountSearchForm");
+		
 
-		// ② 全消し
-		sessionStatus.setComplete();
+		
 
-		// ③ 戻す
-		if (searchForm == null) {
-			searchForm = new AccountSearchForm();
-		}
 		model.addAttribute("accountSearchForm", new AccountSearchForm());
 		return "S0040";
 	}
@@ -84,39 +80,34 @@ public class SearchController {
 	}
 
 	@GetMapping("/accounts/edit/{id}")
-	public String edit(@PathVariable Integer id, HttpSession session, Model model) {
+	public String edit(@PathVariable Integer id,
+	                   HttpSession session,
+	                   Model model) {
 
-		// アカウント権限「登録・編集」（accountsAuthorityが1か2）にならない人を弾く
-		Account loginUser = (Account) session.getAttribute("loginUser");
-		if (loginUser.getAccountsAuthority() < 1) {
-			return "redirect:/dashboard";
-		}
-		if (loginUser.getAccountsAuthority() == 1) {
-			return "redirect:/accounts/search";
-		}
+	    Account loginUser = (Account) session.getAttribute("loginUser");
+	    if (loginUser.getAccountsAuthority() < 1) {
+	        return "redirect:/dashboard";
+	    }
+	    if (loginUser.getAccountsAuthority() == 1) {
+	        return "redirect:/accounts/search";
+	    }
 
-		AccountUpdateForm sessionForm = (AccountUpdateForm) model.getAttribute("accountUpdateForm");
+	    // 🔥 flashがあるときだけ使う
+	    if (!model.containsAttribute("accountUpdateForm")) {
+	        Account account = searchRepository.findById(id).orElseThrow();
 
-		// 🔥 同じIDのときだけ使う
-		if (sessionForm != null && id.equals(sessionForm.getAccountId())) {
-			return "S0042";
-		}
-		
-		// それ以外はDBから再取得
-		Account account = searchRepository.findById(id).orElseThrow();
+	        AccountUpdateForm form = new AccountUpdateForm();
+	        form.setAccountId(account.getAccountId());
+	        form.setName(account.getName());
+	        form.setMail(account.getMail());
+	        form.setSalesAuthority(account.getSalesAuthority());
+	        form.setAccountsAuthority(account.getAccountsAuthority());
 
-		AccountUpdateForm form = new AccountUpdateForm();
-		form.setAccountId(account.getAccountId());
-		form.setName(account.getName());
-		form.setMail(account.getMail());
-		form.setSalesAuthority(account.getSalesAuthority());
-		form.setAccountsAuthority(account.getAccountsAuthority());
+	        model.addAttribute("accountUpdateForm", form);
+	    }
 
-		model.addAttribute("accountUpdateForm", form);
-
-		return "S0042";
+	    return "S0042";
 	}
-
 	@PostMapping("/accounts/edit/confirm")
 	public String confirm(
 			@Valid @ModelAttribute AccountUpdateForm form,
@@ -178,7 +169,7 @@ public class SearchController {
 			// ログイン中のユーザーが存在する場合
 			if (loginUser != null) {
 
-				if (loginUser.getAccountId() == account.getAccountId()) {
+				if (Objects.equals(loginUser.getAccountId(), account.getAccountId()))  {
 
 					// セッションを完全に破棄で強制ログアウト
 					session.invalidate();
@@ -230,7 +221,7 @@ public class SearchController {
 			return "redirect:/dashboard";
 		}
 
-		sessionStatus.setComplete(); // 🔥ここで編集内容リセット
+		
 		if (form.getSalesAuthority() != null && form.getSalesAuthority().isEmpty()) {
 		    form.setSalesAuthority(null);
 		}
@@ -245,7 +236,7 @@ public class SearchController {
 
 		model.addAttribute("accounts", list);
 
-		return "redirect:/accounts/search";
+		return "S0041";
 	}
 
 	@GetMapping("/accounts/delete")
@@ -286,12 +277,17 @@ public class SearchController {
 	
 	@PostMapping("/accounts/edit/cancel")
 	public String editCancel(
-			@ModelAttribute("accountUpdateForm") AccountUpdateForm form, SessionStatus sessionStatus) {
-		sessionStatus.setComplete(); // 🔥これ追加
-		form.setPassword(null);
-		form.setPasswordConfirm(null);
+			) {
+		
 
-		return "forward:/accounts/result"; 
+		return "redirect:/accounts/result"; 
 	}
+	@PostMapping("/accounts/edit/confirm/cancel")
+	public String confirmCancel(
+	        @ModelAttribute("accountUpdateForm") AccountUpdateForm form, RedirectAttributes redirectAttributes) {
 
+		  redirectAttributes.addFlashAttribute("accountUpdateForm", form);
+
+	    return "redirect:/accounts/edit/" + form.getAccountId();
+	}
 }
