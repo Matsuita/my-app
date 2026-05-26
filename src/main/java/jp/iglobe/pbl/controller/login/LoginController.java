@@ -3,7 +3,6 @@ package jp.iglobe.pbl.controller.login;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,30 +12,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.login.LoginForm;
-import jp.iglobe.pbl.repository.AccountRepository;
+import jp.iglobe.pbl.service.LoginService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final LoginService loginService;
 
     // =========================
     // ログイン画面
     // =========================
 
     @GetMapping("/")
-    public String index(
-            HttpSession session,
-            Model model) {
-
-        // ログアウト状態
-        session.invalidate();
-
-        model.addAttribute(
-                "loginForm",
-                new LoginForm());
-
+    public String index(Model model) {
+        model.addAttribute("loginForm",new LoginForm());
         return "C0010";
     }
 
@@ -46,48 +37,28 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(
-
             @Valid
             @ModelAttribute
             LoginForm loginForm,BindingResult result,HttpSession session,Model model) {
 
         // 入力エラー
-        if (result.hasErrors()) {
-
+        if(result.hasErrors()) {
             return "C0010";
         }
 
-        // メール検索
-        Account account = accountRepository.findByMail(loginForm.getMail());
+        // ログイン認証
+        Account account = loginService.login(loginForm.getMail(),loginForm.getPassword());
 
-     // ログイン成功
-        if (account != null) {
-
-            // 論理削除チェック
-            if(!account.isActive()){
-                model.addAttribute("errorMessage", "存在しないアカウントです。");
-                return "C0010";
-            }
-
-            if (account.getPassword().equals(
-                    loginForm.getPassword())) {
-
-                // Session保存
-                session.setAttribute(
-                        "loginUser",
-                        account);
-
-                return "redirect:/dashboard";
-            }
+        // 成功
+        if(account != null) {
+            session.setAttribute("loginUser",account);
+            return "redirect:/dashboard";
         }
 
-        // ログイン失敗
-        model.addAttribute("errorMessage", "メールアドレスまたはパスワードが違います。");
-
+        // 失敗
+        model.addAttribute("errorMessage","メールアドレスまたはパスワードが違います。");
         return "C0010";
     }
-
-    
 
     // =========================
     // ログアウト
@@ -95,10 +66,7 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-
-        // Session削除
         session.invalidate();
-
         return "redirect:/";
     }
 }
