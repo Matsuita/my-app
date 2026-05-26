@@ -22,6 +22,7 @@ import jp.iglobe.pbl.model.sales.SalesSearchForm;
 import jp.iglobe.pbl.repository.AccountRepository;
 import jp.iglobe.pbl.repository.CategoryRepository;
 import jp.iglobe.pbl.repository.SalesRepository;
+import jp.iglobe.pbl.service.SalesCreateService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -33,6 +34,8 @@ public class SalesController {
 	private final CategoryRepository categoryRepository;
 	// 売上
 	private final SalesRepository salesRepository;
+	
+	private final SalesCreateService salesCreateService;
 
 	// 売上登録画面
 	@GetMapping("/sales")
@@ -45,17 +48,12 @@ public class SalesController {
 			return "redirect:/dashboard";
 		}
 
-		// 担当一覧(売上権限なし・退職を省く）
-		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
-		// カテゴリ一覧
-		List<Category> categoryList = categoryRepository.findAll();
-
 		// 画面へ渡す
 		SalesCreateForm salesCreateForm = new SalesCreateForm();
 
 		model.addAttribute("salesCreateForm", salesCreateForm);
-		model.addAttribute("accountList", accountList);
-		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("accountList", salesCreateService.getSalesAccounts());
+		model.addAttribute("categoryList", salesCreateService.getCategories());
 
 		return "S0010";
 	}
@@ -66,60 +64,36 @@ public class SalesController {
 	public String salesConfirm(@Valid SalesCreateForm salesCreateForm, BindingResult result,
 								Model model) {
 		
-		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
-		List<Category> categoryList = categoryRepository.findAll();
-
 		// アカウント存在チェック
-		Account account = null;
-		if (salesCreateForm.getAccountId() != null) {
+		Account account = salesCreateService.validateAccount(
+			        salesCreateForm.getAccountId(),result);
 
-			account = accountRepository.findById(
-					salesCreateForm.getAccountId()).orElse(null);
-
-			if (account == null) {
-
-				result.rejectValue("accountId", null,
-						"アカウントテーブルに存在しません。");
-			}else if(!account.isActive()){
-				result.rejectValue("accountId", null,
-						"退職済みユーザーです。");
-			}
-		}
 		// カテゴリー存在チェック
-		Category category = null;
-		if (salesCreateForm.getCategoryId() != null) {
-
-			category = categoryRepository.findById(
-					salesCreateForm.getCategoryId()).orElse(null);
-
-			if (category == null) {
-				result.rejectValue("categoryId", null,
-						"商品カテゴリーテーブルに存在しません。");
-			}
-		}
+		Category category = salesCreateService.validateCategory(
+		        salesCreateForm.getCategoryId(),result);
 
 		//    	入力エラー
 		if (result.hasErrors()) {
 
 			model.addAttribute("salesCreateForm", salesCreateForm);
-			model.addAttribute("accountList", accountList);
-			model.addAttribute("categoryList", categoryList);
+			model.addAttribute("accountList", salesCreateService.getSalesAccounts());
+			model.addAttribute("categoryList", salesCreateService.getCategories());
 
 			return "S0010";
 		}
 
-		Integer unitPrice = Integer.parseInt(salesCreateForm.getUnitPrice());
-		Integer saleNumber = Integer.parseInt(salesCreateForm.getSaleNumber());
-		long total = (long) unitPrice * saleNumber;
+//		小計
+		long total = salesCreateService.calculateTotal(
+		        salesCreateForm.getUnitPrice(),
+		        salesCreateForm.getSaleNumber());
 
 		model.addAttribute("total", total);
 		model.addAttribute("salesCreateForm", salesCreateForm);
-		model.addAttribute("accountList", accountList);
-		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("accountList", salesCreateService.getSalesAccounts());
+		model.addAttribute("categoryList", salesCreateService.getCategories());
 		model.addAttribute("account", account);
 		model.addAttribute("category", category);
 		
-
 		return "S0011";
 	}
 
@@ -129,13 +103,9 @@ public class SalesController {
 	public String back(@ModelAttribute SalesCreateForm salesCreateForm,
 						Model model) {
 		
-		List<Account> accountList = accountRepository
-				.findBySalesAuthorityAndIsActive(2, true);
-		List<Category> categoryList = categoryRepository.findAll();
-
 		model.addAttribute("salesCreateForm", salesCreateForm);
-		model.addAttribute("accountList", accountList);
-		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("accountList", salesCreateService.getSalesAccounts());
+		model.addAttribute("categoryList", salesCreateService.getCategories());
 
 		return "S0010";
 	}
@@ -145,17 +115,7 @@ public class SalesController {
 	@PostMapping("/sales/create")
 	public String salesCreate(SalesCreateForm salesCreateForm) {
 
-		//    	String→Integer変換
-		Sale sale = new Sale();
-		sale.setSaleDate(salesCreateForm.getSaleDate());
-		sale.setAccountId(salesCreateForm.getAccountId());
-		sale.setCategoryId(salesCreateForm.getCategoryId());
-		sale.setTradeName(salesCreateForm.getTradeName());
-		sale.setUnitPrice(Integer.parseInt(salesCreateForm.getUnitPrice()));
-		sale.setSaleNumber(Integer.parseInt(salesCreateForm.getSaleNumber()));
-		sale.setNote(salesCreateForm.getNote());
-
-		salesRepository.save(sale);
+		salesCreateService.createSale(salesCreateForm);
 
 		return "redirect:/sales";
 	}
@@ -164,12 +124,10 @@ public class SalesController {
 	//  直接URL入力の場合、売上登録へ
 	@GetMapping({"/sales/confirm","/sales/back","/sales/create"})
 	public String getCreate(Model model) {
-		List<Account> accountList = accountRepository.findBySalesAuthorityAndIsActive(2, true);
-		List<Category> categoryList = categoryRepository.findAll();
 
 		model.addAttribute("salesCreateForm", new SalesCreateForm());
-		model.addAttribute("accountList", accountList);
-		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("accountList", salesCreateService.getSalesAccounts());
+		model.addAttribute("categoryList", salesCreateService.getCategories());
 
 		return "redirect:/sales";
 	}
@@ -182,29 +140,11 @@ public class SalesController {
 			@PathVariable Integer saleId) {
 
 		// アカウント存在チェック
-		Account account = null;
-		if (salesForm.getAccountId() != null) {
-
-			account = accountRepository.findById(
-					salesForm.getAccountId()).orElse(null);
-
-			if (account == null) {
-				result.rejectValue("accountId", null,
-						"アカウントテーブルに存在しません。");
-			}
-		}
-		// カテゴリ存在チェック
-		Category category = null;
-		if (salesForm.getCategoryId() != null) {
-
-			category = categoryRepository.findById(
-					salesForm.getCategoryId()).orElse(null);
-
-			if (category == null) {
-				result.rejectValue("categoryId", null,
-						"商品カテゴリーテーブルに存在しません。");
-			}
-		}
+		Account account = salesCreateService.validateAccount(
+					        salesForm.getAccountId(),result);
+		// カテゴリー存在チェック
+		Category category = salesCreateService.validateCategory(
+				        salesForm.getCategoryId(),result);
 		
 		// 単価形式チェック
 		if (!salesForm.getUnitPrice()
@@ -227,32 +167,21 @@ public class SalesController {
 			Sale sales = salesRepository.findById(saleId).orElse(null);
 			account = accountRepository.findById(sales.getAccountId())
 	              .orElse(null);
-			
-		    String accountName;
-		    if(account == null || !account.isActive()){
-
-		        accountName = "（退職済みユーザー）";
-		    }else{
-		    	accountName = account.getName();
-		    }
+			String accountName = salesCreateService.getAccountName(account);
 			
 		    model.addAttribute("accountName", accountName);
 			model.addAttribute("accountList",
 					accountRepository.findBySalesAuthority(2));
 			model.addAttribute("categoryList",
 					categoryRepository.findAll());
+			model.addAttribute("account", account);
+			model.addAttribute("category", category);
 
 			return "S0023";
 		}
 
 		account = accountRepository.findById(salesForm.getAccountId()).orElse(null);
-		String accountName;
-
-		if (account != null && account.isActive()) {
-			accountName = account.getName();
-		} else {
-			accountName = "（退職済みユーザー）";
-		}
+		String accountName = salesCreateService.getAccountName(account);
 
 		model.addAttribute("salesForm", salesForm);
 		model.addAttribute("saleName", accountName);
@@ -274,13 +203,7 @@ public class SalesController {
 		Account account = accountRepository.findById(sales.getAccountId())
               .orElse(null);
 		
-	    String accountName;
-	    if(account == null || !account.isActive()){
-
-	        accountName = "（退職済みユーザー）";
-	    }else{
-	    	accountName = account.getName();
-	    }
+		String accountName = salesCreateService.getAccountName(account);
 
 	    model.addAttribute("accountName", accountName);
 		model.addAttribute("salesForm", salesForm);
@@ -297,17 +220,11 @@ public class SalesController {
 
 		Sale sales = salesRepository.findById(saleId).orElseThrow();
 		Account account = accountRepository.findById(sales.getAccountId()).orElse(null);
-		String accountName;
-
-		if (account != null && account.isActive()) {
-			accountName = account.getName();
-		} else {
-			accountName = "（退職済みユーザー）";
-		}
+		String accountName = salesCreateService.getAccountName(account);
 		
-		long unitPrice = sales.getUnitPrice().longValue();
-	    long saleNumber = sales.getSaleNumber().longValue();
-		long total = unitPrice * saleNumber;
+		long total = salesCreateService.calculateTotal(
+			        sales.getUnitPrice(),
+			        sales.getSaleNumber());
 
 		model.addAttribute("total", total);
 		model.addAttribute("sales", sales);
