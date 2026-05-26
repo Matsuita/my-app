@@ -111,6 +111,34 @@ public class SalesSearchController {
 
         return "S0021";
     }
+    
+ // 結果画面
+
+ @GetMapping("/sales/result")
+ public String result(HttpSession session,Model model) {
+
+     // 未ログイン
+     if(session.getAttribute("loginUser") == null) {
+         return "redirect:/";
+     }
+     
+     Account loginUser = (Account) session.getAttribute("loginUser");
+
+     // 権限
+     if(loginUser.getSalesAuthority() < 1) {
+         return "redirect:/dashboard";
+     }
+
+     // 一覧未保持
+     if(session.getAttribute("salesList") == null) {
+         return "redirect:/sales/search";
+     }
+
+     model.addAttribute("salesList",session.getAttribute("salesList"));
+     model.addAttribute("accountList",salesSearchService.getAllAccounts());
+     model.addAttribute("categoryList",salesSearchService.getAllCategories());
+     return "S0021";
+ }
 
     // 詳細画面
 
@@ -184,7 +212,7 @@ public class SalesSearchController {
         // Formへセット
         SalesForm form = new SalesForm();
         form.setSaleId(sales.getSaleId());
-        form.setSaleDate(sales.getSaleDate().toString());
+        form.setSaleDate(sales.getSaleDate());
         form.setAccountId(sales.getAccountId());
         form.setCategoryId(sales.getCategoryId());
         form.setTradeName(sales.getTradeName());
@@ -201,4 +229,6 @@ public class SalesSearchController {
 
         return "S0023";
     }
+    
+    
 }

@@ -15,31 +15,37 @@ import org.springframework.stereotype.Component;
 public class LoginCheckFilter
 extends HttpFilter {
 
- @Override
-    protected void doFilter(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain)
-            throws IOException, ServletException {
-
-        HttpSession session = request.getSession();
+    @Override
+    protected void doFilter(HttpServletRequest request,HttpServletResponse response,FilterChain chain)
+            throws IOException,
+                   ServletException {
+    	
+        // Session取得
+        // ※未ログイン時は作らない
+        HttpSession session = request.getSession(false);
 
         // ログインユーザー
-        Object loginUser = session.getAttribute("loginUser");
+        Object loginUser = null;
+        if(session != null) {
+            loginUser = session.getAttribute("loginUser");
+        }
 
-        // URL取得
+        // URI取得
         String uri = request.getRequestURI();
 
-        // ログイン不要URL
-        if(uri.equals("/") || uri.equals("/login") || uri.contains("css") || uri.contains("js") || uri.contains("images")) {
-
+        // ログイン不要
+        if(uri.equals("/") || uri.equals("/login") 
+        		|| uri.startsWith("/css/")
+                || uri.startsWith("/js/")
+                || uri.startsWith("/images/")
+                || uri.startsWith("/webjars/")) {
             chain.doFilter(request, response);
             return;
         }
 
         // 未ログイン
         if(loginUser == null) {
-        	response.sendRedirect("/");
+            response.sendRedirect("/");
             return;
         }
 

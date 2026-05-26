@@ -1,6 +1,5 @@
 package jp.iglobe.pbl.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,11 +17,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class SalesSearchService {
-
     private final SalesRepository salesRepository;
-
     private final AccountRepository accountRepository;
-
     private final CategoryRepository categoryRepository;
 
     // 検索
@@ -55,7 +51,7 @@ public class SalesSearchService {
         sales.setUnitPrice(Integer.parseInt(form.getUnitPrice()));
         sales.setSaleNumber(Integer.parseInt(form.getSaleNumber()));
         sales.setNote(form.getNote());
-        sales.setSaleDate(LocalDate.parse(form.getSaleDate()));
+        sales.setSaleDate(form.getSaleDate());
         sales.setAccountId(form.getAccountId());
         sales.setCategoryId(form.getCategoryId());
         salesRepository.save(sales);
