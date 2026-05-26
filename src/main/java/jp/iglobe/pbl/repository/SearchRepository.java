@@ -38,6 +38,7 @@ public interface SearchRepository extends JpaRepository<Account, Integer> {
 
 	//	既に登録されているメールアドレスを弾くための記述
 	// mailカラムに存在するかどうかを真偽値で返す
+	boolean existsByMailAndAccountIdNot(String mail, Integer accountId);
 	boolean existsByMail(String mail);
 
 }

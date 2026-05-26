@@ -9,6 +9,6 @@ public class AccountDeleteForm {
 	private String mail;
 	private String password;
 	private String passwordConfirm;
-	private Integer salesAthoruty;
-	private Integer acountsAuthority;
+	private Integer salesAuthority;
+	private Integer accountsAuthority;
 }
