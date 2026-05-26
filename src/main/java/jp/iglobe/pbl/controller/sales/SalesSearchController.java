@@ -427,4 +427,61 @@ public class SalesSearchController {
 
         return "S0023";
     }
+    
+ // =========================
+ // 更新処理
+ // =========================
+
+ @PostMapping("/sales/update")
+ public String update(
+
+         HttpSession session,
+
+         @ModelAttribute
+         SalesForm salesForm,
+
+         Model model) {
+
+     // 未ログイン
+     if(session.getAttribute(
+             "loginUser") == null) {
+
+         return "redirect:/";
+     }
+
+     Account loginUser =
+         (Account) session.getAttribute(
+                 "loginUser");
+
+     // 権限
+     if(loginUser.getSalesAuthority()
+             != 2) {
+
+         return "redirect:/dashboard";
+     }
+
+     // 更新
+     salesSearchService.update(
+             salesForm);
+
+     // 最新一覧取得
+     List<Sale> salesList =
+             salesSearchService.findAll();
+
+     // session更新
+     session.setAttribute(
+             "salesList",
+             salesList);
+
+     session.setAttribute(
+             "searched",
+             true);
+
+     // 完了メッセージ
+     session.setAttribute(
+             "message",
+             "売上情報を更新しました。");
+
+     return "redirect:/sales/result";
+ }
 }
