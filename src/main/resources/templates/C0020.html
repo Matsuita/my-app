@@ -3,327 +3,361 @@
 
 <head>
 
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-	<title>ダッシュボード</title>
+    <title>ダッシュボード</title>
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet" th:href="@{/navbar.css}">
-	<link rel="stylesheet" th:href="@{/teamb.css}">
-	
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	          rel="stylesheet">
 
-	<style>
-		@media(max-width:1100px) {
-			.card-grid {
-				grid-template-columns:
-					repeat(2, 1fr);
-			}
+	    <link rel="stylesheet"
+	          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-			.ranking-area {
-				grid-template-columns: 1fr;
-			}
-		}
+	    <link rel="stylesheet" th:href="@{/teamb.css}">
+		
+		<link rel="stylesheet" th:href="@{/navbar.css}">
+			  
+		<link rel="stylesheet"th:href="@{/dashboard.css}">
+		
+		<link rel="stylesheet"th:href="@{/dark.css}">
 
-		@media(max-width:900px) {
-			.card-grid {
-				grid-template-columns: 1fr;
-			}
-		}
-
+	    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 </head>
 
 <body>
+	
+	<button id="themeToggle"
+	        class="theme-button">
 
+	    MOOD2
+
+	</button>
+	
 	<div th:replace="fragment/navbar :: navbar('dashboard')">
 	</div>
 
-	<div class="dashboard-container">
+<div class="dashboard-container">
 
-		<h1>
-			<i class="bi bi-bar-chart-fill"></i>
-			ダッシュボード
-		</h1>
+    <h1>
+        <i class="bi bi-bar-chart-fill"></i>
+        ダッシュボード
+    </h1>
 
+	<div class="top-dashboard-area">
 
+	    <!-- メッセージ -->
+	    <div class="welcome-message">
 
-			<div id="liveClock" class="clock-time">
+	        <div>
+	            こんにちは、
+	            [[${session.loginUser.name}]]
+	            さん。
+	        </div>
 
-				00:00:00
+	        <div class="fun-message">
+	            本日の売上状況を確認しましょう。
+	        </div>
 
-			</div>
+	    </div>
 
-		</div>
+	    <!-- ロゴ -->
+	    <div class="team-logo">
 
-		<!-- カード -->
+	        <span id="teamText"></span>
 
-		<div class="progress-wrapper">
+	    </div>
 
-			<!-- 左カード -->
+	    <!-- 時計 -->
+	    <div class="floating-clock">
 
-			<div class="side-info-card">
+	        <div class="clock-label">
 
-				<div class="side-title">
+	            CURRENT TIME
 
+	        </div>
+
+	        <div id="liveClock"
+	             class="clock-time">
+
+	            00:00:00
+
+	        </div>
+
+	    </div>
+
+	</div>
+
+    <!-- カード -->
+
+	<div class="progress-wrapper">
+		
+		<!-- 左カード -->
+
+		    <div class="side-info-card">
+
+		        <div class="side-title">
+					
 					<i class="bi bi-trophy"></i>
 					売上ランク
 
-				</div>
+		        </div>
 
-				<div class="side-value">
+		        <div class="side-value">
 
 					[[${salesRank}]]
 
-				</div>
+		        </div>
 
-				<div class="side-comment">
+		        <div class="side-comment">
 
-					本日のランクです。
+		            本日のランクです。
 
-				</div>
+		        </div>
 
-			</div>
+		    </div>
 
-			<!-- 円 -->
+		    <!-- 円 -->
 
-			<div class="progress-circle" th:style="'--progress:' + ${achievementRate} + '%'">
+	    <div class="progress-circle"
+	         th:style="'--progress:' + ${achievementRate} + '%'">
 
-				<div class="progress-inner">
+	        <div class="progress-inner">
 
-					<div class="progress-number">
+	            <div class="progress-number">
 
-						[[${achievementRate}]]
+	                [[${achievementRate}]]
 
-						<span>%</span>
+	                <span>%</span>
 
-					</div>
+	            </div>
 
-					<div class="progress-label">
+	            <div class="progress-label">
 
-						今日の達成率
+	                今日の達成率
 
-					</div>
+	            </div>
+				
 
+	        </div>
+			
 
-				</div>
+	    </div>
+		    <!-- 右カード -->
 
+		    <div class="side-info-card">
 
-			</div>
-			<!-- 右カード -->
-
-			<div class="side-info-card">
-
-				<div class="side-title">
+		        <div class="side-title">
 
 					<i class="bi bi-activity"></i>
 					本日の状態
 
-				</div>
-
+		        </div>
+				
 				<div class="side-value">
 
-					<span th:if="${salesRank == 'S'}">
-						とても好調
-					</span>
+				    <span th:if="${salesRank == 'S'}">
+				        とても好調
+				    </span>
 
-					<span th:if="${salesRank == 'A'}">
-						好調
-					</span>
+				    <span th:if="${salesRank == 'A'}">
+				        好調
+				    </span>
 
-					<span th:if="${salesRank == 'B'}">
-						順調
-					</span>
+				    <span th:if="${salesRank == 'B'}">
+				        順調
+				    </span>
 
-					<span th:if="${salesRank == 'C'}">
-						普通
-					</span>
+				    <span th:if="${salesRank == 'C'}">
+				        普通
+				    </span>
 
-					<span th:if="${salesRank == 'D'}">
-						不調
-					</span>
-
-				</div>
-
-
-				<div class="side-comment">
-
-					[[${salesComment}]]
+				    <span th:if="${salesRank == 'D'}">
+				        不調
+				    </span>
 
 				</div>
 
-			</div>
+
+		        <div class="side-comment">
+
+		            [[${salesComment}]]
+
+		        </div>
+
+		    </div>
 
 		</div>
 
 	</div>
+	
 
+    <div class="card-grid">
 
-	<div class="card-grid">
+        <div class="dashboard-card sales-card">
 
-		<div class="dashboard-card sales-card">
+            <div class="card-title">
+                <i class="bi bi-cash-stack"></i>
+                今日の売上
+            </div>
 
-			<div class="card-title">
-				<i class="bi bi-cash-stack"></i>
-				今日の売上
-			</div>
-
-			<div class="card-value">
+            <div class="card-value">
 				¥[[${#numbers.formatInteger(
 				todaySales,0, 'COMMA')}]]
-			</div>
+            </div>
 
 
-		</div>
+        </div>
 
-		<div class="dashboard-card count-card">
+        <div class="dashboard-card count-card">
 
-			<div class="card-title">
-				<i class="bi bi-cart-check"></i>
-				登録件数
-			</div>
+            <div class="card-title">
+                <i class="bi bi-cart-check"></i>
+                登録件数
+            </div>
 
-			<div class="card-value">
-				[[${salesCount}]]件
-			</div>
+            <div class="card-value">
+               [[${salesCount}]]件
+            </div>
+
+            
+
+        </div>
+
+        <div class="dashboard-card hot-card">
+
+            <div class="card-title">
+                <i class="bi bi-fire"></i>
+                売れている商品
+            </div>
+
+            <div class="card-value">
+                [[${topProduct}]]
+            </div>
+
+            
+        </div>
+
+        <div class="dashboard-card danger-card">
+
+            <div class="card-title">
+                <i class="bi bi-emoji-dizzy"></i>
+                売れていない商品
+            </div>
+
+            <div class="card-value">
+                [[${worstProduct}]]
+            </div>
 
 
+        </div>
 
-		</div>
+    </div>
 
-		<div class="dashboard-card hot-card">
+    <!-- グラフ -->
 
-			<div class="card-title">
-				<i class="bi bi-fire"></i>
-				売れている商品
-			</div>
+    <div class="chart-area">
 
-			<div class="card-value">
-				[[${topProduct}]]
-			</div>
+        <h3 class="chart-title">
+            <i class="bi bi-graph-up-arrow"></i>
+            月別売上グラフ
+        </h3>
 
+        <canvas id="salesChart"></canvas>
 
-		</div>
-
-		<div class="dashboard-card danger-card">
-
-			<div class="card-title">
-				<i class="bi bi-emoji-dizzy"></i>
-				売れていない商品
-			</div>
-
-			<div class="card-value">
-				[[${worstProduct}]]
-			</div>
-
-
-		</div>
-
-	</div>
-
-	<!-- グラフ -->
-
-	<div class="chart-area">
-
-		<h3 class="chart-title">
-			<i class="bi bi-graph-up-arrow"></i>
-			月別売上グラフ
-		</h3>
-
-		<canvas id="salesChart"></canvas>
-
-	</div>
+    </div>
 
 	<!-- ランキング -->
 
 	<div class="ranking-area">
 
-		<!-- 今日のひとこと -->
+	    <!-- 今日のひとこと -->
 
-		<div class="ranking-box">
+	    <div class="ranking-box">
 
-			<div class="ranking-title">
+	        <div class="ranking-title">
 
 				<i class="bi bi-chat-left-text"></i>
 				今日のひとこと
 
+	        </div>
+
+			<div class="quote-text"
+			     id="slotMessage">
+
+			    「[[${todayMessage}]]」
+
 			</div>
 
-			<div class="quote-text" id="slotMessage">
+	    </div>
 
-				「[[${todayMessage}]]」
+	    <!-- TOP3 -->
 
-			</div>
+	    <div class="ranking-box">
 
-		</div>
-
-		<!-- TOP3 -->
-
-		<div class="ranking-box">
-
-			<div class="ranking-title hot-text">
+	        <div class="ranking-title hot-text">
 
 				<i class="bi bi-bar-chart-line"></i>
 				売上上位商品
 
-			</div>
+	        </div>
 
-			<div class="ranking-item" th:each="product, stat : ${topProducts}">
+	        <div class="ranking-item"
+	             th:each="product, stat : ${topProducts}">
 
-				<span>
+	            <span>
 
-					<span th:if="${stat.index == 0}">
-						<i class="bi bi-1-circle-fill"></i> </span>
+	                <span th:if="${stat.index == 0}">
+						<i class="bi bi-1-circle-fill"></i>	                </span>
 
-					<span th:if="${stat.index == 1}">
-						<i class="bi bi-2-circle-fill"></i>
-					</span>
+	                <span th:if="${stat.index == 1}">
+	                    <i class="bi bi-2-circle-fill"></i>
+	                </span>
 
-					<span th:if="${stat.index == 2}">
-						<i class="bi bi-3-circle-fill"></i>
-					</span>
+	                <span th:if="${stat.index == 2}">
+	                    <i class="bi bi-3-circle-fill"></i>
+	                </span>
 
-					[[${product}]]
+	                [[${product}]]
 
-				</span>
+	            </span>
 
-			</div>
+	        </div>
 
-		</div>
+	    </div>
 
 	</div>
+	
+<script th:inline="javascript">
 
-	<script th:inline="javascript">
+const ctx = document.getElementById('salesChart');
 
-		const ctx = document.getElementById('salesChart');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+		labels: [
+		    '1月',
+		    '2月',
+		    '3月',
+		    '4月',
+		    '5月',
+		    '6月',
+		    '7月',
+		    '8月',
+		    '9月',
+		    '10月',
+		    '11月',
+		    '12月'
+		],
+		datasets: [{
+		    label: '売上',
 
-		new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: [
-					'1月',
-					'2月',
-					'3月',
-					'4月',
-					'5月',
-					'6月',
-					'7月',
-					'8月',
-					'9月',
-					'10月',
-					'11月',
-					'12月'
-				],
-				datasets: [{
-					label: '売上',
+		    backgroundColor: '#2f80c9',
 
-					backgroundColor: '#2f80c9',
+		    borderRadius: 8,
 
-					borderRadius: 8,
-
-					data: [
+			data:[
 			    /*[[${jan}]]*/,
 			    /*[[${feb}]]*/,
 			    /*[[${mar}]]*/,
@@ -335,151 +369,223 @@
 			    /*[[${sep}]]*/,
 			    /*[[${oct}]]*/,
 			    /*[[${nov}]]*/,
-						/*[[${dec}]]*/
-					],
+			    /*[[${dec}]]*/
+			],
 
-					borderWidth: 1
-				}]
+		    borderWidth: 1
+		}]
+		
+		
+    },
+	
+	
+    options: {
+        responsive: true
+    }
+});
+window.addEventListener(
+    "load",
+    function(){
+
+        const slot =
+            document.getElementById(
+                "slotMessage");
+
+        if(!slot) return;
 
 
-			},
+        const messages = [
 
+            "「今日も一日頑張りましょう！」",
+            "「まだ舞える」",
+            "「エラーは仕様です。」",
+            "「売って売って売りまくれ」",
+            "「やる気で何とかしろ」",
+            "「ゾス！！！！！！！」"
+        ];
 
-			options: {
-				responsive: true
-			}
-		});
-		window.addEventListener(
-			"load",
-			function () {
+        let started = false;
 
-				const slot =
-					document.getElementById(
-						"slotMessage");
+        let interval;
 
-				if (!slot) return;
+        // スペースで開始 / 停止
+        document.addEventListener(
+            "keydown",
+            function(e){
 
+                if(e.code !== "Space") return;
 
-				const messages = [
+                e.preventDefault();
 
-					"「今日も一日頑張りましょう！」",
-					"「まだ舞える」",
-					"「エラーは仕様です。」",
-					"「売って売って売りまくれ」",
-					"「やる気で何とかしろ」",
-					"「ゾス！！！！！！！」"
-				];
+                // 開始
+                if(!started){
 
-				let started = false;
+                    started = true;
 
-				let interval;
+                    interval =
+                        setInterval(function(){
 
-				// スペースで開始 / 停止
-				document.addEventListener(
-					"keydown",
-					function (e) {
+                            slot.innerText =
+                                messages[
+                                    Math.floor(
+                                        Math.random()
+                                        * messages.length)
+                                ];
 
-						if (e.code !== "Space") return;
+                        },70);
 
-						e.preventDefault();
+                }else{
 
-						// 開始
-						if (!started) {
+                    // 停止
+                    clearInterval(
+                        interval);
 
-							started = true;
+                    started = false;
 
-							interval =
-								setInterval(function () {
+                    slot.classList.add(
+                        "slot-hit");
 
-									slot.innerText =
-										messages[
-										Math.floor(
-											Math.random()
-											* messages.length)
-										];
+                    // ゾスならぷちゅん
+					if(slot.innerText.includes(
+					        "ゾス")){
 
-								}, 70);
+					    console.log("ぷちゅん");
 
-						} else {
+					    puchun();
+					}
+                }
+        });
+		function puchun(){
 
-							// 停止
-							clearInterval(
-								interval);
+		    const effect =
+		        document.createElement(
+		            "div");
 
-							started = false;
+		    effect.className =
+		        "vvv-dark-effect";
 
-							slot.classList.add(
-								"slot-hit");
+		    document.body.appendChild(
+		        effect);
 
-							// ゾスならぷちゅん
-							if (slot.innerText.includes(
-								"ゾス")) {
+		    setTimeout(function(){
 
-								console.log("ぷちゅん");
+		        effect.classList.add(
+		            "show");
 
-								puchun();
-							}
-						}
-					});
-				function puchun() {
+		    },10);
 
-					const effect =
-						document.createElement(
-							"div");
+		    setTimeout(function(){
 
-					effect.className =
-						"vvv-dark-effect";
+		        effect.remove();
 
-					document.body.appendChild(
-						effect);
-
-					setTimeout(function () {
-
-						effect.classList.add(
-							"show");
-
-					}, 10);
-
-					setTimeout(function () {
-
-						effect.remove();
-
-					}, 1600);
-				}
-			});
-
-		function updateClock() {
-
-			const clock =
-				document.getElementById(
-					"liveClock");
-
-			if (!clock) return;
-
-			const now = new Date();
-
-			const h =
-				String(now.getHours())
-					.padStart(2, "0");
-
-			const m =
-				String(now.getMinutes())
-					.padStart(2, "0");
-
-			const s =
-				String(now.getSeconds())
-					.padStart(2, "0");
-
-			clock.innerText =
-				`${h}:${m}:${s}`;
+		    },1600);
 		}
+});
 
-		setInterval(updateClock, 1000);
+function updateClock(){
 
-		updateClock();
+    const clock =
+        document.getElementById(
+            "liveClock");
 
+    if(!clock) return;
 
-	<script th:src="@{/script.js}" defer></script>
+    const now = new Date();
+
+    const h =
+        String(now.getHours())
+        .padStart(2,"0");
+
+    const m =
+        String(now.getMinutes())
+        .padStart(2,"0");
+
+    const s =
+        String(now.getSeconds())
+        .padStart(2,"0");
+
+    clock.innerText =
+        `${h}:${m}:${s}`;
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+const text = "TEAM B";
+
+const target =
+document.getElementById(
+    "teamText");
+
+let index = 0;
+
+function typeLogo(){
+
+    if(index < text.length){
+
+        target.textContent +=
+            text.charAt(index);
+
+        index++;
+
+        setTimeout(
+            typeLogo,
+            180);
+    }
+}
+
+typeLogo();
+
+const logoText =
+[
+    "TEAM B",
+    "TE∆M B",
+    "TEAM_B",
+    "T3AM B"
+];
+
+setInterval(() => {
+
+    const random = Math.floor(
+        Math.random() *
+        logoText.length);
+
+    document.getElementById(
+        "teamText")
+        .textContent =
+        logoText[random];
+
+},2000);
+
+const toggle =
+document.getElementById(
+    "themeToggle");
+
+toggle.addEventListener(
+    "click",
+
+    () => {
+
+        document.body.classList
+        .toggle("dark-mode");
+
+        if(document.body.classList
+            .contains("dark-mode")){
+
+            toggle.textContent =
+            " MOOD1";
+
+        }else{
+
+            toggle.textContent =
+            " MOOD2";
+        }
+});
+
+</script>
+
+<script th:src="@{/script.js}" defer></script>
 </body>
 
 </html>
