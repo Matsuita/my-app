@@ -27,7 +27,7 @@ public class SalesCreateForm {
 	private Integer categoryId;
 
 	@NotBlank(message = "商品名を入力してください。")
-	@Size(max = 30, message = "商品名が長すぎます。")
+	@Size(max = 100, message = "商品名が長すぎます。")
 	private String tradeName;
 
 	@NotBlank(message = "単価を入力してください。")
