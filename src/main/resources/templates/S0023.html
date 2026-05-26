@@ -57,13 +57,14 @@
 
 
 
-					<div th:if="${accountName == '（退職済みユーザー）'}">
+					<input th:if="${accountName == '（退職済みユーザー）'}"
+					       type="text"
+					       value="（退職済みユーザー）"
+					       readonly>
 
-						<input type="text" class="form-control" value="（退職済みユーザー）" readonly>
-
-						<input type="hidden" th:field="*{accountId}">
-
-					</div>
+					<input th:if="${accountName == '（退職済みユーザー）'}"
+					       type="hidden"
+					       th:field="*{accountId}">
 
 					<select th:unless="${accountName == '（退職済みユーザー）'}" th:field="*{accountId}">
 
