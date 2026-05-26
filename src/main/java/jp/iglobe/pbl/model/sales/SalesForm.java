@@ -1,5 +1,7 @@
 package jp.iglobe.pbl.model.sales;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,8 +13,8 @@ public class SalesForm {
 	
     private Integer saleId;
     
-    @NotBlank(message = "販売日を入力してください。")
-    private String saleDate;
+    @NotNull(message = "販売日を入力してください。")
+    private LocalDate saleDate;
     
     @NotNull(message = "担当を選択してください。")
     private Integer accountId;
@@ -34,6 +36,4 @@ public class SalesForm {
    
     @Size(max = 400,message = "備考が長すぎます。")
     private String note;
-    
-    private String authority;
 }
