@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="salesHiddenFields">
+		<input type="hidden" th:field="*{saleDate}">
+		<input type="hidden" th:field="*{accountId}">
+		<input type="hidden" th:field="*{categoryId}">
+		<input type="hidden" th:field="*{tradeName}">
+		<input type="hidden" th:field="*{unitPrice}">
+		<input type="hidden" th:field="*{saleNumber}">
+		<input type="hidden" th:field="*{note}">
+	</div>
+</body>
+</html>
