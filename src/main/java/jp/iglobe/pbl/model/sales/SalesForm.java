@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +15,7 @@ public class SalesForm {
 	
     private Integer saleId;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "販売日を入力してください。")
     private LocalDate saleDate;
     
