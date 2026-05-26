@@ -1,13 +1,10 @@
 package jp.iglobe.pbl.controller.sales;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,346 +17,188 @@ import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.sales.Sale;
 import jp.iglobe.pbl.model.sales.SalesForm;
 import jp.iglobe.pbl.model.sales.SalesSearchForm;
-import jp.iglobe.pbl.repository.AccountRepository;
-import jp.iglobe.pbl.repository.CategoryRepository;
-import jp.iglobe.pbl.repository.SalesRepository;
+import jp.iglobe.pbl.service.SalesSearchService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class SalesSearchController {
-	@Autowired
-	private SalesRepository salesRepository;
-	@Autowired
-	private AccountRepository accountRepository;
-	@Autowired
-	private CategoryRepository categoryRepository;
-	// 検索画面
-	@GetMapping("/sales/search")
-	public String search(HttpSession session, Model model) {
-		
-		
 
-		// 未ログイン
-		if (session.getAttribute("loginUser") == null) {
-			return "redirect:/";
-		}
-		
-		Account loginUser = (Account) session.getAttribute("loginUser");
-		if(loginUser.getSalesAuthority() < 1){
-		    return "redirect:/dashboard";
-		}
-		
-		session.removeAttribute("searched");
+    private final SalesSearchService salesSearchService;
 
-		session.removeAttribute("salesList");
+    // 検索画面
 
-		model.addAttribute("salesSearchForm", new SalesSearchForm());
+    @GetMapping("/sales/search")
+    public String search(HttpSession session,Model model) {
 
-		// 担当一覧
-		List<Integer> accountIds = salesRepository.findUsedAccountIds();
-		model.addAttribute("accountList", accountRepository.findByAccountIdInAndIsActiveTrue(accountIds));
+        // 未ログイン
+        if(session.getAttribute("loginUser") == null) {
+            return "redirect:/";
+        }
 
-		// カテゴリー一覧
-		model.addAttribute("categoryList", categoryRepository.findAll());
-		return "S0020";
-	}
+        Account loginUser = (Account) session.getAttribute("loginUser");
 
-	
+        // 権限
+        if(loginUser.getSalesAuthority() < 1) {
+            return "redirect:/dashboard";
+        }
 
-	// 検索処理
-	@PostMapping("/sales/result")
-	public String searchResult(
-			HttpSession session,
-			@Valid 
-			@ModelAttribute 
-			SalesSearchForm salesSearchForm,BindingResult result,Model model) {
+        session.removeAttribute("searched");
+        session.removeAttribute("salesList");
+        model.addAttribute("salesSearchForm", new SalesSearchForm());
 
-		// 未ログイン
-		if (session.getAttribute("loginUser") == null) {
-			return "redirect:/";
-		}
-		
-		Account loginUser = (Account) session.getAttribute("loginUser");
-		if(loginUser.getSalesAuthority() == 0){
-		    return "redirect:/dashboard";
-		}
+        // 担当一覧
+        model.addAttribute("accountList",salesSearchService.getUsedAccounts());
 
-		// 開始日チェック
+        // カテゴリ一覧
+        model.addAttribute("categoryList",salesSearchService.getAllCategories());
+        return "S0020";
+    }
 
-		if (result.hasFieldErrors("saleDateFrom")) {
-			model.addAttribute("dateFromError", "販売日（検索開始日）を正しく入力して下さい。");
-			List<Integer> accountIds = salesRepository.findUsedAccountIds();
-			model.addAttribute("accountList", accountRepository .findByAccountIdInAndIsActiveTrue(accountIds));
-			model.addAttribute("categoryList", categoryRepository.findAll());
-			return "S0020";
-		}
+    // 検索処理
 
-		// 終了日チェック
+    @PostMapping("/sales/result")
+    public String searchResult(HttpSession session,
+            @Valid
+            @ModelAttribute
+            SalesSearchForm salesSearchForm,
+            BindingResult result,Model model) {
 
-		if (result.hasFieldErrors("saleDateTo")) {
-			model.addAttribute("dateToError", "販売日（検索終了日）を正しく入力して下さい。");
-			List<Integer> accountIds = salesRepository.findUsedAccountIds();
-			model.addAttribute("accountList", accountRepository.findByAccountIdInAndIsActiveTrue(accountIds));
-			model.addAttribute("categoryList", categoryRepository.findAll());
-			return "S0020";
-		}
+        // 未ログイン
+        if(session.getAttribute("loginUser") == null) {
+            return "redirect:/";
+        }
 
-		// 開始日 > 終了日チェック
+        Account loginUser = (Account) session.getAttribute("loginUser");
 
-		if (salesSearchForm.getSaleDateFrom() != null && salesSearchForm.getSaleDateTo() != null && salesSearchForm.getSaleDateFrom().isAfter(salesSearchForm.getSaleDateTo())) {
-			model.addAttribute("dateRangeError", "販売日（検索開始日）または販売日（検索終了日）を正しく入力して下さい。");
-			List<Integer> accountIds = salesRepository.findUsedAccountIds();
-			model.addAttribute("accountList", accountRepository.findByAccountIdInAndIsActiveTrue(accountIds));
-			model.addAttribute("categoryList", categoryRepository.findAll());
-			return "S0020";
-		}
+        // 権限
+        if(loginUser.getSalesAuthority() == 0) {
+            return "redirect:/dashboard";
+        }
 
-		// 検索
+        // 日付範囲
+        if(salesSearchService.isInvalidDateRange(salesSearchForm)) {
+            model.addAttribute("dateRangeError","販売日（検索開始日）または販売日（検索終了日）を正しく入力して下さい。");
+        }
 
-		List<Sale> salesList = salesRepository.search(
-				salesSearchForm.getSaleDateFrom(),
-				salesSearchForm.getSaleDateTo(),
-				salesSearchForm.getAccountId(),
-				salesSearchForm.getCategoryId(),
-				salesSearchForm.getTradeName(),
-				salesSearchForm.getNote());
+        // エラー
+        if(result.hasErrors() || model.containsAttribute("dateRangeError")) {
+            model.addAttribute("accountList",salesSearchService.getUsedAccounts());
+            model.addAttribute("categoryList",salesSearchService.getAllCategories());
+            return "S0020";
+        }
 
-		// 件数チェック
+        // 検索
+        List<Sale> salesList =  salesSearchService.search(salesSearchForm);
 
-		if (salesList.isEmpty()) {
-			model.addAttribute("searchError", "検索結果はありません。");
-			List<Integer> accountIds = salesRepository.findUsedAccountIds();
-			model.addAttribute("accountList", accountRepository.findByAccountIdInAndIsActiveTrue(accountIds));
-			model.addAttribute("categoryList", categoryRepository.findAll());
-			return "S0020";
-		}
+        // 0件
+        if(salesList.isEmpty()) {
+            model.addAttribute("searchError","検索結果はありません。");
+            model.addAttribute("accountList",salesSearchService.getUsedAccounts());
+            model.addAttribute("categoryList",salesSearchService.getAllCategories());
+            return "S0020";
+        }
 
-		// session保存
-		session.setAttribute("salesList", salesList);
-		session.setAttribute("searched", true);
+        // session保存
+        session.setAttribute("salesList",salesList);
+        session.setAttribute("searched",true);
 
-		// 結果
-		model.addAttribute("salesList", salesList);
-		model.addAttribute("accountList", accountRepository.findAll());
-		model.addAttribute("categoryList", categoryRepository.findAll());
-		model.addAttribute("salesSearchForm",salesSearchForm);
+        // 結果
+        model.addAttribute("salesList",salesList);
+        model.addAttribute("accountList",salesSearchService.getAllAccounts());
+        model.addAttribute("categoryList",salesSearchService.getAllCategories());
+        model.addAttribute("salesSearchForm",salesSearchForm);
 
-		return "S0021";
-	}
+        return "S0021";
+    }
 
-	// 詳細画面
-	@GetMapping("/sales/detail/{saleId}")
-	public String detail(HttpSession session, 
-			@PathVariable
-		     Integer saleId, Model model) {
-	    if(session.getAttribute("loginUser") == null){
-	        return "redirect:/";
-	    }
-		
-		Account loginUser = (Account) session.getAttribute("loginUser");
+    // 詳細画面
 
-		if(loginUser.getSalesAuthority() == 0){
-		    return "redirect:/dashboard";
-		}
+    @GetMapping("/sales/detail/{saleId}")
+    public String detail(HttpSession session,
+            @PathVariable
+            Integer saleId,
+            Model model) {
 
-		// 詳細画面へ直接アクセス禁止
-		if (session.getAttribute("salesList") == null) {
-			return "redirect:/sales/search";
-		}
+        if(session.getAttribute("loginUser") == null) {
+            return "redirect:/";
+        }
 
-		Sale sales = salesRepository.findById(saleId).orElse(null);
-		Account account = accountRepository.findById(sales.getAccountId()).orElse(null);
-		String accountName;
+        Account loginUser = (Account) session.getAttribute("loginUser");
 
-		if(account == null || !account.isActive()){
-		    accountName ="（退職済みユーザー）";
-		}else{
-		    accountName = account.getName();
-		}
+        if(loginUser.getSalesAuthority() == 0) {
+            return "redirect:/dashboard";
+        }
 
-		model.addAttribute("accountName", accountName);
-		model.addAttribute("sales", sales);
-		model.addAttribute("accountList", accountRepository.findAll());
-		model.addAttribute("categoryList",categoryRepository.findAll());
-		return "S0022";
-	}
+        // 詳細直アクセス禁止
+        if(session.getAttribute("salesList") == null) {
+            return "redirect:/sales/search";
+        }
 
-	// 編集画面
-	@GetMapping("/sales/edit/{saleId}")
-	public String edit(HttpSession session, @PathVariable Integer saleId,Model model) {
-		if(session.getAttribute("loginUser")
-		        == null){
-		    return "redirect:/";
-		}
+        Sale sales = salesSearchService.findById(saleId);
+        if(sales == null) {
+            return "redirect:/sales/result";
+        }
+        model.addAttribute("accountName",salesSearchService.getAccountName(sales.getAccountId()));
+        model.addAttribute("sales",sales);
+        model.addAttribute("accountList",salesSearchService.getAllAccounts());
+        model.addAttribute("categoryList",salesSearchService.getAllCategories());
+        return "S0022";
+    }
 
-	    Account loginUser =(Account) session.getAttribute("loginUser");
+    // 編集画面
 
-	    // 権限チェック
-	    if(loginUser.getSalesAuthority() == 0){
-	        return "redirect:/dashboard";
-	    }else if(loginUser.getSalesAuthority() == 1) {
-	    	return "redirect:/sales/search";
-	    }
-	    
-	 // 詳細画面へ直接アクセス禁止
-	 		if (session.getAttribute("salesList") == null) {
-	 			return "redirect:/sales/search";
-	 		}
+    @GetMapping("/sales/edit/{saleId}")
+    public String edit(HttpSession session,
+            @PathVariable
+            Integer saleId,Model model) {
 
-	    // saleIdなし
-	    if(saleId == null) {
-	        return "redirect:/sales/result";
-	    }
+        // 未ログイン
+        if(session.getAttribute("loginUser") == null) {
+            return "redirect:/";
+        }
 
-	    // 売上取得
-	    Sale sales = salesRepository.findById(saleId).orElse(null);
+        Account loginUser = (Account) session.getAttribute("loginUser");
 
-	    // 売上なし
-	    if(sales == null) {
-	        return "redirect:/sales/result";
-	    }
+        // 権限
+        if(loginUser.getSalesAuthority() != 2) {
+            return "redirect:/dashboard";
+        }
 
-	    // アカウント取得
-	    Account account = accountRepository.findById(sales.getAccountId()).orElse(null);
+        // 一覧未保持
+        if(session.getAttribute("salesList") == null) {
+            return "redirect:/sales/search";
+        }
 
-	    // 担当名
-	    String accountName;
-	    if(account == null || !account.isActive()){
-	        accountName = "（退職済みユーザー）";
-	    }else{
-	    	accountName = account.getName();
-	    }
+        // 売上取得
+        Sale sales = salesSearchService.findById(saleId);
 
-	    model.addAttribute("accountName", accountName);
+        // 存在しない
+        if(sales == null) {
+            return "redirect:/sales/result";
+        }
 
-	    // Formへセット
-	    SalesForm form = new SalesForm();
-	    form.setSaleId(sales.getSaleId());
-	    form.setSaleDate(sales.getSaleDate().toString());
-	    form.setAccountId(sales.getAccountId());
-	    form.setCategoryId(sales.getCategoryId());
-	    form.setTradeName(sales.getTradeName());
-	    form.setUnitPrice(String.valueOf(sales.getUnitPrice()));
-	    form.setSaleNumber(String.valueOf(sales.getSaleNumber()));
-	    form.setNote(sales.getNote());
+        // 担当名
+        model.addAttribute("accountName",salesSearchService.getAccountName(sales.getAccountId()));
 
-	    // 更新権限
-	    form.setAuthority("更新");
+        // Formへセット
+        SalesForm form = new SalesForm();
+        form.setSaleId(sales.getSaleId());
+        form.setSaleDate(sales.getSaleDate().toString());
+        form.setAccountId(sales.getAccountId());
+        form.setCategoryId(sales.getCategoryId());
+        form.setTradeName(sales.getTradeName());
+        form.setUnitPrice(String.valueOf(sales.getUnitPrice()));
+        form.setSaleNumber(String.valueOf(sales.getSaleNumber()));
+        form.setNote(sales.getNote());
+        model.addAttribute("salesForm",form);
 
-	    model.addAttribute("salesForm", form);
+        // 担当一覧
+        model.addAttribute("accountList",salesSearchService.getUpdateAccounts());
 
-	 // 登録権限あり担当一覧
-	    model.addAttribute("accountList", accountRepository.findBySalesAuthority(2));
+        // カテゴリ一覧
+        model.addAttribute("categoryList",salesSearchService.getAllCategories());
 
-	    // カテゴリ一覧
-	    model.addAttribute("categoryList", categoryRepository.findAll());
-
-	    return "S0023";
-	}
-
-	// 更新処理
-	@PostMapping("/sales/update")
-	public String update(
-			@Valid 
-			@ModelAttribute 
-			SalesForm salesForm, BindingResult result, Model model, HttpSession session) {
-		if(session.getAttribute("loginUser") == null){
-		    return "redirect:/";
-		}
-		
-		Account loginUser = (Account) session.getAttribute("loginUser");
-
-		if(loginUser.getSalesAuthority() != 2){
-		    return "redirect:/dashboard";
-		}
-	    
-		boolean errorFlg = false;
-
-		// 単価形式チェック
-		if(salesForm.getUnitPrice() != null && !salesForm.getUnitPrice().isBlank() && !salesForm.getUnitPrice().matches("^[0-9]+$")) {
-		    model.addAttribute("unitPriceError", "単価を正しく入力して下さい。");
-		    errorFlg = true;
-		}
-
-		// 個数形式チェック
-		if(salesForm.getSaleNumber() != null && !salesForm.getSaleNumber().isBlank() && !salesForm.getSaleNumber().matches("^[0-9]+$")) {
-		    model.addAttribute("saleNumberError", "個数を正しく入力して下さい。");
-		    errorFlg = true;
-		}
-
-		// 個数0チェック
-		if(salesForm.getSaleNumber() != null && salesForm.getSaleNumber().matches("^[0-9]+$") && Integer.parseInt(salesForm.getSaleNumber()) <= 0){
-		    model.addAttribute("saleNumberError", "個数は1以上で入力して下さい。");
-		    errorFlg = true;
-		}
-
-
-		if(result.hasErrors() || errorFlg){
-		    List<Integer> accountIds = salesRepository.findUsedAccountIds();
-		    model.addAttribute("accountList", accountRepository.findAllById(accountIds));
-		    model.addAttribute("categoryList", categoryRepository.findAll());
-		    return "S0023";
-		}
-	    
-
-		// 権限チェック
-		if (!"更新".equals(salesForm.getAuthority())) {
-			model.addAttribute("errorMessage", "更新権限がありません。");
-			return "S0023";
-		}
-		
-		
-		// 入力エラー
-	    if(result.hasErrors()) {
-	    	model.addAttribute("accountList", accountRepository.findAll());
-	        model.addAttribute("categoryList", categoryRepository.findAll());
-	        return "S0023";
-	    }
-
-		Sale sales = salesRepository.findById(salesForm.getSaleId()).orElse(null);
-
-		// 更新
-		sales.setTradeName(salesForm.getTradeName());
-		sales.setUnitPrice(Integer.parseInt(salesForm.getUnitPrice()));
-		sales.setSaleNumber(Integer.parseInt(salesForm.getSaleNumber()));
-		sales.setNote(salesForm.getNote());
-		sales.setSaleDate(LocalDate.parse(salesForm.getSaleDate()));
-		sales.setAccountId(salesForm.getAccountId());
-		sales.setCategoryId(salesForm.getCategoryId());
-		salesRepository.save(sales);
-
-		// 一覧再取得
-		List<Sale> salesList = salesRepository.findAll();
-		session.setAttribute("salesList", salesList);
-		return "redirect:/sales/result";
-	}
-
-	@GetMapping("/sales/result")
-	public String result(HttpSession session, HttpServletRequest request,Model model) {
-		if(session.getAttribute("loginUser") == null){
-		    return "redirect:/";
-		}
-
-		String referer = request.getHeader("Referer");
-		if(referer == null || !(referer.contains("/sales/search") || referer.contains("/sales/detail"))){
-		    return "redirect:/sales/search";
-		}
-		
-		model.addAttribute("accountList", accountRepository.findAll());
-		if(session.getAttribute("salesList")== null){
-		    return "redirect:/sales/search";
-		}
-		
-		Account loginUser = (Account) session.getAttribute("loginUser");
-		if(loginUser.getSalesAuthority() < 1){
-		    return "redirect:/dashboard";
-		}
-		
-		
-		// 一覧取得
-		model.addAttribute("salesList", session.getAttribute("salesList"));
-		model.addAttribute("accountList", accountRepository.findAll());
-		model.addAttribute("categoryList", categoryRepository.findAll());
-
-		return "S0021";
-	}
+        return "S0023";
+    }
 }
