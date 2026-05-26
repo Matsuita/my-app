@@ -4,6 +4,7 @@
 <head>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" th:href="@{/navbar.css}">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
 </head>
 
@@ -16,56 +17,46 @@
 			物品売上管理システム
 		</span>
 		<div class="menu-toggle" id="menu-toggle" onclick="toggleMenu()">
-				<i class="bi bi-list"></i>
-			</div>
-		
+			<i class="bi bi-list"></i>
+		</div>
+
 		<div class="menu" id="menu">
 
-			<a class="nav-link" 
-				th:classappend="${active == 'dashboard'} ? ' active'" 
-				th:href="@{/dashboard}">
+			<a class="nav-link" th:classappend="${active == 'dashboard'} ? ' active'" th:href="@{/dashboard}">
 				ダッシュボード
 			</a>
 
-			<a class="nav-link" 
-				th:if="${session.loginUser.salesAuthority == 2}"
-				th:classappend="${active == 'sales'} ? ' active'" 
+			<a class="nav-link" th:if="${isSalesEditable}" th:classappend="${active == 'sales'} ? ' active'"
 				th:href="@{/sales}">
 				売上登録
 			</a>
 
-			<a class="nav-link" 
-				th:if="${session.loginUser.salesAuthority >= 1}"
-				th:classappend="${active == 'sales/search'} ? ' active'" 
+			<a class="nav-link" th:if="${canViewSales}" th:classappend="${active == 'sales/search'} ? ' active'"
 				th:href="@{/sales/search}">
 				売上検索
 			</a>
 
-			<a class="nav-link" 
-				th:if="${session.loginUser.accountsAuthority == 2}"
-				th:classappend="${active == 'accounts'} ? ' active'" 
+			<a class="nav-link" th:if="${isAccountEditable}" th:classappend="${active == 'accounts'} ? ' active'"
 				th:href="@{/accounts}">
 				アカウント登録
 			</a>
 
-			<a class="nav-link" 
-				th:if="${session.loginUser.accountsAuthority  >= 1}"
-				th:classappend="${active == 'account/search'} ? ' active'"
+			<a class="nav-link" th:if="${canViewAccounts}" th:classappend="${active == 'account/search'} ? ' active'"
 				th:href="@{/accounts/search}">
 				アカウント検索
-			
+
 			</a>
 
 			<a class="nav-link logout" th:href="@{/logout}">
-											ログアウト
-										</a>
+				ログアウト
+			</a>
 		</div>
 
-		
+
 
 	</nav>
-	
-	
+
+
 	<script th:src="@{/script.js}" defer></script>
 </body>
 

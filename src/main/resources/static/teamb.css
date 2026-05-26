@@ -8,6 +8,7 @@ body {
 		#f3f6fb;
 	color: #333;
 	-webkit-font-smoothing: antialiased;
+	padding-top: 60px;
 }
 
 .main-box {
@@ -416,3 +417,51 @@ input:focus {
 		opacity: 0;
 	}
 }
+
+/* PCだけ表示させる */
+@media (min-width: 769px) {
+	.menu {
+		display: flex;
+		flex-direction: row;
+	}
+}
+
+/* ===== スマホ ===== */
+@media (max-width: 768px) {
+
+	.menu-toggle {
+		display: block;
+	}
+
+	.menu {
+		display: none;
+		position: fixed;
+		top: 60px;
+		right: 0;
+		width: 240px;
+		background: #fff;
+		padding: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		z-index: 9999;
+		height: calc(100vh - 60px);
+		overflow-y: auto;
+		text-align: center;
+	}
+
+	.menu.active {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.btn:active {
+		animation: shake 0.2s;
+	}
+
+	.logout {
+		margin-left: 0;
+		width: 100%;
+		text-align: center;
+	}
+
+}
+
