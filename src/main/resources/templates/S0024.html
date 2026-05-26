@@ -52,8 +52,7 @@
 				<div class="form-row">
 					<div class="form-label">商品カテゴリー</div>
 					<div class="form-input">
-						<input type="text" readonly th:each="category : ${categoryList}"
-							th:if="${category.categoryId == salesForm.categoryId}" th:value="${category.categoryName}">
+						<input type="text" readonly th:value="${categoryName}">
 					</div>
 				</div>
 
