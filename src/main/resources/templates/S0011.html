@@ -88,28 +88,15 @@
 
 			<!-- 登録 -->
 			<form th:action="@{/sales/create}" th:object="${salesCreateForm}" method="post" id="sales">
-				<input type="hidden" th:field="*{saleDate}">
-				<input type="hidden" th:field="*{accountId}">
-				<input type="hidden" th:field="*{categoryId}">
-				<input type="hidden" th:field="*{tradeName}">
-				<input type="hidden" th:field="*{unitPrice}">
-				<input type="hidden" th:field="*{saleNumber}">
-				<input type="hidden" th:field="*{note}">
-
+				<div th:replace= "~{fragment/salesHidden :: salesHiddenFields}">
+				</div>
 
 			</form>
 
 			<!-- キャンセル -->
 			<form th:action="@{/sales/back}" th:object="${salesCreateForm}" method="post" id="salesback">
-
-				<input type="hidden" th:field="*{saleDate}">
-				<input type="hidden" th:field="*{accountId}">
-				<input type="hidden" th:field="*{categoryId}">
-				<input type="hidden" th:field="*{tradeName}">
-				<input type="hidden" th:field="*{unitPrice}">
-				<input type="hidden" th:field="*{saleNumber}">
-				<input type="hidden" th:field="*{note}">
-
+				<div th:replace= "~{fragment/salesHidden :: salesHiddenFields}">
+				</div>
 
 			</form>
 		</div>

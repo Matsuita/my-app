@@ -20,22 +20,20 @@ import jp.iglobe.pbl.model.sales.SalesCreateForm;
 import jp.iglobe.pbl.model.sales.SalesForm;
 import jp.iglobe.pbl.model.sales.SalesSearchForm;
 import jp.iglobe.pbl.repository.AccountRepository;
-import jp.iglobe.pbl.repository.CategoryRepository;
 import jp.iglobe.pbl.repository.SalesRepository;
 import jp.iglobe.pbl.service.SalesCreateService;
+import jp.iglobe.pbl.service.SalesSearchService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class SalesController {
-	// 担当
+
 	private final AccountRepository accountRepository;
-	// 商品カテゴリ
-	private final CategoryRepository categoryRepository;
-	// 売上
 	private final SalesRepository salesRepository;
 	
 	private final SalesCreateService salesCreateService;
+	private final SalesSearchService salesSearchService;
 
 	// 売上登録画面
 	@GetMapping("/sales")
@@ -113,7 +111,18 @@ public class SalesController {
 
 	// 売上登録実行
 	@PostMapping("/sales/create")
-	public String salesCreate(SalesCreateForm salesCreateForm) {
+	public String salesCreate(@Valid SalesCreateForm salesCreateForm,
+	        BindingResult result, Model model) {
+		
+//    	入力エラー
+		if (result.hasErrors()) {
+
+			model.addAttribute("salesCreateForm", salesCreateForm);
+			model.addAttribute("accountList", salesCreateService.getSalesAccounts());
+			model.addAttribute("categoryList", salesCreateService.getCategories());
+
+			return "S0010";
+		}
 
 		salesCreateService.createSale(salesCreateForm);
 
@@ -170,10 +179,8 @@ public class SalesController {
 			String accountName = salesCreateService.getAccountName(account);
 			
 		    model.addAttribute("accountName", accountName);
-			model.addAttribute("accountList",
-					accountRepository.findBySalesAuthority(2));
-			model.addAttribute("categoryList",
-					categoryRepository.findAll());
+			model.addAttribute("accountList", salesSearchService.getUpdateAccounts());
+			model.addAttribute("categoryList", salesSearchService.getAllCategories());
 			model.addAttribute("account", account);
 			model.addAttribute("category", category);
 
@@ -182,13 +189,12 @@ public class SalesController {
 
 		account = accountRepository.findById(salesForm.getAccountId()).orElse(null);
 		String accountName = salesCreateService.getAccountName(account);
+		String categoryName = category.getCategoryName();
 
 		model.addAttribute("salesForm", salesForm);
 		model.addAttribute("saleName", accountName);
-		model.addAttribute("accountList",
-				accountRepository.findBySalesAuthority(2));
-		model.addAttribute("categoryList",
-				categoryRepository.findAll());
+		model.addAttribute("accountList", salesSearchService.getUpdateAccounts());
+		model.addAttribute("categoryName", categoryName);
 
 		return "S0024";
 	}
@@ -207,8 +213,8 @@ public class SalesController {
 
 	    model.addAttribute("accountName", accountName);
 		model.addAttribute("salesForm", salesForm);
-		model.addAttribute("accountList", accountRepository.findBySalesAuthority(2));
-	    model.addAttribute("categoryList", categoryRepository.findAll());
+		model.addAttribute("accountList", salesSearchService.getUpdateAccounts());
+	    model.addAttribute("categoryList", salesSearchService.getAllCategories());
 
 		return "S0023";
 	}
@@ -223,16 +229,13 @@ public class SalesController {
 		String accountName = salesCreateService.getAccountName(account);
 		
 		long total = salesCreateService.calculateTotal(
-			        sales.getUnitPrice(),
-			        sales.getSaleNumber());
+			        sales.getUnitPrice(), sales.getSaleNumber());
 
 		model.addAttribute("total", total);
 		model.addAttribute("sales", sales);
 		model.addAttribute("saleName", accountName);
-		model.addAttribute("accountList",
-				accountRepository.findAll());
-		model.addAttribute("categoryList",
-				categoryRepository.findAll());
+		model.addAttribute("accountList", accountRepository.findAll());
+		model.addAttribute("categoryList", salesSearchService.getAllCategories());
 
 		return "S0025";
 	}
@@ -259,14 +262,11 @@ public class SalesController {
 		
 		model.addAttribute("salesSearchForm", new SalesSearchForm());
 		//担当一覧
-		List<Integer> accountIds = salesRepository.findUsedAccountIds();
-		model.addAttribute("accountList", accountRepository
-				.findByAccountIdInAndIsActiveTrue(accountIds));
+		model.addAttribute("accountList", salesSearchService.getUsedAccounts());
 		// カテゴリー一覧
-		model.addAttribute("categoryList", categoryRepository.findAll());
+		model.addAttribute("categoryList", salesSearchService.getAllCategories());
 
 		return "redirect:/sales/search";
 	}
-
 
 }

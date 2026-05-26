@@ -20,75 +20,76 @@ public class SalesCreateService {
 	private final AccountRepository accountRepository;
 	private final CategoryRepository categoryRepository;
 	private final SalesRepository salesRepository;
-	
+
 	// 担当一覧(売上権限なし・退職を省く）
 	public List<Account> getSalesAccounts() {
 
-        return accountRepository
-                .findBySalesAuthorityAndIsActive(2, true);
-    }
-		
+		return accountRepository
+				.findBySalesAuthorityAndIsActive(2, true);
+	}
+
 	// カテゴリ一覧
 	public List<Category> getCategories() {
 
-        return categoryRepository.findAll();
-    }
-
-
-	public Account validateAccount(Integer accountId, BindingResult result){
-	// アカウント存在チェック
-	
-	if (accountId == null) {
-        return null;
-    }
-	Account account = accountRepository.findById(
-			accountId).orElse(null);
-	
-	if (account == null) {
-
-		result.rejectValue("accountId", null,
-				"アカウントテーブルに存在しません。");
-	}else if(!account.isActive()){
-		result.rejectValue("accountId", null,
-				"退職済みユーザーです。");
+		return categoryRepository.findAll();
 	}
+
+	// アカウント存在チェック
+	public Account validateAccount(Integer accountId, BindingResult result) {
+		
+		if (accountId == null) {
+			return null;
+		}
+		Account account = accountRepository.findById(
+				accountId).orElse(null);
+
+		if (account == null) {
+
+			result.rejectValue("accountId", null,
+					"アカウントテーブルに存在しません。");
+		} else if (!account.isActive()) {
+			result.rejectValue("accountId", null,
+					"退職済みユーザーです。");
+		}
 
 		return account;
-}
+	}
 
-//小計計算
-	public long calculateTotal(String unitPrice, String saleNumber){
-	
+	//小計計算
+	public long calculateTotal(String unitPrice, String saleNumber) {
+
 		Integer price = Integer.parseInt(unitPrice);
-			Integer number = Integer.parseInt(saleNumber);
-			return (long) price * number;
+		Integer number = Integer.parseInt(saleNumber);
+		return (long) price * number;
 	}
 
-	public long calculateTotal(Integer unitPrice,Integer saleNumber) {
+	public long calculateTotal(Integer unitPrice, Integer saleNumber) {
 
-    return (long) unitPrice * saleNumber;
-}
+		return (long) unitPrice * saleNumber;
+	}
 
-	public Category validateCategory(Integer categoryId, BindingResult result){
 	// カテゴリー存在チェック
-	if (categoryId == null) {
-        return null;
-    }
+	public Category validateCategory(Integer categoryId, BindingResult result) {
+		
+		if (categoryId == null) {
+			return null;
+		}
 
-	Category category = categoryRepository.findById(
-			categoryId).orElse(null);
-	
-	if (category == null) {
-		result.rejectValue("categoryId", null,
-				"商品カテゴリーテーブルに存在しません。");
+		Category category = categoryRepository.findById(
+				categoryId).orElse(null);
+
+		if (category == null) {
+			result.rejectValue("categoryId", null,
+					"商品カテゴリーテーブルに存在しません。");
+		}
+
+		return category;
 	}
-	
-	return category;
-}
 
-	public void createSale(SalesCreateForm salesCreateForm){
-//売上登録実行
-	Sale sale = new Sale();
+	//売上登録実行
+	public void createSale(SalesCreateForm salesCreateForm) {
+		
+		Sale sale = new Sale();
 		sale.setSaleDate(salesCreateForm.getSaleDate());
 		sale.setAccountId(salesCreateForm.getAccountId());
 		sale.setCategoryId(salesCreateForm.getCategoryId());
@@ -98,18 +99,16 @@ public class SalesCreateService {
 		sale.setNote(salesCreateForm.getNote());
 
 		salesRepository.save(sale);
-}
+	}
 
+//	退職ユーザー表示
 	public String getAccountName(Account account) {
 
-    if (account != null && account.isActive()) {
-        return account.getName();
-    }
+		if (account != null && account.isActive()) {
+			return account.getName();
+		}
 
-    return "（退職済みユーザー）";
+		return "（退職済みユーザー）";
+	}
+
 }
-
-}
-
-
-
