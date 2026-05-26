@@ -35,8 +35,8 @@ extends HttpFilter {
 
         // ログイン不要
         if(uri.equals("/") || uri.equals("/login") 
-        		|| uri.startsWith("/css/")
-                || uri.startsWith("/js/")
+        		|| uri.endsWith(".css")
+                || uri.endsWith(".js")
                 || uri.startsWith("/images/")
                 || uri.startsWith("/webjars/")) {
             chain.doFilter(request, response);

@@ -1,0 +1,87 @@
+@charset "UTF-8";
+body.dark-mode{
+
+    background:
+    #dbe4ee;
+
+    color:
+    #1f2937;
+}
+
+body.dark-mode .dashboard-card,
+
+body.dark-mode .welcome-message,
+
+body.dark-mode .floating-clock{
+
+    background:
+    #f4f7fb;
+
+    color:
+    #1f2937;
+
+    border:
+    1px solid #d0d8e2;
+
+    box-shadow:
+    0 4px 12px rgba(
+        0,
+        0,
+        0,
+        0.05);
+}
+
+body.dark-mode .team-logo{
+
+    color:
+    #2b4c7e;
+
+    text-shadow:
+    0 0 12px rgba(
+        43,
+        76,
+        126,
+        0.15);
+}
+
+body.dark-mode .theme-button{
+
+    background:
+    #2b4c7e;
+
+    color:
+    white;
+}
+
+body.dark-mode .floating-clock{
+
+    background:
+    #f4f7fb;
+
+    color:
+    #1f2937;
+
+    border:
+    1px solid #d0d8e2;
+
+    box-shadow:
+    0 4px 12px rgba(
+        0,
+        0,
+        0,
+        0.05);
+}
+
+body.dark-mode .clock-time{
+
+    color:
+    #2b4c7e;
+
+    font-weight: 700;
+}
+
+body.dark-mode .clock-label{
+
+    color:
+    #6b7280;
+}

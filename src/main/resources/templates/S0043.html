@@ -6,9 +6,8 @@
 	<title>アカウント詳細編集確認</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" th:href="@{/navbar.css}">
 	<link rel="stylesheet" th:href="@{/teamb.css}">
-
-
 
 </head>
 
@@ -87,16 +86,25 @@
 
 
 			</form>
-
+			<form th:action="@{/accounts/edit/confirm/cancel}" method="post" th:object="${accountUpdateForm}"
+				id="accountsback">
+				<input type="hidden" th:field="*{accountId}">
+				<input type="hidden" th:field="*{name}">
+				<input type="hidden" th:field="*{mail}">
+				<input type="hidden" th:field="*{password}">
+				<input type="hidden" th:field="*{passwordConfirm}">
+				<input type="hidden" th:field="*{salesAuthority}">
+				<input type="hidden" th:field="*{accountsAuthority}">
+			</form>
 		</div>
 		<div class="btn-area-center">
 			<button type="submit" form="accounts" class="btn btn-primary">
 				<i class="bi bi-arrow-repeat"></i>更新
 			</button>
 
-			<a th:href="@{/accounts/edit/{id}(id=${accountUpdateForm.accountId})}" class="btn btn-secondary">
+			<button type="submit" form="accountsback" class="btn btn-secondary">
 				キャンセル
-			</a>
+			</button>
 		</div>
 	</div>
 	<script th:src="@{/script.js}" defer></script>

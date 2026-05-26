@@ -1,153 +1,32 @@
 @charset "UTF-8";
 
-/* 部分一致バッジ（スクショ寄せ） */
-.partial-badge {
-	display: inline-block;
-	background-color: #6c757d;
-	color: white;
-	font-size: 11px;
-	padding: 2px 6px;
-	border-radius: 10px;
-	margin-left: 6px;
-	vertical-align: middle;
-}
-
-/*ヘッダーに<link rel="stylesheet" th:href="@{/teamb.css}">これいれて、
-<span class="partial-badge">部分一致</span> これ使ってね*/
-
-/* ===== 全体フォント ===== */
-body {
-	margin: 0;
-	padding-top: 60px;
-
-	font-family:
-		"Yu Gothic UI",
-		"Yu Gothic",
-		"Meiryo",
-		"Hiragino Kaku Gothic ProN",
-		"Segoe UI",
-		sans-serif;
-}
-
-/* ===== ナビバー ===== */
-.navbar {
-	height: 60px !important;
-		padding: 0 20px !important;
-	border-bottom: 1px solid #ccc;
-	background-color: #e9ecef !important;
-	flex-wrap: nowrap;  /* ← 折り返し許可 */
-	display: flex;
-	align-items: center;
-	
-	overflow: visible; /* ← これ追加 */
-}
-
-/* ===== タイトル ===== */
-.navbar-brand {
-	font-size: 18px;
-	font-weight: 600;
-	color: #555 !important;
-	white-space: nowrap; /* ← 追加 */
-}
-
-/* ===== メニュー配置 ===== */
-.menu {
-	display: none;
-	gap: 35px;
-	width: auto; /* ← これ追加 */
-	flex-wrap: nowrap; /* ← これ重要 */
-	overflow-x: auto; /* ← 横スクロール許可 */
-	flex-shrink: 0;
-	flex:1;
-	
-			
-			
-}
-
-
-
-/* ===== リンク基本 ===== */
-.nav-link {
-	color: #555 !important;
-	text-decoration: none;
-	white-space: nowrap;
-	font-size: 18px;
-	/* ← 14 → 16にUP */
-	padding: 14px 14px;
-	/* ← 上下左右広げる */
-	line-height: 1 !important;
-	transition: all 0.15s ease;
-	display: inline-block;
-	/* ← クリック範囲安定 */
-	flex-shrink: 0;
-}
-
-/* ===== hover ===== */
-.nav-link:hover {
-	color: #222 !important;
-	border-bottom: 2px solid #666;
-}
-
-/* ===== ログアウト位置 ===== */
-.logout {
-	margin-left: auto;
-	white-space: nowrap; /* ← 改行防止 */
-	flex-shrink: 0;
-}
-
-/* ===== 選択中 ===== */
-.nav-link.active {
-	color: #222 !important;
-	font-weight: 600;
-	border-bottom: 2px solid #666;
-}
-/* PCだけ表示させる */
-@media (min-width: 769px) {
-	.menu {
-		display: flex;
-		flex-direction: row;
-	}
-}
-
-/* 開いたとき */
-.menu.active {
-	display: flex;
-	flex-direction: column;
-}
-
-/*こっからhtnl*/
-
 /* ===== 全体 ===== */
 body {
 	margin: 0;
 	font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
 	background:
-			        #f3f6fb;
+		#f3f6fb;
 	color: #333;
 	-webkit-font-smoothing: antialiased;
+	padding-top: 60px;
 }
-
-
-
 
 .main-box {
 
 	width: 100%;
-		max-width: 900px;
-		margin: 60px auto 0;
-		padding: 0 20px;
+	max-width: 900px;
+	margin: 60px auto 0;
+	padding: 0 20px;
 
 }
 
 /* ===== タイトル ===== */
 .title {
 	font-size: 40px;
-	/* ← 少し大きめ */
 	font-weight: 500;
 	margin-bottom: 28px;
 	margin-left: -220px;
 	padding-left: 0;
-	
 	letter-spacing: 1px;
 }
 
@@ -157,43 +36,40 @@ body {
 	align-items: flex-start;
 	justify-content: flex-start;
 	margin-bottom: 12px;
-	padding-right: 0;  /* ← これで右位置をズラす */
+	padding-right: 0;
 }
 
 /* ===== ラベル ===== */
 .form-label {
-	
-	
-	display: flex;              /* ← これ追加（最重要） */
+	display: flex;
 	font-weight: 650;
 	color: #555;
 	align-items: center;
-		gap: 8px;
-	justify-content: flex-end; /* ← 全体を右寄せ */
+	gap: 8px;
+	justify-content: flex-end;
 	width: 280px;
-	min-width: 280px; /* ← 崩れ防止 */
+	min-width: 280px;
 	text-align: right;
 	padding-right: 20px;
-	white-space: nowrap;  /* ← これ超重要 */
+	white-space: nowrap;
 }
+
 .partial-badge {
-	margin-left: 0;   /* ← 消す（重要） */
+	margin-left: 0;
 }
 
 .label-text {
 	white-space: nowrap;
 	text-align: right;
 }
+
 /* ===== 入力エリア ===== */
 .form-input {
-	
-	
-	
 	display: flex;
 	flex-wrap: wrap;
-	align-items: flex-start; /* ← 追加 */
+	align-items: flex-start;
 	width: 100%;
-		max-width: 100%;
+	max-width: 100%;
 }
 
 .form-input input {
@@ -227,8 +103,9 @@ input[type="date"] {
 }
 
 .form-input select {
-    padding-left: 6px;   /* ← 少し減らす */
+	padding-left: 6px;
 }
+
 .wave {
 	font-size: 20px;
 	margin-left: 55px;
@@ -261,7 +138,6 @@ input.short {
 	border: 1px solid #dee2e6;
 	color: #495057;
 	cursor: default;
-	/* カーソルも編集不可っぽく */
 }
 
 .form-input textarea[readonly] {
@@ -273,7 +149,7 @@ input.short {
 
 .readonly-white input[readonly],
 .readonly-white textarea[readonly] {
-    background-color: #ffffff;
+	background-color: #ffffff;
 	cursor: default;
 }
 
@@ -293,14 +169,13 @@ input:focus {
 	color: #fff;
 	padding: 2px 6px;
 	border-radius: 10px;
-	margin-left: 0; /* ← これ重要 */
+	margin-left: 0;
 }
 
 /* ===== ボタンエリア ===== */
 .btn-area-center {
 	text-align: center;
-		margin-top: 30px;
-		
+	margin-top: 30px;
 }
 
 /* ===== 共通ボタン ===== */
@@ -314,13 +189,13 @@ input:focus {
 	align-items: center;
 	display: inline-flex;
 	line-height: 1;
-	justify-content: center;   
-		padding: 0 16px;  /* ← 上下padding消す */
-		font-weight: 550;
-	}
+	justify-content: center;
+	padding: 0 16px;
+	font-weight: 550;
+}
 
 .btn i {
-	font-size: 14px;   /* ← サイズ揃える */
+	font-size: 14px;
 	line-height: 1;
 	display: inline-flex;
 	align-items: center;
@@ -342,39 +217,33 @@ input:focus {
 .btn-secondary {
 	margin-left: 10px;
 	background: #f3f3f3;
-	/* ← 常に見える色 */
 	color: #333;
 	border: 1px solid #ccc;
 }
 
-/* ② formのズレ修正（これが一番重要） */
 .btn-area-center form {
 	margin: 0;
-	
+
 	align-items: center;
-	display: inline-flex;  /* ← ここがミソ */
+	display: inline-flex;
 }
+
 .btn-secondary:hover {
 	background: #e0e0e0;
 }
 
-/* ③ ボタンの高さ揃え */
 .btn-area-center .btn {
 	align-items: center;
 	justify-content: center;
 	margin: 0 !important;
 }
 
-
 .mask {
 	-webkit-text-security: disc;
 }
 
 .form-area {
-	
-		margin-left: -100px;
-
-  
+	margin-left: -100px;
 }
 
 .form-area.wide {
@@ -386,7 +255,6 @@ input:focus {
 	width: 100%;
 }
 
-/* 入力行を左寄せにする */
 .form-area.wide .form-row {
 	justify-content: flex-start;
 }
@@ -396,8 +264,7 @@ input:focus {
 	margin: 0 auto;
 	max-width: 1400px;
 	margin-left: auto;
-		margin-right: auto;
-	/* 中央寄せ */
+	margin-right: auto;
 }
 
 .table td,
@@ -411,34 +278,30 @@ input:focus {
 	border: none;
 }
 
-/*.form-input>*:not(.error) {*/
-/*	flex-shrink: 0;*/
-/*}*/
-
 /* ===== ラジオ ===== */
 .radio-group {
 	display: flex;
 	gap: 24px;
 	font-size: 14px;
-	flex-wrap: nowrap; /* ← これ重要 */
-	
+	flex-wrap: nowrap;
 }
+
 .radio-group label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-	white-space: nowrap; /* ← 折り返し禁止 */
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
 }
 
 /* ===== 見た目だけdisabled風 ===== */
 .radio-disabled-look {
-    pointer-events: none;   /* ← 操作禁止 */
-    opacity: 0.7;           /* ← 少し薄く */
+	pointer-events: none;
+	opacity: 0.7;
 }
 
-/* ラジオ本体の色（自由に変更OK） */
+/* ラジオ本体の色 */
 .radio-disabled-look input[type="radio"] {
-    accent-color: #555;     /* ← 好きな色に */
+	accent-color: #555;
 }
 
 /* ===== エラー ===== */
@@ -446,206 +309,159 @@ input:focus {
 	color: #d9534f;
 	font-size: 12px;
 	margin-top: 2px;
-	
-	    display: block;
-		
+	display: block;
 	flex-basis: 100%;
+}
+
+/* ===== 日付レンジ（これ使う） ===== */
+.date-inputs {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 80%;
+}
+
+/* 日付input */
+.date-inputs input[type="date"] {
+	width: 140px;
+	padding: 6px 10px;
+	border-radius: 6px;
+	box-sizing: border-box;
+	flex-shrink: 0;
+	flex: 1;
+	min-width: 0;
+}
+
+/* 〜 */
+.date-inputs .wave {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #666;
+	font-size: 18px;
+	margin: 0;
+}
+
+.password-wrap {
+	position: relative;
+	width: 80%;
+}
+
+.password-wrap input {
+	width: 100%;
+	padding-right: 40px;
+	height: 36px;
+	box-sizing: border-box;
+}
+
+.password-wrap i {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+	color: #666;
+}
+
+
+@keyframes shake {
+
+	0% {
+		transform: translateX(0);
 	}
-	
-	/* ===== 日付レンジ（これ使う） ===== */
-	.date-inputs {
+
+	25% {
+		transform: translateX(-2px);
+	}
+
+	50% {
+		transform: translateX(2px);
+	}
+
+	75% {
+		transform: translateX(-2px);
+	}
+
+	100% {
+		transform: translateX(0);
+	}
+}
+
+.particle {
+
+	position: fixed;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	pointer-events: none;
+	z-index: 9999;
+	animation: particleAnim 0.7s ease-out forwards;
+}
+
+@keyframes particleAnim {
+
+	0% {
+
+		transform:
+			translate(0, 0) scale(1);
+
+		opacity: 1;
+	}
+
+	100% {
+
+		transform:
+			translate(var(--x),
+				var(--y)) scale(0);
+
+		opacity: 0;
+	}
+}
+
+/* PCだけ表示させる */
+@media (min-width: 769px) {
+	.menu {
 		display: flex;
-		align-items: center;
-		gap: 10px;
-		width: 80%;
+		flex-direction: row;
 	}
+}
 
-	/* 日付input */
-	.date-inputs input[type="date"] {
-		width: 140px;
-		padding: 6px 10px;
-		
-		border-radius: 6px;
-		box-sizing: border-box;
-		flex-shrink: 0;
-		flex: 1;              /* ← 自動で均等に広がる */
-			min-width: 0;         /* ← 崩れ防止 */
-	}
+/* ===== スマホ ===== */
+@media (max-width: 768px) {
 
-	/* 〜 */
-	.date-inputs .wave {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: #666;
-		font-size: 18px;
-		margin: 0;
-	}
-
-	.password-wrap {
-	    position: relative;
-		width: 80%;
-	}
-	/* ← これ追加が本体 */
-	.password-wrap input {
-	    width: 100%;
-	    padding-right: 40px; /* アイコン分 */
-	    height: 36px;        /* 他inputと揃える */
-	    box-sizing: border-box;
-	}
-
-	.password-wrap i {
-	    position: absolute;
-	    right: 10px;
-	    top: 50%;
-	    transform: translateY(-50%);
-	    cursor: pointer;
-	    color: #666;
-	}
-	/* ===== ハンバーガー ===== */
 	.menu-toggle {
+		display: block;
+	}
+
+	.menu {
 		display: none;
-		font-size: 28px;
-		cursor: pointer;
+		position: fixed;
+		top: 60px;
+		right: 0;
+		width: 240px;
+		background: #fff;
+		padding: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		z-index: 9999;
+		height: calc(100vh - 60px);
+		overflow-y: auto;
+		text-align: center;
 	}
 
-	
-
-	/* ===== スマホ ===== */
-	@media (max-width: 768px) {
-
-		.menu-toggle {
-			display: block;
-		}
-
-		.menu {
-				display: none; /* ← ここ重要 */
-				position: fixed;
-				top: 60px;
-				right: 0;
-				width: 240px;
-				background: #fff;
-				padding: 10px;
-				box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-				z-index: 9999;
-				height: calc(100vh - 60px);
-				overflow-y: auto;
-				text-align: center;
-			}
-
-			.menu.active {
-				display: flex;
-				flex-direction: column;
-			}
-	
-	.btn:active{
-
-	    animation:shake 0.2s;
+	.menu.active {
+		display: flex;
+		flex-direction: column;
 	}
 
-	 .logout {
-	        margin-left: 0;      /* ← リセット */
-	        width: 100%;
-	        text-align: center;    /* ← 揃える */
-	    }
-
-	}
-	
-	@keyframes shake{
-
-	    0%{transform:translateX(0);}
-	    25%{transform:translateX(-2px);}
-	    50%{transform:translateX(2px);}
-	    75%{transform:translateX(-2px);}
-	    100%{transform:translateX(0);}
-	}
-	
-	.particle{
-
-	    position:fixed;
-
-	    width:8px;
-	    height:8px;
-
-	    border-radius:50%;
-
-	    pointer-events:none;
-
-	    z-index:9999;
-
-	    animation:particleAnim 0.7s ease-out forwards;
+	.btn:active {
+		animation: shake 0.2s;
 	}
 
-	@keyframes particleAnim{
-
-	    0%{
-
-	        transform:
-	            translate(0,0)
-	            scale(1);
-
-	        opacity:1;
-	    }
-
-	    100%{
-
-	        transform:
-	            translate(var(--x),
-	                      var(--y))
-	            scale(0);
-
-	        opacity:0;
-	    }
+	.logout {
+		margin-left: 0;
+		width: 100%;
+		text-align: center;
 	}
-	
-	
 
-/*<nav class="navbar fixed-top">
+}
 
-    <!-- タイトル -->
-    <span class="navbar-brand">
-        物品売上管理システム
-    </span>
-
-    <!-- メニュー -->
-    <div class="menu">
-
-        <a class="nav-link"
-           th:classappend="${#httpServletRequest.requestURI == '/dashboard'} ? ' active'"
-           th:href="@{/dashboard}">
-           ダッシュボード
-        </a>
-
-        <a class="nav-link"
-           th:classappend="${#httpServletRequest.requestURI == '/sales/register'} ? ' active'"
-           th:href="@{/sales/register}">
-           売上登録
-        </a>
-
-        <a class="nav-link"
-           th:classappend="${#httpServletRequest.requestURI == '/sales/search'} ? ' active'"
-           th:href="@{/sales/search}">
-           売上検索
-        </a>
-
-        <a class="nav-link"
-           th:classappend="${#httpServletRequest.requestURI == '/accounts/register'} ? ' active'"
-           th:href="@{/accounts/register}">
-           アカウント登録
-        </a>
-
-        <a class="nav-link"
-           th:classappend="${#httpServletRequest.requestURI == '/accounts/search'} ? ' active'"
-           th:href="@{/accounts/search}">
-           アカウント検索
-        </a>
-
-    </div>
-
-    <!-- ログアウト -->
-    <a class="nav-link logout"
-       th:href="@{/logout}">
-       ログアウト
-    </a>
-
-</nav>

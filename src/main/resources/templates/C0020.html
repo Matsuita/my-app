@@ -13,628 +13,27 @@
 	    <link rel="stylesheet"
 	          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-	    <link rel="stylesheet"
-	          th:href="@{/teamb.css}">
+	    <link rel="stylesheet" th:href="@{/teamb.css}">
+		
+		<link rel="stylesheet" th:href="@{/navbar.css}">
+			  
+		<link rel="stylesheet"th:href="@{/dashboard.css}">
+		
+		<link rel="stylesheet"th:href="@{/dark.css}">
 
 	    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-		@media(max-width:1100px){
-		    .card-grid{
-		        grid-template-columns:
-		            repeat(2,1fr);
-		    }
-
-		    .ranking-area{
-		        grid-template-columns:1fr;
-		    }
-		}
-
-		@media(max-width:900px){
-		    .card-grid{
-		        grid-template-columns:1fr;
-		    }
-		}
-
-		.ranking-area{
-		        grid-template-columns:1fr;
-		    }
-		
-		.welcome-message{
-		    border-left:6px solid rgb(255, 30, 20);
-		}
-
-		.dashboard-container{
-		    max-width:1200px;
-		    width:95%;
-		    margin:30px auto;
-		}
-
-		h1{
-		    font-size:36px;
-		    font-weight:bold;
-		    margin-bottom:20px;
-		    color:#1f2937;
-		}
-
-		.welcome-message{
-		    background:white;
-		    border-radius:18px;
-		    padding:22px 28px;
-		    margin-bottom:30px;
-		    box-shadow:0 2px 10px rgba(0,0,0,0.05);
-		    font-size:20px;
-		    width:28%;
-		    margin-right:auto;
-		}
-		
-
-        .fun-message{
-            color:#666;
-            margin-top:8px;
-            font-size:15px;
-        }
-
-        .card-grid{
-            display:grid;
-            grid-template-columns:repeat(4,1fr);
-            gap:20px;
-            margin-bottom:30px;
-        }
-
-		.dashboard-card{
-		    background:white;
-		    border-radius:22px;
-		    padding:30px;
-		    box-shadow:0 10px 25px rgba(0,0,0,0.08);
-		    transition:0.25s;
-		    position:relative;
-		    overflow:hidden;
-			min-height:180px;
-		}
-		
-		.dashboard-card:hover{
-		    transform:translateY(-3px);
-		}
-		
-		.card-bg-icon{
-		    position:absolute;
-		    right:18px;
-		    bottom:10px;
-		    font-size:70px;
-		    opacity:0.08;
-		}
-
-        .card-title{
-            font-size:16px;
-            color:#666;
-            margin-bottom:10px;
-        }
-
-		.card-value{
-		    font-size:clamp(22px,2.5vw,34px);
-		    font-weight:bold;
-		    color:#222;
-		    word-break:break-all;
-		}
-
-		.card-comment{
-		    margin-top:12px;
-		    font-size:14px;
-		    color:#6b7280;
-		    line-height:1.7;
-		}
-		
-		.chart-title{
-		    font-size:28px;
-		    font-weight:bold;
-		    margin-bottom:25px;
-		    color:#1f2937;
-		}
-
-		.chart-area{
-			width:100%;
-			overflow-x:auto;
-		    background:white;
-		    border-radius:16px;
-		    padding:24px;
-		    margin-bottom:24px;
-		    box-shadow:0 2px 8px rgba(0,0,0,0.06);
-		    height:380px;
-		}
-		
-		#salesChart{
-			width:100% !important;
-			max-height:300px;
-		}
-
-        .ranking-area{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:20px;
-        }
-
-        .ranking-box{
-            background:white;
-            border-radius:18px;
-            padding:25px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .ranking-title{
-            font-size:24px;
-            font-weight:bold;
-            margin-bottom:18px;
-        }
-		
-		.ranking-item{
-		    padding:18px 14px;
-		    margin-bottom:10px;
-		    background:#f8fafc;
-		    border-radius:14px;
-		    border:1px solid #edf2f7;
-		    transition:0.2s;
-		}
-
-        .ranking-item{
-            display:flex;
-            justify-content:space-between;
-            padding:12px 0;
-            border-bottom:1px solid #eee;
-            font-size:16px;
-        }
-		
-		.ranking-item:hover{
-		    transform:translateX(5px);
-		    background:white;
-		}
-
-		.sales-card,
-		.count-card,
-		.hot-card,
-		.danger-card{
-	     	border-left:5px solid #2f80c9;
-		}
-		
-		.quote-text{
-		    font-size:24px;
-		    line-height:1.8;
-		    color:#444;
-		    padding-top:25px;
-		    font-weight:bold;
-		    text-align:center;
-		}
-		
-		.ranking-title{
-		    font-size:24px;
-		    font-weight:bold;
-		    margin-bottom:20px;
-		}
-		
-		.ranking-item:hover{
-		    background:#f8fafc;
-		    border-radius:10px;
-		}
-		
-		.progress-wrapper{
-		    display:flex;
-		    justify-content:center;
-		    align-items:center;
-		    gap:40px;
-		    margin:40px 0 50px 0;
-		    flex-wrap:wrap;
-		}
-
-		.progress-circle{
-		    width:180px;
-		    height:180px;
-		    border-radius:50%;
-		    background:conic-gradient( #2f80c9 0% var(--progress) , #e5e7eb var(--progress) 100%);
-		    display:flex;
-		    align-items:center;
-		    justify-content:center;
-		    box-shadow:0 10px 25px rgba(0,0,0,0.12);
-		}
-
-		.progress-inner{
-		    width:140px;
-		    height:140px;
-		    background:white;
-		    border-radius:50%;
-		    display:flex;
-		    flex-direction:column;
-		    align-items:center;
-		    justify-content:center;
-		}
-
-		.progress-number{
-		    font-size:36px;
-		    font-weight:bold;
-		    color:#1f2937;
-		}
-
-		.progress-number span{
-		    font-size:24px;
-		}
-
-		.progress-label{
-		    margin-top:10px;
-		    color:#666;
-		    font-size:18px;
-		}
-
-		.progress-comment{
-		    text-align:center;
-		    margin-top:15px;
-		    font-size:18px;
-		    color:#555;
-		}
-		
-		.side-info-card{
-		    width:250px;
-		    background:white;
-		    border-radius:20px;
-		    padding:28px;
-		    box-shadow:0 8px 20px rgba(0,0,0,0.08);
-		    text-align:center;
-		    transition:0.25s;
-		}
-
-		.side-title{
-		    font-size:18px;
-		    color:#666;
-		    margin-bottom:15px;
-		}
-
-		.side-value{
-		    font-size:42px;
-		    font-weight:bold;
-		    color:#2f80c9;
-		    margin-bottom:15px;
-		}
-
-		.side-comment{
-		    color:#777;
-		    line-height:1.7;
-		}
-		
-		.slot-hit{
-		    animation:slotHit 0.4s;
-		}
-
-		@keyframes slotHit{
-
-		    50%{
-		        transform:scale(1.15);
-		        color:#ffcc00;
-		    }
-		}
-
-		.puchun{
-		    position:fixed;
-		    inset:0;
-		    background:black;
-		    z-index:99999;
-		    animation:puchunAnim 1.2s ease;
-		}
-
-		@keyframes puchunAnim{
-		    0%{
-		        opacity:0;
-		    }
-
-		    10%{
-		        opacity:1;
-		    }
-
-		    70%{
-		        opacity:1;
-		    }
-
-		    100%{
-		        opacity:0;
-		    }
-		}
-		
-
-		.vvv-dark-effect{
-		    position:fixed;
-		    inset:0;
-		    background:black;
-		    z-index:999999;
-		    overflow:hidden;
-		    opacity:0;
-		    transition:0.05s;
-		}
-
-		.vvv-dark-effect.show{
-		    opacity:1;
-		}
-
-
-		.vvv-dark-effect::before{
-		    content:"";
-		    position:absolute;
-		    top:50%;
-		    left:50%;
-		    width:12px;
-		    height:12px;
-		    transform:translate(-50%,-50%);
-		    background:white;
-		    border-radius:50%;
-		    box-shadow:
-		        0 0 20px #4fdfff,
-		        0 0 60px #4fdfff,
-		        0 0 120px #4fdfff,
-		        0 0 220px #4fdfff;
-
-		    animation:
-		        coreGlow 1.6s ease-out forwards;
-		}
-
-		.vvv-dark-effect::after{
-		    content:"";
-		    position:absolute;
-		    top:50%;
-		    left:50%;
-		    width:0;
-		    height:2px;
-		    background:white;
-		    transform:
-		        translate(-50%,-50%);
-		    box-shadow:
-		        0 0 12px #4fdfff,
-		        0 0 30px #4fdfff;
-		    animation:
-		        lineGlow 1.2s ease-out forwards;
-		}
-
-
-		@keyframes coreGlow{
-
-		    0%{
-
-		        opacity:0;
-
-		        transform:
-		            translate(-50%,-50%)
-		            scale(0.2);
-		    }
-
-		    15%{
-
-		        opacity:1;
-
-		        transform:
-		            translate(-50%,-50%)
-		            scale(8);
-		    }
-
-		    45%{
-
-		        opacity:1;
-
-		        transform:
-		            translate(-50%,-50%)
-		            scale(5);
-		    }
-
-		    100%{
-
-		        opacity:0;
-
-		        transform:
-		            translate(-50%,-50%)
-		            scale(0.5);
-		    }
-		}
-
-
-		@keyframes lineGlow{
-		    0%{
-		        width:0;
-		        opacity:0;
-		    }
-
-		    20%{
-		        width:100vw;
-		        opacity:1;
-		    }
-
-		    100%{
-		        width:100vw;
-		        opacity:0;
-		    }
-		}
-
-		.vvv-dark-effect.show{
-		    opacity:1;
-		    animation:
-		    darkFlash 1.8s ease-out;
-		}
-
-
-		@keyframes darkFlash{
-		    0%{
-		        filter:brightness(1);
-		        transform:scale(1);
-		    }
-
-		    15%{
-		        filter:brightness(4);
-		        transform:scale(1.03);
-		    }
-
-		    40%{
-		        filter:brightness(0.7);
-		        transform:scale(1);
-		    }
-
-		    100%{
-		        filter:brightness(0);
-		        transform:scale(1.08);
-		    }
-		}
-
-		.floating-clock{
-
-		    position:absolute;
-
-		    top:120px;
-
-		    right:120px;
-
-		    text-align:right;
-		}
-
-		.clock-label{
-
-		    font-size:12px;
-
-		    letter-spacing:3px;
-
-		    color:#888;
-
-		    margin-bottom:8px;
-		}
-
-		.clock-time{
-
-		    font-size:52px;
-
-		    font-weight:bold;
-
-		    color:#2f80c9;
-
-		    font-family:monospace;
-
-		    letter-spacing:4px;
-
-		    text-shadow:
-		        0 0 14px rgba(47,128,201,0.25);
-		}
-		
-		/* TEAM B */
-
-		.team-logo{
-
-		    position:absolute;
-
-		    top:135px;
-
-		    right:580px;
-
-		    font-size:28px;
-
-		    font-weight:800;
-
-		    letter-spacing:4px;
-
-		    color:#1f2937;
-
-		    font-family:
-		        'Segoe UI',
-		        sans-serif;
-
-		    opacity:0.9;
-
-		    user-select:none;
-
-		    overflow:hidden;
-		}
-
-		/* サブ */
-
-		.team-logo::after{
-
-		    content:"SALES CONTROL SYSTEM";
-
-		    display:block;
-
-		    margin-top:2px;
-
-		    font-size:10px;
-
-		    letter-spacing:3px;
-
-		    color:#888;
-		}
-
-		/* 稲妻 */
-
-		.lightning{
-
-		    position:absolute;
-
-		    top:55%;
-
-		    left:-140%;
-
-		    width:140%;
-
-		    height:2px;
-
-		    background:
-		        linear-gradient(
-		            90deg,
-		            transparent,
-		            rgba(79,223,255,0.2),
-		            #4fdfff,
-		            white,
-		            #4fdfff,
-		            transparent
-		        );
-
-		    transform:
-		        rotate(-10deg);
-
-		    box-shadow:
-		        0 0 6px #4fdfff,
-		        0 0 16px #4fdfff;
-
-		    animation:
-		        lightningMove 3s infinite;
-		}
-
-		/* 稲妻 */
-
-		@keyframes lightningMove{
-
-		    0%{
-
-		        left:-140%;
-
-		        opacity:0;
-		    }
-
-		    8%{
-
-		        opacity:1;
-		    }
-
-		    18%{
-
-		        left:140%;
-
-		        opacity:1;
-		    }
-
-		    30%{
-
-		        opacity:0;
-		    }
-
-		    100%{
-		        left:140%;
-		        opacity:0;
-		    }
-		}
-
-    </style>
 
 </head>
 
 <body>
+	
+	<button id="themeToggle"
+	        class="theme-button">
+
+	    MOOD2
+
+	</button>
 	
 	<div th:replace="fragment/navbar :: navbar('dashboard')">
 	</div>
@@ -646,38 +45,45 @@
         ダッシュボード
     </h1>
 
-    <div class="welcome-message">
+	<div class="top-dashboard-area">
 
-        <div>
-            こんにちは、[[${session.loginUser.name}]] さん。
-        </div>
+	    <!-- メッセージ -->
+	    <div class="welcome-message">
 
-        <div class="fun-message">
-			本日の売上状況を確認しましょう。
-        </div>
+	        <div>
+	            こんにちは、
+	            [[${session.loginUser.name}]]
+	            さん。
+	        </div>
 
-    </div>
-	
-	<div class="team-logo">
-
-	    TEAM B
-
-	    <span class="lightning"></span>
-
-	</div>
-	
-	<div class="floating-clock">
-
-	    <div class="clock-label">
-
-	        CURRENT TIME
+	        <div class="fun-message">
+	            本日の売上状況を確認しましょう。
+	        </div>
 
 	    </div>
 
-	    <div id="liveClock"
-	         class="clock-time">
+	    <!-- ロゴ -->
+	    <div class="team-logo">
 
-	        00:00:00
+	        <span id="teamText"></span>
+
+	    </div>
+
+	    <!-- 時計 -->
+	    <div class="floating-clock">
+
+	        <div class="clock-label">
+
+	            CURRENT TIME
+
+	        </div>
+
+	        <div id="liveClock"
+	             class="clock-time">
+
+	            00:00:00
+
+	        </div>
 
 	    </div>
 
@@ -1105,6 +511,77 @@ function updateClock(){
 setInterval(updateClock,1000);
 
 updateClock();
+
+const text = "TEAM B";
+
+const target =
+document.getElementById(
+    "teamText");
+
+let index = 0;
+
+function typeLogo(){
+
+    if(index < text.length){
+
+        target.textContent +=
+            text.charAt(index);
+
+        index++;
+
+        setTimeout(
+            typeLogo,
+            180);
+    }
+}
+
+typeLogo();
+
+const logoText =
+[
+    "TEAM B",
+    "TE∆M B",
+    "TEAM_B",
+    "T3AM B"
+];
+
+setInterval(() => {
+
+    const random = Math.floor(
+        Math.random() *
+        logoText.length);
+
+    document.getElementById(
+        "teamText")
+        .textContent =
+        logoText[random];
+
+},2000);
+
+const toggle =
+document.getElementById(
+    "themeToggle");
+
+toggle.addEventListener(
+    "click",
+
+    () => {
+
+        document.body.classList
+        .toggle("dark-mode");
+
+        if(document.body.classList
+            .contains("dark-mode")){
+
+            toggle.textContent =
+            " MOOD1";
+
+        }else{
+
+            toggle.textContent =
+            " MOOD2";
+        }
+});
 
 </script>
 

@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+/* ===== ナビバー ===== */
+.navbar {
+	height: 60px !important;
+	padding: 0 20px !important;
+	border-bottom: 1px solid #ccc;
+	background-color: #e9ecef !important;
+	flex-wrap: nowrap;
+	display: flex;
+	align-items: center;
+	overflow: visible;
+}
+
+/* ===== タイトル ===== */
+.navbar-brand {
+	font-size: 18px;
+	font-weight: 600;
+	color: #555 !important;
+	white-space: nowrap;
+}
+
+/* ===== メニュー配置 ===== */
+.menu {
+	display: none;
+	gap: 35px;
+	width: auto;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	flex-shrink: 0;
+	flex: 1;
+}
+
+/* ===== リンク基本 ===== */
+.nav-link {
+	color: #555 !important;
+	text-decoration: none;
+	white-space: nowrap;
+	font-size: 18px;
+	padding: 14px 14px;
+	line-height: 1 !important;
+	transition: all 0.15s ease;
+	display: inline-block;
+	flex-shrink: 0;
+}
+
+/* ===== hover ===== */
+.nav-link:hover {
+	color: #222 !important;
+	border-bottom: 2px solid #666;
+}
+
+/* ===== ログアウト位置 ===== */
+.logout {
+	margin-left: auto;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+/* ===== 選択中 ===== */
+.nav-link.active {
+	color: #222 !important;
+	font-weight: 600;
+	border-bottom: 2px solid #666;
+}
+
+/* 開いたとき */
+.menu.active {
+	display: flex;
+	flex-direction: column;
+}
+
+/* ===== ハンバーガー ===== */
+.menu-toggle {
+	display: none;
+	font-size: 28px;
+	cursor: pointer;
+}
