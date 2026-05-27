@@ -477,11 +477,6 @@ public class SalesSearchController {
              "searched",
              true);
 
-     // 完了メッセージ
-     session.setAttribute(
-             "message",
-             "売上情報を更新しました。");
-
      return "redirect:/sales/result";
  }
 }
