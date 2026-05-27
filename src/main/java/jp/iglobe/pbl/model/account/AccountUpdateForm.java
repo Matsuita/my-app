@@ -19,7 +19,7 @@ public class AccountUpdateForm {
 	private String name;
 
 	@NotBlank(message = "メールアドレスを入力して下さい。")
-	@Pattern(regexp = "^$|[a-zA-Z0-9_+-]+(\\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$", message = "メールアドレスの形式が誤っています。")
+	@Pattern(regexp = "^$|[a-zA-Z0-9_+-]+(\\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$", message = "メールアドレスを正しく入力して下さい。")
 	@Size(max = 100, message = "メールアドレスが長すぎます。")
 	private String mail;
 
