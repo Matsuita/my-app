@@ -9,6 +9,7 @@ import jp.iglobe.pbl.model.account.Account;
 import jp.iglobe.pbl.model.category.Category;
 import jp.iglobe.pbl.model.sales.Sale;
 import jp.iglobe.pbl.model.sales.SalesCreateForm;
+import jp.iglobe.pbl.model.sales.SalesForm;
 import jp.iglobe.pbl.repository.AccountRepository;
 import jp.iglobe.pbl.repository.CategoryRepository;
 import jp.iglobe.pbl.repository.SalesRepository;
@@ -21,11 +22,35 @@ public class SalesCreateService {
 	private final CategoryRepository categoryRepository;
 	private final SalesRepository salesRepository;
 
-	// 担当一覧(売上権限なし・退職を省く）
+	// 担当一覧(）
 	public List<Account> getSalesAccounts() {
 
-		return accountRepository
-				.findBySalesAuthorityAndIsActive(2, true);
+		List<Account> accountList = accountRepository.findAll();
+
+	    for (Account account : accountList) {
+	    		account.setName(getDisplayName(account));
+	    }
+
+	    return accountList;
+	}
+	
+//	プルダウン表示
+	public String getDisplayName(Account account) {
+
+	    if (account != null && account.isActive()) {
+	        return account.getName();
+	    }
+
+	    return account.getName() + "（退職済み）";
+	}
+	
+	public String getAccountBySaleId(Integer saleId) {
+		
+	Sale sales = salesRepository.findById(saleId).orElse(null);
+	Account account = accountRepository.findById(sales.getAccountId())
+          .orElse(null);
+	 return getAccountName(account);
+	 
 	}
 
 	// カテゴリ一覧
@@ -34,7 +59,7 @@ public class SalesCreateService {
 		return categoryRepository.findAll();
 	}
 
-	// アカウント存在チェック
+	// アカウント存在チェック(論理削除なし）
 	public Account validateAccount(Integer accountId, BindingResult result) {
 		
 		if (accountId == null) {
@@ -47,13 +72,11 @@ public class SalesCreateService {
 
 			result.rejectValue("accountId", null,
 					"アカウントテーブルに存在しません。");
-		} else if (!account.isActive()) {
-			result.rejectValue("accountId", null,
-					"退職済みユーザーです。");
 		}
 
 		return account;
 	}
+	
 
 	//小計計算
 	public long calculateTotal(String unitPrice, String saleNumber) {
@@ -85,6 +108,24 @@ public class SalesCreateService {
 
 		return category;
 	}
+	
+	// 単価形式チェック
+	public void validatePriceAndNumber(SalesForm salesForm,
+	        BindingResult result) {
+			if (!salesForm.getUnitPrice()
+							.matches("(^$)|^[0-9]+$")) {
+						
+				result.rejectValue("unitPrice", null,
+						"単価を正しく入力してください。");
+			}
+			// 個数形式チェック
+			if (!salesForm.getSaleNumber()
+							.matches("(^$)|^([1-9][0-9]*)$")) {
+						
+				result.rejectValue("saleNumber", null,
+						"個数を正しく入力して下さい。");
+			}
+	}
 
 	//売上登録実行
 	public void createSale(SalesCreateForm salesCreateForm) {
@@ -110,5 +151,7 @@ public class SalesCreateService {
 
 		return "（退職済みユーザー）";
 	}
+	
+
 
 }
