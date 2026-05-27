@@ -80,10 +80,9 @@ public class SalesController {
 			return "S0010";
 		}
 
-//		小計
+		//		小計
 		long total = salesCreateService.calculateTotal(
-		        salesCreateForm.getUnitPrice(),
-		        salesCreateForm.getSaleNumber());
+		        salesCreateForm.getUnitPrice(),salesCreateForm.getSaleNumber());
 
 		model.addAttribute("total", total);
 		model.addAttribute("salesCreateForm", salesCreateForm);
@@ -156,27 +155,12 @@ public class SalesController {
 				        salesForm.getCategoryId(),result);
 		
 		// 単価形式チェック
-		if (!salesForm.getUnitPrice()
-						.matches("(^$)|^[0-9]+$")) {
-					
-			result.rejectValue("unitPrice", null,
-					"単価を正しく入力してください。");
-		}
-		// 個数形式チェック
-		if (!salesForm.getSaleNumber()
-						.matches("(^$)|^([1-9][0-9]*)$")) {
-					
-			result.rejectValue("saleNumber", null,
-					"個数を正しく入力して下さい。");
-		}
+		salesCreateService.validatePriceAndNumber(salesForm,result);
 
 		// 入力エラー
 		if (result.hasErrors()) {
 			
-			Sale sales = salesRepository.findById(saleId).orElse(null);
-			account = accountRepository.findById(sales.getAccountId())
-	              .orElse(null);
-			String accountName = salesCreateService.getAccountName(account);
+			String accountName = salesCreateService.getAccountBySaleId(saleId);
 			
 		    model.addAttribute("accountName", accountName);
 			model.addAttribute("accountList", salesSearchService.getUpdateAccounts());
@@ -205,11 +189,7 @@ public class SalesController {
 	public String editBack(@ModelAttribute SalesForm salesForm,
 			@PathVariable Integer saleId, Model model) {
 		
-		Sale sales = salesRepository.findById(saleId).orElse(null);
-		Account account = accountRepository.findById(sales.getAccountId())
-              .orElse(null);
-		
-		String accountName = salesCreateService.getAccountName(account);
+		String accountName = salesCreateService.getAccountBySaleId(saleId);
 
 	    model.addAttribute("accountName", accountName);
 		model.addAttribute("salesForm", salesForm);
