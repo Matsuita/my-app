@@ -4,17 +4,20 @@ body{
           padding: 0;
           background-color: #eeeeee;
           font-family: "Yu Gothic", sans-serif;
+		  
       }
 
       .login-area{
           width: 320px;
           margin: 110px auto;
+		  text-align: center; 
       }
 
       .system-title{
-          font-size: 28px;
+          font-size: 32px;
           margin-bottom: 15px;
           color: #222;
+		  text-align: center; 
       }
 
       .input-box{
@@ -38,7 +41,7 @@ body{
           background-color: #2f78bd;
           color: white;
           font-size: 16px;
-          font-weight: bold;
+          font-weight: 20px;
           cursor: pointer;
       }
 
@@ -50,4 +53,20 @@ body{
 	    color: #d9534f;
 	    font-size: 12px;
 	    margin-top: 2px;
+		text-align: left; 
+	}
+	
+	.password-wrap {
+		position: relative;
+		width: 100%;
+	}
+
+	
+	.password-wrap i {
+		position: absolute;
+		right: 10px;
+		top: 50%;
+		transform: translateY(-50%);
+		cursor: pointer;
+		color: #666;
 	}
