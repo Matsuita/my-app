@@ -34,7 +34,7 @@
 				<div class="form-row">
 					<div class="form-label">氏名</div>
 					<div class="form-input">
-						<input type="text" th:value="*{name}" disabled>
+						<input type="text" th:value="*{name}" readonly>
 					</div>
 				</div>
 
@@ -42,7 +42,7 @@
 				<div class="form-row">
 					<div class="form-label">メールアドレス</div>
 					<div class="form-input">
-						<input type="text" th:value="*{mail}" disabled>
+						<input type="text" th:value="*{mail}" readonly>
 					</div>
 				</div>
 
@@ -51,7 +51,7 @@
 					<div class="form-label">パスワード</div>
 					<div class="form-input">
 						<input type="text" th:value="${#strings.repeat('•', accountUpdateForm.password.length())}"
-							disabled>
+							readonly>
 					</div>
 				</div>
 
