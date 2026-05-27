@@ -23,15 +23,18 @@ public class AccountService {
 	public void validateAccountForm(AccountForm accountform, BindingResult result) {
 
 		// パスワード一致チェック（カスタムチェック）
-		if (!accountform.getPassword().equals(accountform.getPasswordConfirm())) {
-			// passwordConfirmフィールドに対して個別にエラーを紐付ける
-			result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードとパスワード（確認）の入力値が異なります。");
+		if (accountform.getPassword() != null && accountform.getPasswordConfirm() != null) {
+			if (!accountform.getPassword().equals(accountform.getPasswordConfirm())) {
+				// passwordConfirmフィールドに対して個別にエラーを紐付ける
+				result.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードとパスワード（確認）の入力値が異なります。");
+			}
 		}
 		// メールアドレス重複チェック（DBを見に行く処理）
-		if (accountRepository.existsByMail(accountform.getMail())) {
-			result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のメールアドレスで登録してください。");
+		if (accountform.getMail() != null && !accountform.getMail().isEmpty()) {
+			if (accountRepository.existsByMail(accountform.getMail())) {
+				result.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されているため、別のメールアドレスで登録してください。");
+			}
 		}
-
 	}
 
 	//	アカウントの新規登録（DB保存）を行う

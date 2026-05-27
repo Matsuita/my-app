@@ -60,11 +60,6 @@ public class AccountController {
 	@PostMapping("/accounts/confirm")
 	public String confirmRegister(@Validated @ModelAttribute AccountForm accountForm, BindingResult result) {
 
-		// 1. 入力チェック（@NotBlankや@NotNull）に引っかかった場合
-		if (result.hasErrors()) {
-			return "S0030";
-		}
-
 		// Serviceにパスワード一致やメール重複などのチェックを実行
 		// エラーが見つかっていたら、入力画面（S0030）に戻す
 		accountService.validateAccountForm(accountForm, result);
