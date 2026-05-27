@@ -79,11 +79,10 @@ public class SalesSearchService {
     }
 
     
-    // 担当
-   
-
+ // 担当一覧
     public List<Account> getUpdateAccounts() {
-        return accountRepository.findBySalesAuthority(2);
+
+        return accountRepository.findAll();
     }
 
     // カテゴリ一覧
