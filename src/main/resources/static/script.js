@@ -4,6 +4,12 @@ function toggleMenu() {
     menu.classList.toggle("active");
 }
 
+window.addEventListener('resize', function() {
+    const menu = document.getElementById("menu");
+    if (window.innerWidth > 768) {
+        menu.classList.remove("active");
+    }
+});
 // 🔥 パーティクルは外に出す
 function setupParticle() {
     let lastTime = 0;
