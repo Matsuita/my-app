@@ -15,3 +15,13 @@ INSERT INTO sale (
   3,
   'テスト'
 );
+
+INSERT INTO category (
+  category_id,
+  category_name,
+  active_flg
+) VALUES (
+  2,
+  '野菜',
+  1
+);
