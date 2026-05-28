@@ -1,6 +1,6 @@
 -- ① 先に重複削除
 DELETE FROM accounts
-WHERE id NOT IN (
+WHERE account_id NOT IN (
   SELECT MIN(id)
   FROM accounts
   GROUP BY mail
