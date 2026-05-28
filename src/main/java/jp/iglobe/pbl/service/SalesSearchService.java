@@ -59,9 +59,9 @@ public class SalesSearchService {
 
     // 一覧
 
-    public List<Sale> findAll() {
-        return salesRepository.findAll();
-    }
+  public List<Sale> findAll() {
+    return salesRepository.findAllByOrderBySaleIdAsc();
+}
     
     
     // 全アカウント
