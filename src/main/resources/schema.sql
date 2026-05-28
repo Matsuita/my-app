@@ -1,7 +1,7 @@
 CREATE TABLE categories (
   category_id SERIAL PRIMARY KEY,
   category_name VARCHAR(255) ,
-  active_flg INTEGER NOT NULL　DEFAULT 1
+  active_flg INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE sales (
