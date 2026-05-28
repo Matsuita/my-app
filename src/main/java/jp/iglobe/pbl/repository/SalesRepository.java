@@ -10,7 +10,7 @@ import jp.iglobe.pbl.model.sales.Sale;
 
 public interface SalesRepository
         extends JpaRepository<Sale, Integer> {
-
+List<Sale> findAllByOrderBySaleIdAsc();
     // 商品名部分一致
     List<Sale>
     findByTradeNameContaining(String tradeName);
