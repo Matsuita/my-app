@@ -20,36 +20,38 @@ List<Sale> findAllByOrderBySaleIdAsc();
     findByNoteContaining(String note);
     @Query("""
 
-    	    SELECT s
-    	    FROM Sale s
+    SELECT s
+    FROM Sale s
 
-    	    WHERE
-    	    (:saleDateFrom IS NULL
-    	        OR s.saleDate >= :saleDateFrom)
+    WHERE
+    (:saleDateFrom IS NULL
+        OR s.saleDate >= :saleDateFrom)
 
-    	    AND
-    	    (:saleDateTo IS NULL
-    	        OR s.saleDate <= :saleDateTo)
+    AND
+    (:saleDateTo IS NULL
+        OR s.saleDate <= :saleDateTo)
 
-    	    AND
-    	    (:accountId IS NULL
-    	        OR s.accountId = :accountId)
+    AND
+    (:accountId IS NULL
+        OR s.accountId = :accountId)
 
-    	    AND
-    	    (:categoryId IS NULL
-    	        OR s.categoryId = :categoryId)
+    AND
+    (:categoryId IS NULL
+        OR s.categoryId = :categoryId)
 
-    	    AND
-    	    (:tradeName IS NULL
-    	        OR :tradeName = ''
-    	        OR s.tradeName LIKE %:tradeName%)
+    AND
+    (:tradeName IS NULL
+        OR :tradeName = ''
+        OR s.tradeName LIKE %:tradeName%)
 
-    	    AND
-    	    (:note IS NULL
-    	        OR :note = ''
-    	        OR s.note LIKE %:note%)
+    AND
+    (:note IS NULL
+        OR :note = ''
+        OR s.note LIKE %:note%)
 
-    	""")
+    ORDER BY s.saleId ASC
+
+""")
     	List<Sale> search(
 
     	    LocalDate saleDateFrom,
