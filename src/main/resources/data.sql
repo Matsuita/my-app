@@ -1,3 +1,6 @@
+ALTER TABLE categories
+ADD COLUMN active_flg INTEGER NOT NULL DEFAULT 1;
+
 INSERT INTO categories (
   category_id,
   category_name,
