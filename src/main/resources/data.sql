@@ -1,4 +1,12 @@
-INSERT INTO sale (
+INSERT INTO categories (
+  category_id,
+  category_name,
+  active_flg
+) VALUES (1, '果物', 1),
+(2, '飲み物', 1),
+(3, 'その他', 1);
+
+INSERT INTO sales (
   sale_date,
   account_id,
   category_id,
@@ -16,12 +24,4 @@ INSERT INTO sale (
   'テスト'
 );
 
-INSERT INTO category (
-  category_id,
-  category_name,
-  active_flg
-) VALUES (
-  2,
-  '野菜',
-  1
-);
+
