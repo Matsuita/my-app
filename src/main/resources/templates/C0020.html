@@ -443,7 +443,9 @@
 								"ゾス")) {
 
 								console.log("ぷちゅん");
-
+								document
+									.getElementById("zosAudio")
+									.play();
 								puchun();
 							}
 						}
@@ -577,8 +579,33 @@
 			});
 
 	</script>
+	
+	<div id="overlay"></div>
+	<div id="slot-layer">
+		<canvas id="reelCanvas"></canvas>
+	</div>
 
-	<script th:src="@{/script.js}" defer></script>
+
+	<video id="leftVideo" src="/videos/god.mp4"></video>
+	<video id="centerVideo" src="/videos/god.mp4"></video>
+	<video id="rightVideo" src="/videos/god.mp4"></video>
+
+
+	<div id="movie" style="display:none;">
+		<video id="bgVideo" preload="auto">
+			<source src="/videos/god.mp4" type="video/mp4">
+		</video>
+	</div>
+
+	<script th:src="@{/script.js}" defer>
+	</script>
+	<audio id="zosAudio">
+
+	    <source th:src="@{/audio/VVV.mp3}"
+	            type="audio/mpeg">
+
+	</audio>
 </body>
+
 
 </html>
