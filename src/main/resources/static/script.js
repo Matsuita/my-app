@@ -10,7 +10,7 @@ window.addEventListener('resize', function() {
         menu.classList.remove("active");
     }
 });
-//  🔥 パーティクルは外に出す
+// 🔥 パーティクルは外に出す
 function setupParticle() {
     let lastTime = 0;
 
