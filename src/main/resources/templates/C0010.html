@@ -22,8 +22,8 @@
         <div class="error"th:errors="*{mail}"></div>
 
         <!-- パスワード -->
-		<div class="password-wrap">
-        <input type="password" id="password" th:field="*{password}" class="input-box" placeholder="パスワード"><i id="togglePassword" class="bi bi-eye-fill"></i></div>
+		
+        <input type="password" th:field="*{password}" class="input-box" placeholder="パスワード">
         <div class="error" th:errors="*{password}"></div>
 
         <!-- ログイン失敗 -->
@@ -34,6 +34,6 @@
     </form>
 
 </div>
-<script th:src="@{/scriptlogin.js}"></script>
+
 </body>
 </html>
