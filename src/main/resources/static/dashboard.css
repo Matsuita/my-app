@@ -592,6 +592,140 @@
 
 		    transform: scale(1.05);
 		}
-		
-		
-		
+	body {
+	  margin: 0;
+	  background: black;
+	  font-family: serif;
+	}
+
+	/* オーバーレイ */
+	#overlay {
+	  position: fixed;
+	  inset: 0;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  flex-direction: column;
+	  color: white;
+	  z-index: 9999;
+	  pointer-events: none;
+	}
+
+	/* ナビ */
+	.nav {
+	  font-size: 42px;
+	  animation: blink 0.8s infinite;
+	}
+
+	@keyframes blink {
+	  50% { opacity: 0; }
+	}
+
+	/* GOD */
+	.god {
+	  font-size: 200px;
+	  color: gold;
+	  text-shadow: 0 0 40px yellow;
+	}
+
+	/* フラッシュ */
+	.flash {
+	  position: fixed;
+	  inset: 0;
+	  background: white;
+	  z-index: 10000;
+	    pointer-events: none; /* ←追加 */
+	    animation: flashFade 0.2s forwards;
+	  }
+
+	  @keyframes flashFade {
+	    from { opacity: 1; }
+	    to { opacity: 0; }
+	  }
+	  /* 通常画面はそのまま */
+
+	  #slot-layer{
+	    position: fixed;
+	    inset: 0;
+	    z-index: 9998;
+		background: black; /* ←これ追加！！！！ */
+	    opacity: 0;              /* ←最初は非表示 */
+	    pointer-events: none;
+
+	    transition: opacity 0.2s;
+	  }
+
+	  #reelCanvas{
+	    position: absolute;
+	    inset: 0;
+	  }
+
+	  #overlay{
+	    position: absolute;
+	    inset: 0;
+	    z-index: 9999;
+	  }
+	  @keyframes godZoom {
+	    0% {
+	      transform: scale(0.5);
+	      opacity: 0;
+	    }
+	    50% {
+	      transform: scale(1.3);
+	      opacity: 1;
+	    }
+	    100% {
+	      transform: scale(1);
+	    }
+	  }	.nav-img {
+	  width: 500px;
+	  max-width: 80%;
+	  animation: blink 0.8s infinite;
+	  
+	}
+
+	@keyframes blink {
+	  50% { opacity: 0; }
+	} 
+
+	#movie{
+	    position: fixed;
+	    inset: 0;
+	    z-index: 10001;
+	    background: black;
+	  }
+
+	  #bgVideo{
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	 
+	  opacity: 0;
+	  transition: opacity 0.05s linear;
+	}
+	  
+  
+  #movie iframe {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    pointer-events: none;
+  }
+  #movie::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.2); /* ちょい暗く */
+    pointer-events: none;
+  }
+  video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 9999;
+      display: none;
+  }
