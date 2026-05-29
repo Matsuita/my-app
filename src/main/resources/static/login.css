@@ -70,3 +70,7 @@ body{
 		cursor: pointer;
 		color: #666;
 	}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
